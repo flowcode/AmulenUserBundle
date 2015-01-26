@@ -1,0 +1,2 @@
+# AmulenUserBundle
+UserBundle
