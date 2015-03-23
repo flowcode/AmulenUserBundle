@@ -1,6 +1,12 @@
 {
     "name": "flowcode/amulen-user-bundle",
     "description": "Description of project AmulenUserBundle.",
+    "license": "MIT",
+    "autoload": {
+        "psr-0": {
+            "": "src/"
+        }
+    },
     "authors": [
         {
             "name": "Juan Manuel Aguero",
