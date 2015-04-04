@@ -1,4 +1,4 @@
-{% extends '::backend.html.twig' %}
+{% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
 {% block body -%}
     <ol class="breadcrumb">
@@ -59,12 +59,12 @@
                         <ul class="list-inline">
                             <li>
                                 <a title="{{'show'|trans}}" class="btn btn-xs btn-default" href="{{ path('admin_user_show', { 'id': entity.id }) }}">
-                                    <i class="glyphicon glyphicon-eye-open"></i>
+                                    <i class="fa fa-eye-open"></i>
                                 </a>
                             </li>
                             <li>
                                 <a title="{{'edit'|trans}}" class="btn btn-xs btn-default" href="{{ path('admin_user_edit', { 'id': entity.id }) }}">
-                                    <i class="glyphicon glyphicon-edit"></i>
+                                    <i class="fa fa-edit"></i>
                                 </a>
                             </li>
                         </ul>

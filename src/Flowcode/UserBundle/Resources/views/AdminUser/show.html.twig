@@ -1,4 +1,4 @@
-{% extends '::backend.html.twig' %}
+{% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
 {% block stylesheets %}
     {{parent()}}
@@ -45,9 +45,9 @@
                         <th>Enabled</th>
                         <td>
                         {%if entity.enabled%}
-                            <div class="glyphicon glyphicon-thumbs-up"/>
+                            <div class="fa fa-thumbs-up"/>
                             {%else%}
-                            <div class="glyphicon glyphicon-thumbs-down"/>
+                            <div class="fa fa-thumbs-down"/>
                         {%endif%}
                         </td>
                     </tr>
@@ -55,9 +55,9 @@
                         <th>Locked</th>
                         <td>
                         {%if entity.locked %}
-                            <div class="glyphicon glyphicon-ban-circle"/>
+                            <div class="fa fa-ban-circle"/>
                             {%else%}
-                            <div class="glyphicon glyphicon-ok-circle"/>
+                            <div class="fa fa-ok-circle"/>
                         {%endif%}
                         </td>
                     </tr>
