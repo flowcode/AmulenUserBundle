@@ -1,0 +1,42 @@
+{% extends "FlowcodeUserBundle:AdminLogin:layout.html.twig" %}
+
+{% block fos_user_content %}
+    <div class="login-box">
+        <div class="login-logo">
+            <img class="img-rounded" src="{{ asset('bundles/flowcodedashboard/images/logo.png') }}" alt="Welcome to Amulen" />
+        </div><!-- /.login-logo -->
+        <div class="login-box-body">
+            {% if error %}
+                <p class="login-box-msg">{{ error|trans }}</p>
+            {% endif %}
+            <form action="{{ path("fos_user_security_check") }}" method="post">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                <div class="form-group has-feedback">
+                    <input type="text" id="username" name="_username" placeholder="{{ 'security.login.username'|trans }}" value="{{ last_username }}" required="required" class="form-control" />
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" id="password" name="_password" placeholder="{{ 'security.login.password'|trans }}" required="required" class="form-control" />
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input type="checkbox"> Remember Me
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <input class="btn btn-primary btn-block btn-flat" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+                    </div>
+                </div>
+            </form>
+
+            <a href="#">I forgot my password</a><br>
+
+        </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+
+
+{% endblock fos_user_content %}

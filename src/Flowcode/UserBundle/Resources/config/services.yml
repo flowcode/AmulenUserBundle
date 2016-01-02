@@ -1,0 +1,21 @@
+services:
+
+    form.type.user:
+        class: Flowcode\UserBundle\Form\Type\UserType
+        arguments: ["@security.context"]
+        tags:
+            - { name: form.type, alias: user_type }
+
+    form.type.user_register:
+        class: Flowcode\UserBundle\Form\Type\UserRegisterType
+        arguments: ["@security.context"]
+        tags:
+            - { name: form.type, alias: user_register_type }
+
+    flowcode.user.notification:
+        class: Flowcode\UserBundle\Service\UserNotificationService
+        arguments: [@service_container, @flowcode.sender.senderEmailMandrill, @templating]
+
+    flowcode.user:
+        class: Flowcode\UserBundle\Service\UserService
+        arguments: [@doctrine.orm.entity_manager, @security.password_encoder, @service_container]
