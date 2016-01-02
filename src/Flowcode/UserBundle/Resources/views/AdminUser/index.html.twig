@@ -21,12 +21,11 @@
     <table class="records_list table table-condensed">
         <thead>
             <tr>
-                <th>Name</th>
+                <th>Firstname</th>
+                <th>Lasttname</th>
                 <th>Email</th>
                 <th>Username</th>
-                <th>Lastlogin</th>
-                <th>Enabled</th>
-                <th>Locked</th>
+                <th>Status</th>
                 <th>Created</th>
                 <th>Updated</th>
                 <th>Actions</th>
@@ -35,19 +34,12 @@
         <tbody>
             {% for entity in entities %}
                 <tr>
-                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.firstname }}</td>
+                    <td>{{ entity.lastname }}</td>
                     <td>{{ entity.email }}</td>
                     <td><a href="{{ path('admin_user_show', { 'id': entity.id }) }}">{{ entity.username }}</a></td>
-                    <td>{% if entity.lastLogin %}{{ entity.lastLogin|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>
-                        {%if entity.enabled%}
-                            {{ 'yes'|trans }}
-                        {%else%}
-                            {{ 'no'|trans }}
-                        {%endif%}
-                    </td>
-                    <td>
-                        {%if entity.locked %}
+                        {%if entity.status %}
                             {{ 'yes'|trans }}
                         {%else%}
                             {{ 'no'|trans }}
@@ -76,4 +68,3 @@
 
 
 {% endblock %}
-

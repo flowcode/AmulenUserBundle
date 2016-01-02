@@ -3,16 +3,13 @@
 namespace Flowcode\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use FOS\UserBundle\Model\Group as BaseGroup;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * UserGroup
- *
- * @ORM\Table(name="user_group")
- * @ORM\Entity
  */
-class UserGroup {
-
+class UserGroup
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -20,14 +17,25 @@ class UserGroup {
      */
     protected $id;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     */
     protected $name;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Amulen\UserBundle\Entity\Role")
+     * @ORM\JoinTable(name="user_group_role",
+     *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
+     * )
+     */
     protected $roles;
 
-    public function __construct($name, $roles = array())
+    public function __construct()
     {
-        $this->name = $name;
-        $this->roles = $roles;
+        $this->roles = new ArrayCollection();
     }
 
     /**
@@ -49,7 +57,8 @@ class UserGroup {
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -111,9 +120,4 @@ class UserGroup {
 
         return $this;
     }
-
-
-
-
-
 }

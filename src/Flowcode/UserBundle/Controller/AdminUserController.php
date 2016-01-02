@@ -38,7 +38,7 @@ class AdminUserController extends Controller {
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('FlowcodeUserBundle:User')->findAll();
+        $entities = $em->getRepository('AmulenUserBundle:User')->findAll();
 
         return array(
             'entities' => $entities,
@@ -106,15 +106,27 @@ class AdminUserController extends Controller {
      * @Template()
      */
     public function newAction() {
-        $userManager = $this->container->get('fos_user.user_manager');
-        $entity = $userManager->createUser();
-        //$entity = new User();
+        $userManager = $this->container->get('flowcode.user');
+        $entity = $userManager->create();
+
         $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
             'form' => $form->createView(),
         );
+    }
+
+    /**
+     * Finds and displays a User entity.
+     *
+     * @Route("/logout", name="flowcode_admin_user_logout")
+     * @Method("GET")
+     * @Template()
+     */
+    public function logoutAction() {
+
+        return array();
     }
 
     /**
@@ -127,7 +139,7 @@ class AdminUserController extends Controller {
     public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodeUserBundle:User')->find($id);
+        $entity = $em->getRepository('AmulenUserBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
@@ -142,6 +154,32 @@ class AdminUserController extends Controller {
     }
 
     /**
+     * Finds and displays a User entity.
+     *
+     * @Route("/profile", name="admin_user_profile_show")
+     * @Method("GET")
+     * @Template()
+     */
+    public function profileAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $this->getUser();
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return array(
+            'entity' => $entity,
+            'delete_form' => $deleteForm->createView(),
+        );
+    }
+
+
+
+    /**
      * Displays a form to edit an existing User entity.
      *
      * @Route("/{id}/edit", name="admin_user_edit")
@@ -151,7 +189,7 @@ class AdminUserController extends Controller {
     public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodeUserBundle:User')->find($id);
+        $entity = $em->getRepository('AmulenUserBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
@@ -195,7 +233,7 @@ class AdminUserController extends Controller {
     public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodeUserBundle:User')->find($id);
+        $entity = $em->getRepository('AmulenUserBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
@@ -234,7 +272,7 @@ class AdminUserController extends Controller {
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('FlowcodeUserBundle:User')->find($id);
+            $entity = $em->getRepository('AmulenUserBundle:User')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find User entity.');

@@ -6,8 +6,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation\Groups;
 
 /**
  * User
@@ -23,23 +23,20 @@ class User implements UserInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"list", "entity","api_admin"})
      */
     protected $id;
 
     /**
      * @var string
      *
-     * @Groups({"list", "entity", "api_public", "api_admin"})
-     * @ORM\Column(name="username", type="string", length=45, nullable=true)
+     * @ORM\Column(name="username", type="string", length=255, nullable=true)
      */
     protected $username;
 
     /**
      * @var string
      *
-     * @Groups({"list", "entity", "api_public", "api_admin"})
-     * @ORM\Column(name="firstname", type="string", length=45, nullable=true)
+     * @ORM\Column(name="firstname", type="string", length=255, nullable=true)
      */
     protected $firstname;
 
@@ -47,30 +44,27 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @Groups({"list","entity", "api_public", "api_admin"})
-     * @ORM\Column(name="lastname", type="string", length=45, nullable=true)
+     * @ORM\Column(name="lastname", type="string", length=255, nullable=true)
      */
     protected $lastname;
 
     /**
      * @var string
      *
-     * @Groups({"list","entity", "api_public", "api_admin"})
-     * @ORM\Column(name="phone", type="string", length=45, nullable=true)
+     * @ORM\Column(name="phone", type="string", length=255, nullable=true)
      */
     protected $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=65, nullable=true)
+     * @ORM\Column(name="password", type="string", length=255, nullable=true)
      */
     protected $password;
 
     /**
      * @var string
      *
-     * @Groups({"list","entity", "api_public", "api_admin"})
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
     protected $email;
@@ -78,7 +72,6 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @Groups({"list","entity", "api_admin"})
      * @ORM\Column(name="role", type="string", length=255, nullable=true)
      */
     protected $role;
@@ -86,7 +79,6 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @Groups({"list","entity", "api_public", "api_admin"})
      * @ORM\Column(name="dni", type="integer", length=255, nullable=true)
      */
     protected $dni;
@@ -95,7 +87,6 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
-     * @Groups({"list", "entity", "api_public", "api_admin"})
      */
     protected $avatar;
 
@@ -110,7 +101,6 @@ class User implements UserInterface
      *
      *
      * @ORM\Column(name="status", type="smallint")
-     * @Groups({"list","entity","api_admin"})
      */
     protected $status;
 
@@ -136,7 +126,7 @@ class User implements UserInterface
     protected $file;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Flowcode\UserBundle\Entity\UserGroup")
+     * @ORM\ManyToMany(targetEntity="Amulen\UserBundle\Entity\UserGroup")
      * @ORM\JoinTable(name="user_user_user_group",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
@@ -146,6 +136,7 @@ class User implements UserInterface
 
     public function __construct()
     {
+        $this->groups = new ArrayCollection();
     }
 
     /**
@@ -478,7 +469,7 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return $this->role;
+        return array("ROLE_ADMIN");
     }
 
     public function getSalt()

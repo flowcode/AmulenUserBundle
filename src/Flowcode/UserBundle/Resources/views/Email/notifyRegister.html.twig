@@ -1,0 +1,39 @@
+{% extends "FlouUserBundle:Email:layout.html.twig" %}
+{% block body %}
+<table class="container" >
+    <tr>
+        <td>
+            <table class="row">
+                <tr>
+                    <td class="wrapper last"></td>
+                </tr>
+            </table>
+            <table align="center">
+                <tr>
+                    <td>
+                        <h1>Hola, {{ user.firstname }}</h1>
+                    </td>
+                </tr>
+            </table>
+            <table class="nine columns">
+                <tr>
+                    <td>
+                        <p>Bienvenido al sistema.</p>
+                    </td>
+                    <td class="expander"></td>
+                </tr>
+            </table>
+            <table class="row callout">
+                <tr>
+                    <td class="wrapper last">
+                        <table class="twelve columns">
+                            <tr>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock %}

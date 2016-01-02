@@ -9,8 +9,7 @@
             {% if error %}
                 <p class="login-box-msg">{{ error|trans }}</p>
             {% endif %}
-            <form action="{{ path("fos_user_security_check") }}" method="post">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+            <form action="{{ path("flowcode_admin_user_check") }}" method="post">
                 <div class="form-group has-feedback">
                     <input type="text" id="username" name="_username" placeholder="{{ 'security.login.username'|trans }}" value="{{ last_username }}" required="required" class="form-control" />
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>

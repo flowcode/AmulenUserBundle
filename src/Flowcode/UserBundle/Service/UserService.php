@@ -1,6 +1,6 @@
 <?php
 
-namespace Flou\UserBundle\Service;
+namespace Flowcode\UserBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
