@@ -1,0 +1,54 @@
+{% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+{{ include('FlowcodeUserBundle:AdminRole:rolesHeader.html.twig') }}
+<section class="content">
+
+    <div class="box box-solid">
+
+        <div class="box-header">
+            <h1 class="box-title">{{ 'role.list'|trans }}</h1>
+            <div class="box-tools">
+                <a class ="btn btn-link btn-sm" href="{{ path('admin_role_new') }}">
+                    <i class="fa fa-plus"></i> {{ 'create'|trans }}
+                </a>
+            </div>
+        </div>
+
+        <div class="box-body">
+
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.id }}</td>
+                        <td>{{ entity.name }}</td>
+                        <td>
+                            <ul class="list-inline">
+                                <li>
+                                    <a title="{{'show'|trans}}" class="btn btn-xs btn-default" href="{{ path('admin_role_show', { 'id': entity.id }) }}">
+                                        <i class="fa fa-eye-open"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a title="{{'edit'|trans}}" class="btn btn-xs btn-default" href="{{ path('admin_role_edit', { 'id': entity.id }) }}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

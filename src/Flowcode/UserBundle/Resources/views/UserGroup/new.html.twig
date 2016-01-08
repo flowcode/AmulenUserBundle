@@ -1,42 +1,21 @@
-{#
-
- Displays a form to create a new UserGroup entity.
-
- @Route("/new", name="admin_usergroup_new")
- @Method("GET")
- @Template("FlowcodeUserBundle:UserGroup:new.html.twig")
-
- viewBag:
-    form Formulario para crear una entidad UserGroup
-        name string Nombre del grupo.
-    roles array lista de roles definidos en security.yml
-#}
-
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
 {% block body %}
-    <h1>User Group creation</h1>
-    <div style="width: 50%">
-        {%if form is defined%}
-            {{ form_start(form) }}
-                <a class="btn btn-primary" href="{{ path('admin_usergroup') }}">
-                    Back to the list
-                </a>        
-                {{ form_row(form.submit) }}
-                <br/>
-                <br/>
-                {{ form_row(form.name) }}
-                {%if roles is defined %}
-                <select multiple>
-                    {%for rol,rol_name in roles%}
-                        <option value="{{rol}}">{{rol_name}}</option>
-                    {%endfor%}
-                </select>
-                {%endif%}
-
-                {{ form_row(form._token) }}
-            {{ form_rest(form) }}
-        {%endif%}
+{{ include('FlowcodeUserBundle:UserGroup:userGroupsHeader.html.twig') }}
+<section class="content">
+    <div class="box box-solid">
+        <div class="box-header">
+            <h1 class="box-title">{{ "new"|trans|title }}</h1>
+            <div class="box-tools">
+                <a class="btn btn-link btn-sm" href="{{ path('admin_usergroup') }}">
+                    {{ "list"|trans|title }}
+                </a>
+            </div>
+        </div>
+        <div class="box-body">
+            {{form(form)}}
+        </div>
     </div>
-    
+</section>
+
 {% endblock %}

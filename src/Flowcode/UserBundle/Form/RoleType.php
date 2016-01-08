@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class UserGroupType extends AbstractType
+class RoleType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,8 +16,7 @@ class UserGroupType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('roles')
-            ->add('submit', 'submit', array('label' => 'Create'));
+            ;
     }
 
     /**
@@ -26,7 +25,7 @@ class UserGroupType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Amulen\UserBundle\Entity\UserGroup'
+            'data_class' => 'Amulen\UserBundle\Entity\Role'
         ));
     }
 
@@ -35,6 +34,6 @@ class UserGroupType extends AbstractType
      */
     public function getName()
     {
-        return 'flowcode_userbundle_usergroup';
+        return 'flowcode_userbundle_role';
     }
 }

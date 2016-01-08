@@ -1,70 +1,51 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
 {% block body -%}
-    <ol class="breadcrumb">
-        <li><a href="{{ url('admin_dashboard') }}">{{ 'home'|trans }}</a></li>
-        <li><a href="{{ url('admin_user_dashboard') }}">{{ 'user.dashboard'|trans|capitalize }}</a></li>
-        <li>{{ 'user.users'|trans }}</li>
-    </ol>
-    <div class="page-header">
-        <ul class="list-inline pull-right">
-            <li>
-                <a class ="btn btn-primary" href="{{ path('admin_user_new') }}">
-                    {{ 'create'|trans }}
+{{ include('FlowcodeUserBundle:AdminUser:usersHeader.html.twig') }}
+<section class="content">
+    <div class="box box-solid">
+        <div class="box-header">
+            <div class="box-tools">
+                <a class ="btn btn-link btn-sm" href="{{ path('admin_user_new') }}">
+                    <i class="fa fa-plus"></i> {{ 'create'|trans }}
                 </a>
-            </li>
-        </ul>
-        <h1>{{ 'user.list'|trans }}</h1>
-    </div>
+            </div>
+        </div>
+        <div class="box-body">
 
-
-    <table class="records_list table table-condensed">
-        <thead>
-            <tr>
-                <th>Firstname</th>
-                <th>Lasttname</th>
-                <th>Email</th>
-                <th>Username</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for entity in entities %}
-                <tr>
-                    <td>{{ entity.firstname }}</td>
-                    <td>{{ entity.lastname }}</td>
-                    <td>{{ entity.email }}</td>
-                    <td><a href="{{ path('admin_user_show', { 'id': entity.id }) }}">{{ entity.username }}</a></td>
-                    <td>
-                        {%if entity.status %}
+            <table class="records_list table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Firstname</th>
+                        <th>Lasttname</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entity in entities %}
+                    <tr>
+                        <td><a href="{{ path('admin_user_show', { 'id': entity.id }) }}">{{ entity.username }}</a></td>
+                        <td>{{ entity.firstname }}</td>
+                        <td>{{ entity.lastname }}</td>
+                        <td>{{ entity.email }}</td>
+                        <td>
+                            {%if entity.status %}
                             {{ 'yes'|trans }}
-                        {%else%}
+                            {%else%}
                             {{ 'no'|trans }}
-                        {%endif%}
-                    </td>
-                    <td>{% if entity.created %}{{ entity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if entity.updated %}{{ entity.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>
-                        <ul class="list-inline">
-                            <li>
-                                <a title="{{'show'|trans}}" class="btn btn-xs btn-default" href="{{ path('admin_user_show', { 'id': entity.id }) }}">
-                                    <i class="fa fa-eye-open"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a title="{{'edit'|trans}}" class="btn btn-xs btn-default" href="{{ path('admin_user_edit', { 'id': entity.id }) }}">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-
+                            {%endif%}
+                        </td>
+                        <td>{% if entity.created %}{{ entity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td>{% if entity.updated %}{{ entity.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 {% endblock %}

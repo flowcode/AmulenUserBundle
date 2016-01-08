@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Flowcode\UserBundle\Entity\UserGroup as UserGroup;
+use Amulen\UserBundle\Entity\UserGroup as UserGroup;
 use Flowcode\UserBundle\Form\UserGroupType;
 
 /**
@@ -27,13 +27,8 @@ class UserGroupController extends Controller {
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('FlowcodeUserBundle:UserGroup')->findAll();
+        $entities = $em->getRepository('AmulenUserBundle:UserGroup')->findAll();
 
-        foreach ($entities as $entity)
-        {
-            $entity->setRoles($this->get('flowcode.security.roles')->traducirRoles($entity->getRoles()));
-        }
-        
         return array(
             'entities' => $entities,
         );
@@ -44,32 +39,31 @@ class UserGroupController extends Controller {
      *
      * @Route("/new", name="admin_usergroup_new")
      * @Method("GET")
-     * @Template("FlowcodeUserBundle:UserGroup:new.html.twig")
+     * @Template()
      */
     public function newAction() {
-        
-        $viewBag = $this->createViewBag();
-        
+
         $entity = new UserGroup();
-        $viewBag['form'] = $this->createCreateForm($entity)->createView();
-        
-        return $viewBag;
+
+        return array(
+            "form" => $this->createCreateForm($entity)->createView(),
+        );
     }
-    
+
     /**
      * Creates a new UserGroup entity.
      *
      * @Route("/", name="admin_usergroup_create")
      * @Method("POST")
-     * @Template("FlowcodeUserBundle:UserGroup:new.html.twig")
+     * @Template("AmulenUserBundle:UserGroup:new.html.twig")
      */
     public function createAction(Request $request) {
-        
+
         $entity = new UserGroup();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) 
+        if ($form->isValid())
         {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
@@ -77,10 +71,10 @@ class UserGroupController extends Controller {
 
             return $this->redirect($this->generateUrl('admin_usergroup_show', array('id' => $entity->getId())));
         }
-        
+
         return array('form' => $form->createView());
     }
-    
+
     /**
      * Finds and displays a UserGroup entity.
      *
@@ -89,25 +83,23 @@ class UserGroupController extends Controller {
      * @Template()
      */
     public function showAction($id) {
-        
-        $viewBag = $this->createViewBag();
-        
+
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodeUserBundle:UserGroup')->find($id);
+        $entity = $em->getRepository('AmulenUserBundle:UserGroup')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find UserGroup entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        
-        $viewBag['id'] = $entity->getId();
-        $viewBag['name'] = $entity->getName();
-        $viewBag['roles'] = $this->get('flowcode.security.roles')->traducirRoles($entity->getRoles());
-        $viewBag['delete_form'] = $deleteForm->createView();
-        
-        return $viewBag;
+
+        return array(
+            'id' => $entity->getId(),
+            'name' => $entity->getName(),
+            'roles' => $entity->getRoles(),
+            'delete_form' => $deleteForm->createView(),
+        );
     }
 
 
@@ -119,24 +111,24 @@ class UserGroupController extends Controller {
      * @Template()
      */
     public function editAction($id) {
-        
+
         $em = $this->getDoctrine()->getManager();
-        $viewBag = $this->createViewBag();
-        
-        $entity = $em->getRepository('FlowcodeUserBundle:UserGroup')->find($id);
+
+        $entity = $em->getRepository('AmulenUserBundle:UserGroup')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find UserGroup entity.');
         }
-        
+
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        $viewBag ['entity'] = $entity;
-        $viewBag ['edit_form'] = $editForm->createView();
-        $viewBag ['delete_form'] = $deleteForm->createView();
 
-        return $viewBag;
+        return array(
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        );
     }
 
     /**
@@ -152,16 +144,8 @@ class UserGroupController extends Controller {
             'method' => 'PUT',
         ));
 
-        $form->add('roles', 
-              'choice', 
-               array(
-                    'choices'   => $this->get('flowcode.security.roles')->getRoles(),
-                    'multiple'  => true,
-                    'label' => 'Roles'
-                    )
-             );
         $form->add('submit', 'submit', array('label' => 'Update'));
-        
+
         return $form;
     }
 
@@ -170,12 +154,12 @@ class UserGroupController extends Controller {
      *
      * @Route("/{id}", name="admin_usergroup_update")
      * @Method("PUT")
-     * @Template("FlowcodeUserBundle:UserGroup:edit.html.twig")
+     * @Template("AmulenUserBundle:UserGroup:edit.html.twig")
      */
     public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodeUserBundle:UserGroup')->find($id);
+        $entity = $em->getRepository('AmulenUserBundle:UserGroup')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find UserGroup entity.');
@@ -210,16 +194,16 @@ class UserGroupController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            $userGroup = $em->getRepository('FlowcodeUserBundle:UserGroup')->find($id);
-            
+            $userGroup = $em->getRepository('AmulenUserBundle:UserGroup')->find($id);
+
             if (!$userGroup) {
                 throw $this->createNotFoundException('Unable to find UserGroup entity.');
             }
-            
+
             $users = $this->getUsersByUserGroup($userGroup);
-            
+
             if (count($users) == 0)
             {
                 $em->remove($userGroup);
@@ -231,7 +215,7 @@ class UserGroupController extends Controller {
                 return $this->redirect($request->getUri());
             }
         }
-        
+
         return $this->redirect($this->generateUrl('admin_usergroup'));
     }
 
@@ -243,7 +227,7 @@ class UserGroupController extends Controller {
      * @return \Symfony\Component\Form\Form The form
      */
     private function createDeleteForm($id) {
-        
+
         $form = $this->createFormBuilder()
                         ->setAction($this->generateUrl('admin_usergroup_delete', array('id' => $id)))
                         ->setMethod('DELETE')
@@ -259,35 +243,18 @@ class UserGroupController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(UserGroup $entity) 
+    private function createCreateForm(UserGroup $entity)
     {
-        $options = array ('action' => $this->generateUrl('admin_usergroup_create'), 
+        $options = array ('action' => $this->generateUrl('admin_usergroup_create'),
                           'method' => 'POST'
                          );
 
         $form = $this->createForm(new UserGroupType(), $entity, $options);
-        $form->add('roles', 
-              'choice', 
-               array(
-                    'choices'   => $this->get('flowcode.security.roles')->getRoles(),
-                    'multiple'  => true,
-                    'label' => 'Roles'
-                    )
-             );
-            
+
         return $form;
     }
-    
-    /**
-     * Get Elementos de la vista.
-     *
-     * @return array() Parametros de la vista.
-     */    
-    private function createViewBag ()
-    {
-        return array();
-    }    
-    
+
+
     /**
      * Get Users by user group.  Dado un grupo de roles de usuario, retorna todos
      * los usuarios que pertenecen al grupo.
@@ -295,7 +262,7 @@ class UserGroupController extends Controller {
      * @param UserGroup $userGroup El grupo.
      *
      * @return array() Los usuarios.
-     */    
+     */
     private function getUsersByUserGroup(UserGroup $userGroup)
     {
         return 10;
@@ -307,7 +274,7 @@ class UserGroupController extends Controller {
                 . '                     join u.groups g '
                 . '                WHERE '
                 . '                     g.name = '.$userGroup->getName().'');
-        $users = $query->getResult(); 
+        $users = $query->getResult();
 
         return $users;
     }

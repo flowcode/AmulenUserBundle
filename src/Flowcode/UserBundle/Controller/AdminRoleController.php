@@ -7,38 +7,28 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Amulen\UserBundle\Entity\User;
-use Flowcode\UserBundle\Form\UserType;
+use Flowcode\UserBundle\Form\RoleType;
+use Amulen\UserBundle\Entity\Role;
 
 /**
- * User controller.
+ * Role controller.
  *
- * @Route("/admin/user")
+ * @Route("/admin/role")
  */
-class AdminUserController extends Controller {
+class AdminRoleController extends Controller {
+
 
     /**
      * Lists all User entities.
      *
-     * @Route("/dashboard", name="admin_user_dashboard")
-     * @Method("GET")
-     * @Template()
-     */
-    public function dashboardAction() {
-        return array();
-    }
-
-    /**
-     * Lists all User entities.
-     *
-     * @Route("/", name="admin_user")
+     * @Route("/", name="admin_role")
      * @Method("GET")
      * @Template()
      */
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('AmulenUserBundle:User')->findAll();
+        $entities = $em->getRepository('AmulenUserBundle:Role')->findAll();
 
         return array(
             'entities' => $entities,
@@ -48,21 +38,21 @@ class AdminUserController extends Controller {
     /**
      * Creates a new User entity.
      *
-     * @Route("/", name="admin_user_create")
+     * @Route("/", name="admin_role_create")
      * @Method("POST")
-     * @Template("FlowcodeUserBundle:User:new.html.twig")
+     * @Template("FlowcodeUserBundle:AdminRole:new.html.twig")
      */
     public function createAction(Request $request) {
-
-        $entity = new User();
+        $entity = new Role();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $userService = $this->get("flowcode.user");
-            $userService->create($entity);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_user_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('admin_role_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -71,14 +61,6 @@ class AdminUserController extends Controller {
         );
     }
 
-    /*
-
-      $builder->add('save', 'button', array(
-      'attr' => array('class' => 'save'),
-      ));
-
-
-     *  */
 
     /**
      * Creates a form to create a User entity.
@@ -87,9 +69,9 @@ class AdminUserController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(User $entity) {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('admin_user_create'),
+    private function createCreateForm(Role $entity) {
+        $form = $this->createForm(new RoleType, $entity, array(
+            'action' => $this->generateUrl('admin_role_create'),
             'method' => 'POST',
         ));
 
@@ -101,13 +83,13 @@ class AdminUserController extends Controller {
     /**
      * Displays a form to create a new User entity.
      *
-     * @Route("/new", name="admin_user_new")
+     * @Route("/new", name="admin_role_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction() {
-        $userManager = $this->container->get('flowcode.user');
-        $entity = new User();
+
+        $entity = new Role();
 
         $form = $this->createCreateForm($entity);
 
@@ -117,56 +99,21 @@ class AdminUserController extends Controller {
         );
     }
 
-    /**
-     * Finds and displays a User entity.
-     *
-     * @Route("/logout", name="flowcode_admin_user_logout")
-     * @Method("GET")
-     * @Template()
-     */
-    public function logoutAction() {
-
-        return array();
-    }
 
     /**
      * Finds and displays a User entity.
      *
-     * @Route("/{id}", name="admin_user_show")
+     * @Route("/{id}", name="admin_role_show")
      * @Method("GET")
      * @Template()
      */
     public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AmulenUserBundle:User')->find($id);
+        $entity = $em->getRepository('AmulenUserBundle:Role')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity' => $entity,
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Finds and displays a User entity.
-     *
-     * @Route("/profile", name="admin_user_profile_show")
-     * @Method("GET")
-     * @Template()
-     */
-    public function profileAction() {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $this->getUser();
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Role entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -182,17 +129,17 @@ class AdminUserController extends Controller {
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="admin_user_edit")
+     * @Route("/{id}/edit", name="admin_role_edit")
      * @Method("GET")
      * @Template()
      */
     public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AmulenUserBundle:User')->find($id);
+        $entity = $em->getRepository('AmulenUserBundle:Role')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Role entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -212,9 +159,9 @@ class AdminUserController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(User $entity) {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('admin_user_update', array('id' => $entity->getId())),
+    private function createEditForm(Role $entity) {
+        $form = $this->createForm(new RoleType(), $entity, array(
+            'action' => $this->generateUrl('admin_role_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -226,7 +173,7 @@ class AdminUserController extends Controller {
     /**
      * Edits an existing User entity.
      *
-     * @Route("/{id}", name="admin_user_update")
+     * @Route("/{id}", name="admin_role_update")
      * @Method("PUT")
      * @Template("FlowcodeUserBundle:User:edit.html.twig")
      */
@@ -246,10 +193,11 @@ class AdminUserController extends Controller {
         if ($editForm->isValid()) {
 
             /* get user manager */
-            $userManager = $this->container->get('flowcode.user');
-            $userManager->update($entity);
+            $userManager = $this->container->get('fos_user.user_manager');
+            //$entity->setPlainPassword("juanma");
+            $userManager->updateUser($entity);
 
-            return $this->redirect($this->generateUrl('admin_user_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('admin_role_edit', array('id' => $id)));
         }
 
         return array(
@@ -262,7 +210,7 @@ class AdminUserController extends Controller {
     /**
      * Deletes a User entity.
      *
-     * @Route("/{id}", name="admin_user_delete")
+     * @Route("/{id}", name="admin_role_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id) {
@@ -281,7 +229,7 @@ class AdminUserController extends Controller {
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('admin_user'));
+        return $this->redirect($this->generateUrl('admin_role'));
     }
 
     /**
@@ -293,7 +241,7 @@ class AdminUserController extends Controller {
      */
     private function createDeleteForm($id) {
         return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('admin_user_delete', array('id' => $id)))
+                        ->setAction($this->generateUrl('admin_role_delete', array('id' => $id)))
                         ->setMethod('DELETE')
                         ->add('submit', 'submit', array('label' => 'Delete'))
                         ->getForm()

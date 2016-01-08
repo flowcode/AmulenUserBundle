@@ -14,14 +14,14 @@ class UserType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('name')
+                ->add('firstname')
+                ->add('lastname')
                 ->add('username')
                 ->add('plainPassword')
                 ->add('email')
-                ->add('enabled', null, array("required" => false))
-                ->add('locked', null, array("required" => false))
+                ->add('status', null, array("required" => false))
                 ->add('groups', 'entity', array(
-                        'class' => 'FlowcodeUserBundle:UserGroup',
+                        'class' => 'AmulenUserBundle:UserGroup',
                         'property' => 'name',
                         'multiple' => true,
                      ));

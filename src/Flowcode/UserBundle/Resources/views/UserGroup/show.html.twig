@@ -1,50 +1,44 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
 {% block body %}
-
-<h1>{{"User Group"|trans}}</h1>
-
-<div style="width: 100%">
-
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Name</th>
-                <td>{{ name }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>
-                    {%if roles is defined%}
-                        {%for rol in roles%}
+{{ include('FlowcodeUserBundle:UserGroup:userGroupsHeader.html.twig') }}
+<section class="content">
+    <div class="box box-solid">
+        <div class="box-header">
+            <h1 class="box-title">{{ name }}</h1>
+            <div class="box-tools">
+                <a class="btn btn-link btn-sm" href="{{ path('admin_usergroup') }}">
+                    {{ "list"|trans|title }}
+                </a>
+                <a class="btn btn-link btn-sm" href="{{ path('admin_usergroup_edit', { 'id': id }) }}">
+                    {{ "edit"|trans|title }}
+                </a>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Roles</th>
+                        <td>
+                            {%if roles is defined%}
+                            {%for rol in roles%}
                             {{rol}}
-                        {%endfor%}
-                    {%else%}
-                        {{"Sin roles definidos."}}
-                    {%endif%}
-                </td>
-            </tr>
-            <tr>
-                <th>Id</th>
-                <td>{{ id }}</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <br />
-    
-    {{ form_start(delete_form) }}
-    <a class = "btn btn-primary" href="{{ path('admin_usergroup') }}">
-        Back to the list
-    </a>
-    <a class="btn btn-primary" href="{{ path('admin_usergroup_edit', { 'id': id }) }}">
-        Edit
-    </a>
-    {{ form_widget(delete_form.submit) }}
-    {{ form_errors(delete_form) }}
-    {{ form_row(delete_form._token) }}
-    {{ form_end(delete_form) }}
-            
-</div>
+                            {%endfor%}
+                            {%else%}
+                            {{"Sin roles definidos."}}
+                            {%endif%}
+                        </td>
+                    </tr>
 
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</section>
 {% endblock %}

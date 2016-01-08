@@ -1,69 +1,49 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
-{% block stylesheets %}
-    {{parent()}}
-    <link href="{{ asset('bundles/flowcodeuser/css/userGroupMenu.css') }}" rel="stylesheet" media="screen">
-{% endblock %}
-
 {% block body -%}
-    <div class="contenido">
-        <div class="encabezado">
-            <h1>User</h1>
-        </div>
-        <div class="userGroupMenu">
-            <div class="menuItem">
-                <a class="btn btn-primary" href="{{ path('admin_user') }}">
+{{ include('FlowcodeUserBundle:AdminUser:usersHeader.html.twig') }}
+
+<section class="content">
+
+    <div class="box box-solid">
+        <div class="box-header">
+            <div class="box-tools">
+                <a class="btn btn-link btn-sm" href="{{ path('admin_user_new') }}">
+                    <i class="fa fa-plus"></i> {{ 'create'|trans }}
+                </a>
+                <a class="btn btn-link btn-sm" href="{{ path('admin_user') }}">
                     Back to the list
                 </a>
-            </div>
-            <div class="menuItem">
-                <a class="btn btn-primary" href="{{ path('admin_user_edit', { 'id': entity.id }) }}">
+                <a class="btn btn-link btn-sm" href="{{ path('admin_user_edit', { 'id': entity.id }) }}">
                     Edit
                 </a>
             </div>
-            <div class="menuItem">
-                {{ form(delete_form) }}
-            </div>
         </div>
-        <div class="cuerpo">
-            <table class="record_properties">
+        <div class="box-body">
+            <table class="table table-condensed">
                 <tbody>
                     <tr>
-                        <th>Name</th>
-                        <td>{{ entity.name }}</td>
+                        <th>firstname</th>
+                        <td>{{ entity.firstname }}</td>
                     </tr>
                     <tr>
                         <th>Email</th>
                         <td>{{ entity.email }}</td>
                     </tr>
-                    
+
                     <tr>
                         <th>Username</th>
                         <td>{{ entity.username }}</td>
                     </tr>
                     <tr>
-                        <th>Enabled</th>
+                        <th>status</th>
                         <td>
-                        {%if entity.enabled%}
-                            <div class="fa fa-thumbs-up"/>
-                            {%else%}
-                            <div class="fa fa-thumbs-down"/>
-                        {%endif%}
+                            {% if entity.status %}
+                            {{ "active"|trans }}
+                            {% else %}
+                            {{ "active"|trans }}
+                            {% endif %}
                         </td>
-                    </tr>
-                    <tr>
-                        <th>Locked</th>
-                        <td>
-                        {%if entity.locked %}
-                            <div class="fa fa-ban-circle"/>
-                            {%else%}
-                            <div class="fa fa-ok-circle"/>
-                        {%endif%}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Lastlogin</th>
-                        <td>{{ entity.lastLogin|date('Y-m-d H:i:s') }}</td>
                     </tr>
                     <tr>
                         <th>Created</th>
@@ -77,7 +57,7 @@
             </table>
         </div>
     </div>
-    
 
+</section>
 
 {% endblock %}

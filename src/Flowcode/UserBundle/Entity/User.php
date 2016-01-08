@@ -69,12 +69,6 @@ class User implements UserInterface
      */
     protected $email;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="role", type="string", length=255, nullable=true)
-     */
-    protected $role;
 
     /**
      * @var string
@@ -469,7 +463,13 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return array("ROLE_ADMIN");
+        $roles = array();
+        foreach ($this->getGroups() as $userGroup) {
+            foreach ($userGroup->getRoles() as $role) {
+                array_push($roles, $role->getName());
+            }
+        }
+        return $roles;
     }
 
     public function getSalt()
