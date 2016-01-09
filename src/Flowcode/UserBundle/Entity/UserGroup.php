@@ -25,7 +25,7 @@ class UserGroup
     protected $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Amulen\UserBundle\Entity\Role")
+     * @ORM\ManyToMany(targetEntity="\Amulen\UserBundle\Entity\Role")
      * @ORM\JoinTable(name="user_group_role",
      *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
@@ -36,20 +36,6 @@ class UserGroup
     public function __construct()
     {
         $this->roles = new ArrayCollection();
-    }
-
-    /**
-     * @param string $role
-     *
-     * @return Group
-     */
-    public function addRole($role)
-    {
-        if (!$this->hasRole($role)) {
-            $this->roles[] = strtoupper($role);
-        }
-
-        return $this;
     }
 
     /**
@@ -83,24 +69,17 @@ class UserGroup
     }
 
     /**
-     * @param string $role
-     *
-     * @return Group
+     * @param \Amulen\UserBundle\Entity\Role $role
      */
-    public function removeRole($role)
+    public function removeRole(\Amulen\UserBundle\Entity\Role $role)
     {
-        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
-            unset($this->roles[$key]);
-            $this->roles = array_values($this->roles);
-        }
-
-        return $this;
+        $this->tags->removeElement($role);
     }
 
     /**
      * @param string $name
      *
-     * @return Group
+     * @return \Amulen\UserBundle\Entity\UserGroup
      */
     public function setName($name)
     {
@@ -110,9 +89,21 @@ class UserGroup
     }
 
     /**
+     * @param \Amulen\UserBundle\Entity\Role $role
+     *
+     * @return \Amulen\UserBundle\Entity\UserGroup
+     */
+    public function addRole(\Amulen\UserBundle\Entity\Role $role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    /**
      * @param array $roles
      *
-     * @return Group
+     * @return \Amulen\UserBundle\Entity\UserGroup
      */
     public function setRoles(array $roles)
     {

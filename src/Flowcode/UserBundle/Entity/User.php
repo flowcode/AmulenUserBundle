@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Amulen\UserBundle\Entity\UserGroup;
 
 /**
  * User
@@ -481,6 +482,29 @@ class User implements UserInterface
     {
     }
 
+    /**
+     * @param UserGroup $userGroup
+     *
+     * @return User
+     */
+    public function addUserGroup(UserGroup $userGroup)
+    {
+        $this->groups[] = $userGroup;
+
+        return $this;
+    }
+
+    /**
+     * @param UserGroup $userGroup
+     */
+    public function removeUserGroup(UserGroup $userGroup)
+    {
+        $this->groups->removeElement($userGroup);
+    }
+
+    /**
+     * @return UserGroup
+     */
     public function getGroups()
     {
         return $this->groups;
@@ -490,4 +514,21 @@ class User implements UserInterface
     {
         $this->groups = $groups;
     }
+
+    public function getHappyName()
+    {
+        $happyName = "";
+        if(isset($this->firstname)){
+            $happyName .= $this->firstname;
+            if(isset($this->lastname)){
+                $happyName .= " " . $this->lastname;
+            }
+        }else {
+            $happyName .= $this->username;
+        }
+
+        return $happyName;
+
+    }
+
 }

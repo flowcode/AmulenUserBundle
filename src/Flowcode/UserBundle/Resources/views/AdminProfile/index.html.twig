@@ -1,0 +1,51 @@
+{% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+{{ include('FlowcodeUserBundle:AdminProfile:profileHeader.html.twig') }}
+
+<section class="content">
+
+    <div class="box box-solid">
+        <div class="box-header">
+            <div class="box-tools">
+                <a class="btn btn-link btn-sm" href="{{ path('admin_profile_edit') }}">
+                    Edit
+                </a>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <th>{{"firstname"|trans|title}}</th>
+                        <td>{{ entity.firstname }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{"lastname"|trans|title}}</th>
+                        <td>{{ entity.lastname }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{"email"|trans|title}}</th>
+                        <td>{{ entity.email }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>{{"username"|trans|title}}</th>
+                        <td>{{ entity.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{"created"|trans|title}}</th>
+                        <td>{{ entity.created|date('Y-m-d H:i:s') }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{"updated"|trans|title}}</th>
+                        <td>{{ entity.updated|date('Y-m-d H:i:s') }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

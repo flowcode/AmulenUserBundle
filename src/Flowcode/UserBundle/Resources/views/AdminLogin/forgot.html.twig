@@ -1,0 +1,32 @@
+{% extends "FlowcodeUserBundle:AdminLogin:layout.html.twig" %}
+
+{% block fos_user_content %}
+    <div class="login-box">
+        <div class="login-logo">
+            <img class="img-rounded" src="{{ asset('bundles/flowcodedashboard/images/logo.png') }}" alt="Welcome to Amulen" />
+        </div>
+        <div class="login-box-body">
+            {% if error %}
+                <p class="login-box-msg">{{ error|trans }}</p>
+            {% endif %}
+            <form action="{{ path("flowcode_admin_user_check") }}" method="post">
+                <div class="form-group has-feedback">
+                    <input type="text" name="_username" placeholder="{{ 'security.login.username'|trans|title }}" value="{{ last_email }}" required="required" class="form-control" />
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-8">
+
+                    </div>
+                    <div class="col-xs-4">
+                        <input class="btn btn-primary btn-block btn-flat" type="submit" id="_submit" name="_submit" value="{{ 'security.login.send_resetting'|trans|title }}" />
+                    </div>
+                </div>
+            </form>
+
+        </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+
+
+{% endblock fos_user_content %}

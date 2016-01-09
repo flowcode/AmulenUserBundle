@@ -15,18 +15,8 @@ use Flowcode\UserBundle\Form\UserType;
  *
  * @Route("/admin/user")
  */
-class AdminUserController extends Controller {
-
-    /**
-     * Lists all User entities.
-     *
-     * @Route("/dashboard", name="admin_user_dashboard")
-     * @Method("GET")
-     * @Template()
-     */
-    public function dashboardAction() {
-        return array();
-    }
+class AdminUserController extends Controller
+{
 
     /**
      * Lists all User entities.
@@ -35,7 +25,8 @@ class AdminUserController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('AmulenUserBundle:User')->findAll();
@@ -52,8 +43,8 @@ class AdminUserController extends Controller {
      * @Method("POST")
      * @Template("FlowcodeUserBundle:User:new.html.twig")
      */
-    public function createAction(Request $request) {
-
+    public function createAction(Request $request)
+    {
         $entity = new User();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -71,15 +62,6 @@ class AdminUserController extends Controller {
         );
     }
 
-    /*
-
-      $builder->add('save', 'button', array(
-      'attr' => array('class' => 'save'),
-      ));
-
-
-     *  */
-
     /**
      * Creates a form to create a User entity.
      *
@@ -87,7 +69,8 @@ class AdminUserController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(User $entity) {
+    private function createCreateForm(User $entity)
+    {
         $form = $this->createForm(new UserType(), $entity, array(
             'action' => $this->generateUrl('admin_user_create'),
             'method' => 'POST',
@@ -105,7 +88,8 @@ class AdminUserController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function newAction() {
+    public function newAction()
+    {
         $userManager = $this->container->get('flowcode.user');
         $entity = new User();
 
@@ -124,10 +108,11 @@ class AdminUserController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function logoutAction() {
-
+    public function logoutAction()
+    {
         return array();
     }
+
 
     /**
      * Finds and displays a User entity.
@@ -136,7 +121,8 @@ class AdminUserController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id) {
+    public function showAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AmulenUserBundle:User')->find($id);
@@ -153,31 +139,6 @@ class AdminUserController extends Controller {
         );
     }
 
-    /**
-     * Finds and displays a User entity.
-     *
-     * @Route("/profile", name="admin_user_profile_show")
-     * @Method("GET")
-     * @Template()
-     */
-    public function profileAction() {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $this->getUser();
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity' => $entity,
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-
 
     /**
      * Displays a form to edit an existing User entity.
@@ -186,7 +147,8 @@ class AdminUserController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id) {
+    public function editAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AmulenUserBundle:User')->find($id);
@@ -212,7 +174,8 @@ class AdminUserController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(User $entity) {
+    private function createEditForm(User $entity)
+    {
         $form = $this->createForm(new UserType(), $entity, array(
             'action' => $this->generateUrl('admin_user_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -230,7 +193,8 @@ class AdminUserController extends Controller {
      * @Method("PUT")
      * @Template("FlowcodeUserBundle:User:edit.html.twig")
      */
-    public function updateAction(Request $request, $id) {
+    public function updateAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AmulenUserBundle:User')->find($id);
@@ -265,7 +229,8 @@ class AdminUserController extends Controller {
      * @Route("/{id}", name="admin_user_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id) {
+    public function deleteAction(Request $request, $id)
+    {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -291,7 +256,8 @@ class AdminUserController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id) {
+    private function createDeleteForm($id)
+    {
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('admin_user_delete', array('id' => $id)))
                         ->setMethod('DELETE')
@@ -299,5 +265,4 @@ class AdminUserController extends Controller {
                         ->getForm()
         ;
     }
-
 }

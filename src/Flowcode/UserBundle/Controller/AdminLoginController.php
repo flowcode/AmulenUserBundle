@@ -46,4 +46,22 @@ class AdminLoginController extends Controller
     public function checkAction()
     {
     }
+
+    /**
+    * Login to admin panel.
+    *
+    * @Route("/admin/login/forgot", name="amulen_admin_login_forgot")
+    * @Method("GET")
+    * @Template()
+    */
+    public function forgotAction()
+    {
+        $error = null;
+        $last_email = null;
+        
+        return array(
+            "error" => $error,
+            "last_email" => $last_email,
+        );
+    }
 }

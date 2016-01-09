@@ -22,6 +22,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder("u");
         $qb->where("u.username = :username")->setParameter("username", $username);
         $qb->orWhere("u.email = :email")->setParameter("email", $username);
+        $qb->orWhere("u.status = :status")->setParameter("status", 1);
         $qb->setMaxResults(1);
         return $qb->getQuery()->getOneOrNullResult();
     }

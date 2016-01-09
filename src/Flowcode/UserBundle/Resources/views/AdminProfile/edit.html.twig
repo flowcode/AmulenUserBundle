@@ -1,0 +1,17 @@
+{% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+{{ include('FlowcodeUserBundle:AdminProfile:profileHeader.html.twig') }}
+<section class="content">
+    <div class="box box-solid">
+        <div class="box-header">
+            <h1 class="box-title">{{ 'profile.edit'|trans|capitalize }}</h1>
+            <div class="box-tools">
+            </div>
+        </div>
+        <div class="box-body">
+            {{ form(edit_form) }}
+        </div>
+    </div>
+</section>
+{% endblock %}

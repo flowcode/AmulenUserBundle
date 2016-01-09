@@ -11,28 +11,28 @@
             {% endif %}
             <form action="{{ path("flowcode_admin_user_check") }}" method="post">
                 <div class="form-group has-feedback">
-                    <input type="text" id="username" name="_username" placeholder="{{ 'security.login.username'|trans }}" value="{{ last_username }}" required="required" class="form-control" />
+                    <input type="text" id="username" name="_username" placeholder="{{ 'security.login.username'|trans|title }}" value="{{ last_username }}" required="required" class="form-control" />
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" id="password" name="_password" placeholder="{{ 'security.login.password'|trans }}" required="required" class="form-control" />
+                    <input type="password" id="password" name="_password" placeholder="{{ 'security.login.password'|trans|title }}" required="required" class="form-control" />
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="row">
                     <div class="col-xs-8">
                         <div class="checkbox icheck">
                             <label>
-                                <input type="checkbox"> Remember Me
+                                <input type="checkbox"> {{"security.login.remember"|trans|title}}
                             </label>
                         </div>
                     </div>
                     <div class="col-xs-4">
-                        <input class="btn btn-primary btn-block btn-flat" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+                        <input class="btn btn-primary btn-block btn-flat" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans|title }}" />
                     </div>
                 </div>
             </form>
 
-            <a href="#">I forgot my password</a><br>
+            <a href="{{ path("amulen_admin_login_forgot") }}">{{"security.login.forgot"|trans|title}}</a><br>
 
         </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->

@@ -1,8 +1,12 @@
 ## YAML Template.
 ---
 
-security.login.username: Usuario
-security.login.username: Contraseña
+security.login.username: usuario/email
+security.login.password: contraseña
+security.login.submit: entrar
+security.login.remember: recordarme
+security.login.forgot: Olvidé mi contraseña
+security.login.send_resetting: Recuperar
 
 user.dashboard: tablero de usuario
 user.list: lista de usuarios
@@ -14,3 +18,14 @@ user.group: grupo de usuarios
 user.group.list: lista de grupo de usuarios
 
 Plain password: password
+
+profile.edit: Editar perfil
+
+firstname: nombre
+Firstname: nombre
+
+lastname: apellido
+Lastname: apellido
+
+username: usuario
+Username: usuario
