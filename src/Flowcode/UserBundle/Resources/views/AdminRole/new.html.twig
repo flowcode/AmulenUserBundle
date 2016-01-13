@@ -1,15 +1,20 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
 {% block body -%}
-    <h1>User creation</h1>
-
-    {{ form(form, { 'style': 'horizontal' }) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('admin_user') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+{{ include('FlowcodeUserBundle:AdminRole:rolesHeader.html.twig') }}
+<section class="content">
+    <div class="box box-solid">
+        <div class="box-header">
+            <h1 class="box-title">{{ 'role.create'|trans|capitalize }}</h1>
+            <div class="box-tools">
+                <a class="btn btn-link btn-sm" href="{{ path('admin_role') }}">
+                    {{ 'list'|trans}}
+                </a>
+            </div>
+        </div>
+        <div class="box-body">
+            {{ form(form) }}
+        </div>
+    </div>
+</section>
 {% endblock %}

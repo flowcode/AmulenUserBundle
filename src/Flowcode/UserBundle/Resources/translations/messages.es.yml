@@ -17,15 +17,29 @@ user.edit: editar usuario
 user.group: grupo de usuarios
 user.group.list: lista de grupo de usuarios
 
-Plain password: password
+Plain password: Contraseña
+
+Groups: Grupos
 
 profile.edit: Editar perfil
 
-firstname: nombre
-Firstname: nombre
+firstname: Nombre
+Firstname: Nombre
 
-lastname: apellido
-Lastname: apellido
+lastname: Apellido
+Lastname: Apellido
 
-username: usuario
-Username: usuario
+username: Usuario
+Username: Usuario
+
+Created: Creado
+Created: Creado
+Updated: Actualizado
+updated: Actualizado
+Status: Estado
+status: Estado
+
+'Users list': Lista
+'User Groups': Grupo de Usuarios
+role.list: Lista
+role.create: Nuevo

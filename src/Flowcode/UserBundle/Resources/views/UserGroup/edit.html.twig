@@ -10,11 +10,11 @@
                 <a class="btn btn-link btn-sm" href="{{ path('admin_usergroup') }}">
                     {{ "list"|trans|title }}
                 </a>
-                {{ form(delete_form) }}
             </div>
         </div>
         <div class="box-body">
             {{form(edit_form)}}
+            {{ form(delete_form) }}
         </div>
     </div>
 </section>

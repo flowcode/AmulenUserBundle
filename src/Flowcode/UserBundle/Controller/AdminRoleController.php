@@ -19,7 +19,7 @@ class AdminRoleController extends Controller {
 
 
     /**
-     * Lists all User entities.
+     * Lists all Role entities.
      *
      * @Route("/", name="admin_role")
      * @Method("GET")
@@ -36,7 +36,7 @@ class AdminRoleController extends Controller {
     }
 
     /**
-     * Creates a new User entity.
+     * Creates a new Role entity.
      *
      * @Route("/", name="admin_role_create")
      * @Method("POST")
@@ -63,9 +63,9 @@ class AdminRoleController extends Controller {
 
 
     /**
-     * Creates a form to create a User entity.
+     * Creates a form to create a Role entity.
      *
-     * @param User $entity The entity
+     * @param Role $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
@@ -81,7 +81,7 @@ class AdminRoleController extends Controller {
     }
 
     /**
-     * Displays a form to create a new User entity.
+     * Displays a form to create a new Role entity.
      *
      * @Route("/new", name="admin_role_new")
      * @Method("GET")
@@ -101,7 +101,7 @@ class AdminRoleController extends Controller {
 
 
     /**
-     * Finds and displays a User entity.
+     * Finds and displays a Role entity.
      *
      * @Route("/{id}", name="admin_role_show")
      * @Method("GET")
@@ -127,7 +127,7 @@ class AdminRoleController extends Controller {
 
 
     /**
-     * Displays a form to edit an existing User entity.
+     * Displays a form to edit an existing Role entity.
      *
      * @Route("/{id}/edit", name="admin_role_edit")
      * @Method("GET")
@@ -153,9 +153,9 @@ class AdminRoleController extends Controller {
     }
 
     /**
-     * Creates a form to edit a User entity.
+     * Creates a form to edit a Role entity.
      *
-     * @param User $entity The entity
+     * @param Role $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
@@ -171,19 +171,19 @@ class AdminRoleController extends Controller {
     }
 
     /**
-     * Edits an existing User entity.
+     * Edits an existing Role entity.
      *
      * @Route("/{id}", name="admin_role_update")
      * @Method("PUT")
-     * @Template("FlowcodeUserBundle:User:edit.html.twig")
+     * @Template("FlowcodeUserBundle:Role:edit.html.twig")
      */
     public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AmulenUserBundle:User')->find($id);
+        $entity = $em->getRepository('AmulenUserBundle:Role')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Role entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -208,7 +208,7 @@ class AdminRoleController extends Controller {
     }
 
     /**
-     * Deletes a User entity.
+     * Deletes a Role entity.
      *
      * @Route("/{id}", name="admin_role_delete")
      * @Method("DELETE")
@@ -219,10 +219,10 @@ class AdminRoleController extends Controller {
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AmulenUserBundle:User')->find($id);
+            $entity = $em->getRepository('AmulenUserBundle:Role')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find User entity.');
+                throw $this->createNotFoundException('Unable to find Role entity.');
             }
 
             $em->remove($entity);
@@ -233,7 +233,7 @@ class AdminRoleController extends Controller {
     }
 
     /**
-     * Creates a form to delete a User entity by id.
+     * Creates a form to delete a Role entity by id.
      *
      * @param mixed $id The entity id
      *

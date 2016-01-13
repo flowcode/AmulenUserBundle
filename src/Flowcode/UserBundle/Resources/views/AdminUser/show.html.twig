@@ -12,10 +12,10 @@
                     <i class="fa fa-plus"></i> {{ 'create'|trans }}
                 </a>
                 <a class="btn btn-link btn-sm" href="{{ path('admin_user') }}">
-                    Back to the list
+                    {{ "Back to the list"|trans }}
                 </a>
                 <a class="btn btn-link btn-sm" href="{{ path('admin_user_edit', { 'id': entity.id }) }}">
-                    Edit
+                    {{ "edit"|trans }}
                 </a>
             </div>
         </div>
@@ -23,20 +23,20 @@
             <table class="table table-condensed">
                 <tbody>
                     <tr>
-                        <th>firstname</th>
+                        <th>{{ "firstname"|trans }}</th>
                         <td>{{ entity.firstname }}</td>
                     </tr>
                     <tr>
-                        <th>Email</th>
+                        <th>{{ "Email"|trans }}</th>
                         <td>{{ entity.email }}</td>
                     </tr>
 
                     <tr>
-                        <th>Username</th>
+                        <th>{{ "Username"|trans }}</th>
                         <td>{{ entity.username }}</td>
                     </tr>
                     <tr>
-                        <th>status</th>
+                        <th>{{ "status"|trans }}</th>
                         <td>
                             {% if entity.status %}
                             {{ "active"|trans }}
@@ -46,11 +46,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Created</th>
+                        <th>{{ "Created"|trans }}</th>
                         <td>{{ entity.created|date('Y-m-d H:i:s') }}</td>
                     </tr>
                     <tr>
-                        <th>Updated</th>
+                        <th>{{ "Updated"|trans }}</th>
                         <td>{{ entity.updated|date('Y-m-d H:i:s') }}</td>
                     </tr>
                 </tbody>

@@ -21,8 +21,8 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Actions</th>
+                        <th>{{ 'Name'|trans }}</th>
+                        <th>{{ 'Actions'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,18 +31,14 @@
                         <td>{{ entity.id }}</td>
                         <td>{{ entity.name }}</td>
                         <td>
-                            <ul class="list-inline">
-                                <li>
-                                    <a title="{{'show'|trans}}" class="btn btn-xs btn-default" href="{{ path('admin_role_show', { 'id': entity.id }) }}">
-                                        <i class="fa fa-eye-open"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a title="{{'edit'|trans}}" class="btn btn-xs btn-default" href="{{ path('admin_role_edit', { 'id': entity.id }) }}">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                </li>
-                            </ul>
+                            <div class="btn-group">
+                                <a class="btn btn-default btn-sm" href="{{ path('admin_role_show', {id: entity.id}) }}">
+                                    <i class="fa fa-file-o"></i> {{ 'show'|trans }}
+                                </a>
+                                <a class="btn btn-default btn-sm" href="{{ path('admin_role_edit', {id: entity.id}) }}">
+                                    <i class="fa fa-edit"></i> {{ 'edit'|trans }}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}

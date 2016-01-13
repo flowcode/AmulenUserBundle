@@ -5,6 +5,7 @@
 <section class="content">
     <div class="box box-solid">
         <div class="box-header">
+            <h3>{{ "Users list"|trans|title }}</h3>
             <div class="box-tools">
                 <a class ="btn btn-link btn-sm" href="{{ path('admin_user_new') }}">
                     <i class="fa fa-plus"></i> {{ 'create'|trans }}
@@ -16,13 +17,13 @@
             <table class="records_list table table-condensed">
                 <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Firstname</th>
-                        <th>Lasttname</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Created</th>
-                        <th>Updated</th>
+                        <th>{{ 'Username'|trans }}</th>
+                        <th>{{ 'Firstname'|trans }}</th>
+                        <th>{{ 'Lastname'|trans }}</th>
+                        <th>{{ 'Email'|trans }}</th>
+                        <th>{{ 'Status'|trans }}</th>
+                        <th>{{ 'Created'|trans }}</th>
+                        <th>{{ 'Updated'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -1,42 +1,38 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
-{% block stylesheets %}
-    {{parent()}}
-    <link href="{{ asset('bundles/flowcodeuser/css/userGroupMenu.css') }}" rel="stylesheet" media="screen">
-{% endblock %}
-
-{% block body -%}
-    <div class="contenido">
-        <div class="encabezado">
-            <h1>User</h1>
-        </div>
-        <div class="userGroupMenu">
-            <div class="menuItem">
-                <a class="btn btn-primary" href="{{ path('admin_role') }}">
-                    Back to the list
-                </a>
+{% block body %}
+{{ include('FlowcodeUserBundle:AdminRole:rolesHeader.html.twig') }}
+<section class="content">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">{{ entity.name }}</h3>
+                    <div class="box-tools">
+                        <a href="{{ path('admin_role') }}" class="btn btn-xs btn-link">
+                            {{ "Back to the list"|trans }}
+                        </a>
+                        <a href="{{ path('admin_role_edit', { 'id': entity.id }) }}" class="btn btn-xs btn-link">
+                            {{ "edit"|trans }}
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table class="table table-condensed">
+                        <tbody>
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ entity.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "Name"|trans }}</th>
+                                <td>{{ entity.name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="menuItem">
-                <a class="btn btn-primary" href="{{ path('admin_role_edit', { 'id': entity.id }) }}">
-                    Edit
-                </a>
-            </div>
-            <div class="menuItem">
-                {{ form(delete_form) }}
-            </div>
-        </div>
-        <div class="cuerpo">
-            <table class="record_properties">
-                <tbody>
-                    <tr>
-                        <th>Name</th>
-                        <td>{{ entity.name }}</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
-
-
-
+</section>
 {% endblock %}
