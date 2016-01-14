@@ -95,7 +95,7 @@ class User implements UserInterface
      * @var integer
      *
      *
-     * @ORM\Column(name="status", type="smallint")
+     * @ORM\Column(name="status", type="smallint", nullable=true)
      */
     protected $status;
 

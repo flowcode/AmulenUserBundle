@@ -191,12 +191,7 @@ class AdminRoleController extends Controller {
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-
-            /* get user manager */
-            $userManager = $this->container->get('fos_user.user_manager');
-            //$entity->setPlainPassword("juanma");
-            $userManager->updateUser($entity);
-
+            $em->flush();
             return $this->redirect($this->generateUrl('admin_role_edit', array('id' => $id)));
         }
 

@@ -203,7 +203,7 @@ class UserGroupController extends Controller {
             }
 
             $users = $this->getUsersByUserGroup($userGroup);
-
+            
             if (count($users) == 0)
             {
                 $em->remove($userGroup);

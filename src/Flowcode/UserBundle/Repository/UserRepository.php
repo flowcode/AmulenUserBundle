@@ -40,4 +40,14 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         }
         return $qb->getQuery()->getResult();
     }
+
+    public function findByGroup($group)
+    {
+        $qb = $this->createQueryBuilder("u");
+        $qb->join("AmulenUserBundle:UserGroup", "gr");
+        $qb->where("gr.id IN (:group_id)");
+        $qb->setParameter("group_id", $group);
+        $qb->setMaxResults(1);
+        $qb->getQuery()->getOneOrNullResult();
+    }
 }

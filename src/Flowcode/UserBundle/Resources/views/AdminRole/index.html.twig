@@ -3,47 +3,32 @@
 {% block body -%}
 {{ include('FlowcodeUserBundle:AdminRole:rolesHeader.html.twig') }}
 <section class="content">
-
-    <div class="box box-solid">
-
-        <div class="box-header">
-            <h1 class="box-title">{{ 'role.list'|trans }}</h1>
-            <div class="box-tools">
-                <a class ="btn btn-link btn-sm" href="{{ path('admin_role_new') }}">
-                    <i class="fa fa-plus"></i> {{ 'create'|trans }}
-                </a>
+    <div class="col-sm-6">
+        <div class="box box-solid">
+            <div class="box-header">
+                <h1 class="box-title">{{ 'list'|trans }}</h1>
+                <div class="box-tools">
+                    <a class ="btn btn-link btn-sm" href="{{ path('admin_role_new') }}">
+                        <i class="fa fa-plus"></i> {{ 'create'|trans }}
+                    </a>
+                </div>
             </div>
-        </div>
-
-        <div class="box-body">
-
-            <table class="table table-condensed">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>{{ 'Name'|trans }}</th>
-                        <th>{{ 'Actions'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entity in entities %}
-                    <tr>
-                        <td>{{ entity.id }}</td>
-                        <td>{{ entity.name }}</td>
-                        <td>
-                            <div class="btn-group">
-                                <a class="btn btn-default btn-sm" href="{{ path('admin_role_show', {id: entity.id}) }}">
-                                    <i class="fa fa-file-o"></i> {{ 'show'|trans }}
-                                </a>
-                                <a class="btn btn-default btn-sm" href="{{ path('admin_role_edit', {id: entity.id}) }}">
-                                    <i class="fa fa-edit"></i> {{ 'edit'|trans }}
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="box-body">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>{{ 'Name'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entity in entities %}
+                        <tr>
+                            <td><a href="{{ path('admin_role_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </section>
