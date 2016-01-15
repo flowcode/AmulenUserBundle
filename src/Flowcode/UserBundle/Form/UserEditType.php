@@ -5,8 +5,9 @@ namespace Flowcode\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class UserProfileType extends AbstractType {
+class UserEditType extends AbstractType {
 
     /**
      * @param FormBuilderInterface $builder
@@ -19,7 +20,18 @@ class UserProfileType extends AbstractType {
                 ->add('username')
                 ->add('plainPassword','password', array('required'=> false))
                 ->add('email')
-                ;
+                ->add('status', ChoiceType::class, array(
+                        'choices'  => array(
+                            'Inactive' => 0,
+                            'Active' => 1
+                        ),
+                        'choices_as_values' => true,
+                    ))
+                ->add('groups', 'entity', array(
+                        'class' => 'AmulenUserBundle:UserGroup',
+                        'property' => 'name',
+                        'multiple' => true,
+                     ));
     }
 
     /**
@@ -35,7 +47,7 @@ class UserProfileType extends AbstractType {
      * @return string
      */
     public function getName() {
-        return 'flowcode_userbundle_user_profile';
+        return 'flowcode_userbundle_user';
     }
 
 }

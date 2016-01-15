@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Amulen\UserBundle\Entity\User;
 use Flowcode\UserBundle\Form\UserType;
+use Flowcode\UserBundle\Form\UserEditType;
 
 /**
  * User controller.
@@ -176,7 +177,7 @@ class AdminUserController extends Controller
      */
     private function createEditForm(User $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $form = $this->createForm(new UserEditType(), $entity, array(
             'action' => $this->generateUrl('admin_user_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
