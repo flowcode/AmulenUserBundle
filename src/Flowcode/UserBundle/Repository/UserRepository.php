@@ -20,9 +20,10 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
     public function findByUsername($username)
     {
         $qb = $this->createQueryBuilder("u");
-        $qb->where("u.username = :username")->setParameter("username", $username);
-        $qb->orWhere("u.email = :email")->setParameter("email", $username);
-        $qb->orWhere("u.status = :status")->setParameter("status", 1);
+        $qb->where("(u.username = :username OR u.email = :email)")
+            ->setParameter("username", $username)
+            ->setParameter("email", $username);
+        $qb->andWhere("u.status = :status")->setParameter("status", 1);
         $qb->setMaxResults(1);
         return $qb->getQuery()->getOneOrNullResult();
     }
@@ -39,15 +40,5 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             $qb->orWhere("u.code = :code")->setParameter("code", $code);
         }
         return $qb->getQuery()->getResult();
-    }
-
-    public function findByGroup($group)
-    {
-        $qb = $this->createQueryBuilder("u");
-        $qb->join("AmulenUserBundle:UserGroup", "gr");
-        $qb->where("gr.id IN (:group_id)");
-        $qb->setParameter("group_id", $group);
-        $qb->setMaxResults(1);
-        $qb->getQuery()->getOneOrNullResult();
     }
 }

@@ -18,7 +18,7 @@ class UserType extends AbstractType {
                 ->add('firstname')
                 ->add('lastname')
                 ->add('username')
-                ->add('plainPassword')
+                ->add('plainPassword','password')
                 ->add('email')
                 ->add('status', ChoiceType::class, array(
                         'choices'  => array(

@@ -7,7 +7,9 @@
         </div><!-- /.login-logo -->
         <div class="login-box-body">
             {% if error %}
-                <p class="login-box-msg">{{ error|trans }}</p>
+                <p class="login-box-msg">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </p>
             {% endif %}
             <form action="{{ path("flowcode_admin_user_check") }}" method="post">
                 <div class="form-group has-feedback">

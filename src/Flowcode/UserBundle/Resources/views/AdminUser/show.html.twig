@@ -43,6 +43,14 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>{{ "Groups"|trans }}</th>
+                        <td>
+                            {% for group in entity.groups %}
+                                {{ group.name }} {{ loop.last ? '' : ', ' }}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
                         <th>{{ "Created"|trans }}</th>
                         <td>{{ entity.created|date('Y-m-d H:i:s') }}</td>
                     </tr>

@@ -33,7 +33,7 @@ class AdminLoginController extends Controller
         return array(
             'last_username' => $lastUsername,
             'error'         => $error,
-        );
+            );
     }
 
     /**
@@ -48,7 +48,7 @@ class AdminLoginController extends Controller
     }
 
     /**
-    * Login to admin panel.
+    * Check.
     *
     * @Route("/admin/login/forgot", name="amulen_admin_login_forgot")
     * @Method("GET")
@@ -62,6 +62,37 @@ class AdminLoginController extends Controller
         return array(
             "error" => $error,
             "last_email" => $last_email,
-        );
+            );
+    }
+
+    /**
+    * Forget check.
+    *
+    * @Route("/admin/login/forgot_check", name="amulen_admin_login_forgot_check")
+    * @Method("POST")
+    * @Template("FlowcodeUserBundle:AdminLogin:forgot.html.twig")
+    */
+    public function forgotCheckAction(Request $request)
+    {
+        $error = null;
+        $last_email = null;
+
+        $userService = $this->get("flowcode.user");
+        $user = $userService->loadUserByUsername($request->get("_username"));
+
+        if($user){
+            $userService->resetPasssword($user);
+        }else{
+            $error = array(
+                "messageKey" => "security.login.unknown_user",
+                "messageData" => array(),
+            );
+        }
+
+        
+        return array(
+            "error" => $error,
+            "last_email" => $last_email,
+            );
     }
 }

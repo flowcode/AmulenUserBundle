@@ -1,12 +1,15 @@
 ## YAML Template.
 ---
 
+security.login: login
 security.login.username: usuario/email
 security.login.password: contraseña
 security.login.submit: entrar
 security.login.remember: recordarme
 security.login.forgot: Olvidé mi contraseña
 security.login.send_resetting: Recuperar
+
+security.login.unknown_user: Usuario no encontrado
 
 user.dashboard: tablero de usuario
 user.list: lista de usuarios

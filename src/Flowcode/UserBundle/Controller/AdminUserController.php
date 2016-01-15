@@ -261,7 +261,10 @@ class AdminUserController extends Controller
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('admin_user_delete', array('id' => $id)))
                         ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->add('submit', 'submit', array('label' => 'Delete',
+                            'attr' => array(
+                                    'onclick' => 'return confirm("Estás seguro?")'
+                            )))
                         ->getForm()
         ;
     }

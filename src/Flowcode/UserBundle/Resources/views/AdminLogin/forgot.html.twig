@@ -7,9 +7,11 @@
         </div>
         <div class="login-box-body">
             {% if error %}
-                <p class="login-box-msg">{{ error|trans }}</p>
+                <p class="login-box-msg">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </p>
             {% endif %}
-            <form action="{{ path("flowcode_admin_user_check") }}" method="post">
+            <form action="{{ path("amulen_admin_login_forgot_check") }}" method="post">
                 <div class="form-group has-feedback">
                     <input type="text" name="_username" placeholder="{{ 'security.login.username'|trans|title }}" value="{{ last_email }}" required="required" class="form-control" />
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -17,10 +19,12 @@
 
                 <div class="row">
                     <div class="col-xs-8">
-
+                        <a href="{{ path("flowcode_admin_user_login") }}">
+                            <i class="fa fa-long-arrow-left"></i> {{ 'security.login'|trans|title }}
+                        </a>
                     </div>
                     <div class="col-xs-4">
-                        <input class="btn btn-primary btn-block btn-flat" type="submit" id="_submit" name="_submit" value="{{ 'security.login.send_resetting'|trans|title }}" />
+                        <input class="btn btn-primary btn-block btn-flat" tabindex="0" type="submit" id="_submit" name="_submit" value="{{ 'security.login.send_resetting'|trans|title }}" />
                     </div>
                 </div>
             </form>

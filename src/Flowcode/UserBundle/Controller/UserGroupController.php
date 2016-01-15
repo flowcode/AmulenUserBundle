@@ -202,6 +202,10 @@ class UserGroupController extends Controller {
                 throw $this->createNotFoundException('Unable to find UserGroup entity.');
             }
 
+            $var = $em->getRepository('AmulenUserBundle:User')->findByGroup($userGroup);
+            echo $var;
+            die("123");
+
             $users = $this->getUsersByUserGroup($userGroup);
             
             if (count($users) == 0)
@@ -231,7 +235,10 @@ class UserGroupController extends Controller {
         $form = $this->createFormBuilder()
                         ->setAction($this->generateUrl('admin_usergroup_delete', array('id' => $id)))
                         ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->add('submit', 'submit', array('label' => 'Delete',
+                            'attr' => array(
+                                    'onclick' => 'return confirm("Estás seguro?")'
+                            )))
                         ->getForm();
         return $form;
     }
