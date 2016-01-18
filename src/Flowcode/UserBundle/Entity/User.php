@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Amulen\UserBundle\Entity\UserGroup;
 
 /**
  * User
@@ -483,11 +482,11 @@ class User implements UserInterface
     }
 
     /**
-     * @param UserGroup $userGroup
+     * @param \Amulen\UserBundle\Entity\UserGroup $userGroup
      *
      * @return User
      */
-    public function addUserGroup(UserGroup $userGroup)
+    public function addUserGroup(\Amulen\UserBundle\Entity\UserGroup $userGroup)
     {
         $this->groups[] = $userGroup;
 
@@ -495,15 +494,15 @@ class User implements UserInterface
     }
 
     /**
-     * @param UserGroup $userGroup
+     * @param \Amulen\UserBundle\Entity\UserGroup $userGroup
      */
-    public function removeUserGroup(UserGroup $userGroup)
+    public function removeUserGroup(\Amulen\UserBundle\Entity\UserGroup $userGroup)
     {
         $this->groups->removeElement($userGroup);
     }
 
     /**
-     * @return UserGroup
+     * @return \Amulen\UserBundle\Entity\UserGroup
      */
     public function getGroups()
     {
