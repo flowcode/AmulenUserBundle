@@ -33,8 +33,10 @@ class UserGroup
      */
     protected $roles;
 
-    public function __construct()
+
+    public function __construct($name)
     {
+        $this->setName($name);
         $this->roles = new ArrayCollection();
     }
 
@@ -110,5 +112,8 @@ class UserGroup
         $this->roles = $roles;
 
         return $this;
+    }
+    function __toString(){
+        return $this->id."-".$this->name;
     }
 }
