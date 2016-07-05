@@ -1,14 +1,34 @@
 ## YAML Template.
 ---
 
+security.login: login
 security.login.username: username
-security.login.username: password
+security.login.password: password
+security.login.submit: Sign in
+security.login.remember: remember me
+security.login.forgot: forgot
+security.login.send_resetting: reset
+security.login.username_or_email: Email or username
+security.login.unknown_user: Unknown user
+security.no_account: Don't have an account?
+user.signin: Sign in with
+
 
 user.dashboard: user dashboard
 user.list: user list
 user.create: create user
 user.delete: delete user
 user.edit: edit user
+user.profile: profile
+user.logout: sign out
+
+user.register: Registrarme
 
 user.group: user group
 user.group.list: user group list
+
+profile.edit: Edit profile
+
+Password: Password
+Repeat Password: Repeat Password
+
