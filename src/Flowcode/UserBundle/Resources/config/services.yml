@@ -24,4 +24,4 @@ services:
 
     flowcode.user:
         class: Flowcode\UserBundle\Service\UserService
-        arguments: ["@doctrine.orm.entity_manager", "@security.password_encoder", "@service_container"]
+        arguments: ["@doctrine.orm.entity_manager", "@security.password_encoder", "@service_container", "@security.token_storage", "@event_dispatcher"]

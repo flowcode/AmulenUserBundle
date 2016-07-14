@@ -10,6 +10,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Amulen\UserBundle\Entity\User;
 use Flowcode\UserBundle\Service\UserNotificationService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * User Service
@@ -26,11 +29,13 @@ class UserService implements UserProviderInterface
      */
     protected $encoder;
 
-    public function __construct(EntityManager $em, UserPasswordEncoder $encoder, ContainerInterface $container)
+    public function __construct(EntityManager $em, UserPasswordEncoder $encoder, ContainerInterface $container, TokenStorageInterface $tokenStorage, EventDispatcherInterface $dispatcher)
     {
         $this->em = $em;
         $this->encoder = $encoder;
         $this->container = $container;
+        $this->tokenStorage = $tokenStorage;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -159,6 +164,37 @@ class UserService implements UserProviderInterface
     {
         $user = $this->getEm()->getRepository("AmulenUserBundle:User")->findOneBy(array('code' => $code));
         return $user;
+    }
+
+    /**
+     * Get by Code.
+     * @param  [type] $user [user to auth]
+     * @param  [type] $user [user's plain password]
+     * @param  [type] $firewall [name in security.yml]
+     * @param  [type] $roles [user's roles]
+     * @return [bool] token [description]
+     */
+    public function getAuthToken($user, $plainPassword, $firewall, $roles = array())
+    {
+        // Here, "public" is the name of the firewall in your security.yml
+        $token = new UsernamePasswordToken($user, $user->getPlainPassword(), $firewall, $roles);
+
+        // For older versions of Symfony, use security.context here
+        $this->tokenStorage->setToken($token);
+
+        return $token;
+    }
+
+    /**
+     * Get by Code.
+     * @param  [type] $event [description]
+     * @return [bool] true   [description]
+     */
+    public function loginUser($event)
+    {
+        $this->dispatcher->dispatch("security.interactive_login", $event);
+
+        return true;
     }
 
     /**

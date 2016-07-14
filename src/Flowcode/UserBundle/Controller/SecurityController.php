@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 /**
  * Login controller.
@@ -167,6 +168,14 @@ class SecurityController extends Controller
 
             $userManager = $this->container->get('flowcode.user');
             $userManager->create($user);
+
+            // //FIXME: firewall name in security.yml
+            // $firewall = 'public';
+            // $token = $userManager->getAuthToken($user, $user->getPlainPassword(), $firewall);
+            // // Fire the login event
+            // // Logging the user in above the way we do it doesn't do this automatically
+            // $event = new InteractiveLoginEvent($request, $token);
+            // $userManager->loginUser($event);
 
             return $this->redirect($this->generateUrl('homepage'));
         }
