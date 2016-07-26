@@ -118,7 +118,7 @@ class SecurityController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function registerAction()
+    public function registerAction(Request $request)
     {
         $user = new User();
         $form = $this->createRegisterForm($user);
