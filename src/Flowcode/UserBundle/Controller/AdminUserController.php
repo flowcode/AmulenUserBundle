@@ -19,6 +19,7 @@ use Flowcode\UserBundle\Form\UserEditType;
 class AdminUserController extends Controller
 {
 
+
     /**
      * Lists all User entities.
      *
@@ -28,12 +29,20 @@ class AdminUserController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        /* init filters */
+        $filter['q'] = $request->get('q');
 
-        $entities = $em->getRepository('AmulenUserBundle:User')->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->getRepository('AmulenUserBundle:User')->createQueryBuilder('u');
+        if ($filter['q']) {
+            $qb->andWhere('(u.username LIKE :username OR u.email LIKE :username OR u.email LIKE :username OR u.firstname LIKE :username OR u.lastname LIKE :username)')->setParameter('username', '%' . $filter['q'] . '%');
+        }
+
+        $paginator = $this->get('knp_paginator')->paginate($qb, $request->query->get('page', 1), 20);
 
         return array(
-            'entities' => $entities,
+            'paginator' => $paginator,
+            'filter' => $filter,
         );
     }
 
@@ -260,13 +269,12 @@ class AdminUserController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('admin_user_delete', array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete',
-                            'attr' => array(
-                                    'onclick' => 'return confirm("Estás seguro?")'
-                            )))
-                        ->getForm()
-        ;
+            ->setAction($this->generateUrl('admin_user_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete',
+                'attr' => array(
+                    'onclick' => 'return confirm("Estás seguro?")'
+                )))
+            ->getForm();
     }
 }

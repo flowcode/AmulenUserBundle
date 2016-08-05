@@ -12,6 +12,8 @@ use Amulen\UserBundle\Entity\User;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+
+
     /**
      * Find by username.
      * @param  string $username A username.

@@ -80,7 +80,7 @@ class ProfileController extends Controller
      *
      * @Route("/{id}", name="amulen_profile_update")
      * @Method("PUT")
-     * @Template("FlowcodeUserBundle:AdminProfile:edit.html.twig")
+     * @Template("FlowcodeUserBundle:Profile:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {

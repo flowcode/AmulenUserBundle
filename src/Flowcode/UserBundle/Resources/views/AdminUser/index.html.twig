@@ -1,52 +1,71 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
 {% block body -%}
-{{ include('FlowcodeUserBundle:AdminUser:usersHeader.html.twig') }}
-<section class="content">
-    <div class="box box-solid">
-        <div class="box-header">
-            <h3>{{ "Users list"|trans|title }}</h3>
-            <div class="box-tools">
-                <a class ="btn btn-link btn-sm" href="{{ path('admin_user_new') }}">
-                    <i class="fa fa-plus"></i> {{ 'create'|trans }}
-                </a>
+    {{ include('FlowcodeUserBundle:AdminUser:usersHeader.html.twig') }}
+    <section class="content">
+        <div class="box box-solid">
+            <div class="box-header">
+                <h3>{{ "Users list"|trans|title }}</h3>
+                <div class="box-tools">
+                    <a class="btn btn-link btn-sm" href="{{ path('admin_user_new') }}">
+                        <i class="fa fa-plus"></i> {{ 'create'|trans }}
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="box-body">
+            <div class="box-body">
+                <div class="">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input name="q" class="form-control input-xlarge" type="text" value="{{ filter.q }}"
+                                   id="product-query"
+                                   placeholder="Buscar">
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                            <i class="fa fa-search"></i> {{ 'search'|trans|title }}
+                        </button>
 
-            <table class="records_list table table-condensed">
-                <thead>
+                        <a class="btn btn-default btn-sm" href="{{ path('admin_user') }}?reset">
+                            <i class="fa fa-times"></i> {{ 'clean' | trans | capitalize }}
+                        </a>
+
+                        <br>
+                    </form>
+                </div>
+                <table class="records_list table table-condensed">
+                    <thead>
                     <tr>
-                        <th>{{ 'Username'|trans }}</th>
-                        <th>{{ 'Firstname'|trans }}</th>
-                        <th>{{ 'Lastname'|trans }}</th>
+                        <th>{{ knp_pagination_sortable(paginator, 'Username', 'u.username') }}</th>
+                        <th>{{ knp_pagination_sortable(paginator, 'Firstname', 'u.firstname') }}</th>
+                        <th>{{ knp_pagination_sortable(paginator, 'Lastname', 'u.lastname') }}</th>
                         <th>{{ 'Email'|trans }}</th>
                         <th>{{ 'Status'|trans }}</th>
-                        <th>{{ 'Created'|trans }}</th>
-                        <th>{{ 'Updated'|trans }}</th>
+                        <th>{{ knp_pagination_sortable(paginator, 'Created', 'u.created') }}</th>
+                        <th>{{ knp_pagination_sortable(paginator, 'Updated', 'u.updated') }}</th>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for entity in entities %}
-                    <tr>
-                        <td><a href="{{ path('admin_user_show', { 'id': entity.id }) }}">{{ entity.username }}</a></td>
-                        <td>{{ entity.firstname }}</td>
-                        <td>{{ entity.lastname }}</td>
-                        <td>{{ entity.email }}</td>
-                        <td>
-                            {%if entity.status %}
-                            {{ 'yes'|trans }}
-                            {%else%}
-                            {{ 'no'|trans }}
-                            {%endif%}
-                        </td>
-                        <td>{% if entity.created %}{{ entity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                        <td>{% if entity.updated %}{{ entity.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for entity in paginator %}
+                        <tr>
+                            <td><a href="{{ path('admin_user_show', { 'id': entity.id }) }}">{{ entity.username }}</a>
+                            </td>
+                            <td>{{ entity.firstname }}</td>
+                            <td>{{ entity.lastname }}</td>
+                            <td>{{ entity.email }}</td>
+                            <td>
+                                {% if entity.status %}
+                                    {{ 'yes'|trans }}
+                                {% else %}
+                                    {{ 'no'|trans }}
+                                {% endif %}
+                            </td>
+                            <td>{% if entity.created %}{{ entity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            <td>{% if entity.updated %}{{ entity.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        </tr>
                     {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+                {{ knp_pagination_render(paginator) }}
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endblock %}
