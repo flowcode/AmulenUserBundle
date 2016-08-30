@@ -63,7 +63,7 @@ class ProfileController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(User $entity)
+    protected function createEditForm(User $entity)
     {
         $form = $this->createForm($this->get("form.type.user_profile"), $entity, array(
             'action' => $this->generateUrl('amulen_profile_update', array('id' => $entity->getId())),
