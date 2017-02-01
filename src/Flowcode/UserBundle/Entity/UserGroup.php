@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * UserGroup
  */
-class UserGroup
-{
+class UserGroup {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -25,7 +25,7 @@ class UserGroup
     protected $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Amulen\UserBundle\Entity\Role")
+     * @ORM\ManyToMany(targetEntity="Role")
      * @ORM\JoinTable(name="user_group_role",
      *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
@@ -33,9 +33,7 @@ class UserGroup
      */
     protected $roles;
 
-
-    public function __construct($name)
-    {
+    public function __construct($name) {
         $this->setName($name);
         $this->roles = new ArrayCollection();
     }
@@ -45,13 +43,11 @@ class UserGroup
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -60,21 +56,18 @@ class UserGroup
      *
      * @return boolean
      */
-    public function hasRole($role)
-    {
+    public function hasRole($role) {
         return in_array(strtoupper($role), $this->roles, true);
     }
 
-    public function getRoles()
-    {
+    public function getRoles() {
         return $this->roles;
     }
 
     /**
      * @param \Amulen\UserBundle\Entity\Role $role
      */
-    public function removeRole(\Amulen\UserBundle\Entity\Role $role)
-    {
+    public function removeRole(\Amulen\UserBundle\Entity\Role $role) {
         $this->tags->removeElement($role);
     }
 
@@ -83,8 +76,7 @@ class UserGroup
      *
      * @return \Amulen\UserBundle\Entity\UserGroup
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -95,8 +87,7 @@ class UserGroup
      *
      * @return \Amulen\UserBundle\Entity\UserGroup
      */
-    public function addRole(\Amulen\UserBundle\Entity\Role $role)
-    {
+    public function addRole(\Amulen\UserBundle\Entity\Role $role) {
         $this->roles[] = $role;
 
         return $this;
@@ -107,13 +98,14 @@ class UserGroup
      *
      * @return \Amulen\UserBundle\Entity\UserGroup
      */
-    public function setRoles(array $roles)
-    {
+    public function setRoles(array $roles) {
         $this->roles = $roles;
 
         return $this;
     }
-    function __toString(){
-        return $this->id."-".$this->name;
+
+    function __toString() {
+        return $this->id . "-" . $this->name;
     }
+
 }

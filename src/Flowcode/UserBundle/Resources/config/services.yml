@@ -2,19 +2,19 @@ services:
 
     form.type.user:
         class: Flowcode\UserBundle\Form\UserType
-        arguments: ["@security.context"]
+        arguments: ["@security.token_storage"]
         tags:
             - { name: form.type, alias: user_type }
 
     form.type.user_profile:
         class: Flowcode\UserBundle\Form\UserProfileType
-        arguments: ["@security.context"]
+        arguments: ["@security.token_storage"]
         tags:
             - { name: form.type, alias: flowcode_userbundle_user_profile }
 
     form.type.user_register:
         class: Flowcode\UserBundle\Form\Type\UserRegisterType
-        arguments: ["@security.context"]
+        arguments: ["@security.token_storage"]
         tags:
             - { name: form.type, alias: user_register_type }
 
