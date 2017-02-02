@@ -9,12 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-
 /**
  * User
  */
-class User implements UserInterface {
-
+class User implements UserInterface
+{
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
 
@@ -106,19 +105,19 @@ class User implements UserInterface {
      */
     protected $groups;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->groups = new ArrayCollection();
     }
-
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
-
     /**
      * Set username
      *
@@ -126,21 +125,21 @@ class User implements UserInterface {
      *
      * @return User
      */
-    public function setUsername($username) {
+    public function setUsername($username)
+    {
         $this->username = $username;
 
         return $this;
     }
-
     /**
      * Get username
      *
      * @return string
      */
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->username;
     }
-
     /**
      * Set password
      *
@@ -148,21 +147,21 @@ class User implements UserInterface {
      *
      * @return User
      */
-    public function setPassword($password) {
+    public function setPassword($password)
+    {
         $this->password = $password;
 
         return $this;
     }
-
     /**
      * Get password
      *
      * @return string
      */
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
-
     /**
      * Set email
      *
@@ -170,21 +169,21 @@ class User implements UserInterface {
      *
      * @return User
      */
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
 
         return $this;
     }
-
     /**
      * Get email
      *
      * @return string
      */
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
-
     /**
      * Set status
      *
@@ -192,21 +191,21 @@ class User implements UserInterface {
      *
      * @return User
      */
-    public function setStatus($status) {
+    public function setStatus($status)
+    {
         $this->status = $status;
 
         return $this;
     }
-
     /**
      * Get status
      *
      * @return integer
      */
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->status;
     }
-
     /**
      * Set created
      *
@@ -214,21 +213,21 @@ class User implements UserInterface {
      *
      * @return User
      */
-    public function setCreated($created) {
+    public function setCreated($created)
+    {
         $this->created = $created;
 
         return $this;
     }
-
     /**
      * Get created
      *
      * @return \DateTime
      */
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
-
     /**
      * Set updated
      *
@@ -236,21 +235,21 @@ class User implements UserInterface {
      *
      * @return User
      */
-    public function setUpdated($updated) {
+    public function setUpdated($updated)
+    {
         $this->updated = $updated;
 
         return $this;
     }
-
     /**
      * Get updated
      *
      * @return \DateTime
      */
-    public function getUpdated() {
+    public function getUpdated()
+    {
         return $this->updated;
     }
-
     /**
      * Set firstname
      *
@@ -258,21 +257,21 @@ class User implements UserInterface {
      *
      * @return User
      */
-    public function setFirstname($firstname) {
+    public function setFirstname($firstname)
+    {
         $this->firstname = $firstname;
 
         return $this;
     }
-
     /**
      * Get firstname
      *
      * @return string
      */
-    public function getFirstname() {
+    public function getFirstname()
+    {
         return $this->firstname;
     }
-
     /**
      * Set lastname
      *
@@ -280,21 +279,21 @@ class User implements UserInterface {
      *
      * @return User
      */
-    public function setLastname($lastname) {
+    public function setLastname($lastname)
+    {
         $this->lastname = $lastname;
 
         return $this;
     }
-
     /**
      * Get lastname
      *
      * @return string
      */
-    public function getLastname() {
+    public function getLastname()
+    {
         return $this->lastname;
     }
-
     /**
      * Set phone
      *
@@ -302,21 +301,21 @@ class User implements UserInterface {
      *
      * @return User
      */
-    public function setPhone($phone) {
+    public function setPhone($phone)
+    {
         $this->phone = $phone;
 
         return $this;
     }
-
     /**
      * Get phone
      *
      * @return string
      */
-    public function getPhone() {
+    public function getPhone()
+    {
         return $this->phone;
     }
-
     /**
      * Set dni
      *
@@ -324,21 +323,21 @@ class User implements UserInterface {
      *
      * @return User
      */
-    public function setDni($dni) {
+    public function setDni($dni)
+    {
         $this->dni = $dni;
 
         return $this;
     }
-
     /**
      * Get dni
      *
      * @return string
      */
-    public function getDni() {
+    public function getDni()
+    {
         return $this->dni;
     }
-
     /**
      * Set code
      *
@@ -346,69 +345,70 @@ class User implements UserInterface {
      *
      * @return User
      */
-    public function setCode($code) {
+    public function setCode($code)
+    {
         $this->code = $code;
 
         return $this;
     }
-
-    public function setPlainPassword($plainPassword) {
+    public function setPlainPassword($plainPassword)
+    {
         $this->plainPassword = $plainPassword;
     }
-
-    public function getPlainPassword() {
+    public function getPlainPassword()
+    {
         return $this->plainPassword;
     }
-
     /**
      * Sets file.
      *
      * @param UploadedFile $file
      */
-    public function setFile(UploadedFile $file = null) {
+    public function setFile(UploadedFile $file = null)
+    {
         $this->file = $file;
     }
-
     /**
      * Set avatar
      *
      * @param string $avatar
      * @return User
      */
-    public function setAvatar($avatar) {
+    public function setAvatar($avatar)
+    {
         $this->avatar = $avatar;
 
         return $this;
     }
-
     /**
      * Get avatar
      *
      * @return string
      */
-    public function getAvatar() {
+    public function getAvatar()
+    {
         return $this->avatar;
     }
-
     /**
      * Get file.
      *
      * @return UploadedFile
      */
-    public function getFile() {
+    public function getFile()
+    {
         return $this->file;
     }
-
     /**
      * Get code
      *
      * @return string
      */
-    public function getCode() {
+    public function getCode()
+    {
         return $this->code;
     }
-
-    public function getRoles() {
+    public function getRoles()
+    {
         $roles = array();
         foreach ($this->getGroups() as $userGroup) {
             foreach ($userGroup->getRoles() as $role) {
@@ -417,45 +417,45 @@ class User implements UserInterface {
         }
         return $roles;
     }
-
-    public function getSalt() {
+    public function getSalt()
+    {
         return null;
     }
-
-    public function eraseCredentials() {
+    public function eraseCredentials()
+    {
         
     }
-
     /**
      * @param \Amulen\UserBundle\Entity\UserGroup $userGroup
      *
      * @return User
      */
-    public function addUserGroup(\Amulen\UserBundle\Entity\UserGroup $userGroup) {
+    public function addUserGroup(\Amulen\UserBundle\Entity\UserGroup $userGroup)
+    {
         $this->groups[] = $userGroup;
 
         return $this;
     }
-
     /**
      * @param \Amulen\UserBundle\Entity\UserGroup $userGroup
      */
-    public function removeUserGroup(\Amulen\UserBundle\Entity\UserGroup $userGroup) {
+    public function removeUserGroup(\Amulen\UserBundle\Entity\UserGroup $userGroup)
+    {
         $this->groups->removeElement($userGroup);
     }
-
     /**
      * @return \Amulen\UserBundle\Entity\UserGroup
      */
-    public function getGroups() {
+    public function getGroups()
+    {
         return $this->groups;
     }
-
-    public function setGroups($groups) {
+    public function setGroups($groups)
+    {
         $this->groups = $groups;
     }
-
-    public function getHappyName() {
+    public function getHappyName()
+    {
         $happyName = "";
         if (isset($this->firstname)) {
             $happyName .= $this->firstname;
@@ -468,5 +468,4 @@ class User implements UserInterface {
 
         return $happyName;
     }
-
 }

@@ -28,6 +28,7 @@ class Role
 
     public function __construct()
     {
+        
     }
 
     /**
@@ -64,7 +65,8 @@ class Role
         return $this->name;
     }
 
-    function __toString(){
+    function __toString()
+    {
         return $this->getName();
     }
 

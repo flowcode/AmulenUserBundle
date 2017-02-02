@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * UserGroup
  */
-class UserGroup {
-
+class UserGroup
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -33,79 +33,79 @@ class UserGroup {
      */
     protected $roles;
 
-    public function __construct($name) {
+    public function __construct($name)
+    {
         $this->setName($name);
         $this->roles = new ArrayCollection();
     }
-
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
-
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
-
     /**
      * @param string $role
      *
      * @return boolean
      */
-    public function hasRole($role) {
+    public function hasRole($role)
+    {
         return in_array(strtoupper($role), $this->roles, true);
     }
-
-    public function getRoles() {
+    public function getRoles()
+    {
         return $this->roles;
     }
-
     /**
      * @param \Amulen\UserBundle\Entity\Role $role
      */
-    public function removeRole(\Amulen\UserBundle\Entity\Role $role) {
+    public function removeRole(\Amulen\UserBundle\Entity\Role $role)
+    {
         $this->tags->removeElement($role);
     }
-
     /**
      * @param string $name
      *
      * @return \Amulen\UserBundle\Entity\UserGroup
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
 
         return $this;
     }
-
     /**
      * @param \Amulen\UserBundle\Entity\Role $role
      *
      * @return \Amulen\UserBundle\Entity\UserGroup
      */
-    public function addRole(\Amulen\UserBundle\Entity\Role $role) {
+    public function addRole(\Amulen\UserBundle\Entity\Role $role)
+    {
         $this->roles[] = $role;
 
         return $this;
     }
-
     /**
      * @param array $roles
      *
      * @return \Amulen\UserBundle\Entity\UserGroup
      */
-    public function setRoles(array $roles) {
+    public function setRoles(array $roles)
+    {
         $this->roles = $roles;
 
         return $this;
     }
-
-    function __toString() {
+    function __toString()
+    {
         return $this->id . "-" . $this->name;
     }
-
 }
