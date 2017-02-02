@@ -4,10 +4,10 @@
 Include libs in composer
 --------------------
 
-stof/doctrine-extensions-bundle
-friendsofsymfony/rest-bundle
-jms/serializer-bundle
-nelmio/cors-bundle
++ stof/doctrine-extensions-bundle
++ friendsofsymfony/rest-bundle
++ jms/serializer-bundle
++ nelmio/cors-bundle
 
 
 Create bundles in AppKernel
@@ -73,10 +73,4 @@ fos_rest:
         view_response_listener: 'force'
         formats:
             json: true
-    versioning:
-        enabled: true
-        default_version: v1
-        resolvers:
-            query: true
-
 ```
