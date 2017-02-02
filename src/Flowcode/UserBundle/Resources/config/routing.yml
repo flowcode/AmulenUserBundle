@@ -1,7 +1,5 @@
-flowcode_user_api_login:     
-    resource: Flowcode\UserBundle\Controller\Api\SecurityController
-    type:     rest
+flowcode_user_api_login_v1:     
+    path: /users
+    defaults:  { _controller: FlowcodeUserBundle:Api/Security:login }
+    methods: [POST]
     
-flowcode_user_api_login_v2:     
-    resource: Flowcode\UserBundle\Controller\Api\SecurityControllerV2
-    type:     rest
