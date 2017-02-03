@@ -4,12 +4,8 @@ namespace Flowcode\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Role
- */
-class Role
+abstract class Role
 {
-
     /**
      * @var integer
      *
@@ -30,7 +26,6 @@ class Role
     {
         
     }
-
     /**
      * Get id
      *
@@ -40,7 +35,6 @@ class Role
     {
         return $this->id;
     }
-
     /**
      * Set name
      *
@@ -54,7 +48,6 @@ class Role
 
         return $this;
     }
-
     /**
      * Get name
      *
@@ -64,10 +57,8 @@ class Role
     {
         return $this->name;
     }
-
     function __toString()
     {
         return $this->getName();
     }
-
 }

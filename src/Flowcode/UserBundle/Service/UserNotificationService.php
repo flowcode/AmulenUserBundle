@@ -4,7 +4,7 @@ namespace Flowcode\UserBundle\Service;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Flowcode\NotificationBundle\Senders\EmailSenderInterface;
-use Amulen\UserBundle\Entity\User;
+use Flowcode\UserBundle\Entity\UserInterface;
 
 /**
  * Description of UserNotificationService

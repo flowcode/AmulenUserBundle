@@ -2,17 +2,14 @@
 
 namespace Flowcode\UserBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use Flowcode\UserBundle\Entity\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * User
- */
-class User implements UserInterface
+abstract class User implements UserInterface
 {
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
@@ -28,22 +25,22 @@ class User implements UserInterface
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @Assert\NotNull
+     * @ORM\Column(name="email", type="string", length=255)
      */
     protected $email;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="username", type="string", length=255, nullable=true)
+     * @Assert\NotNull
+     * @ORM\Column(name="username", type="string", length=255)
      */
     protected $username;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=true)
+     * @Assert\NotNull
+     * @ORM\Column(name="password", type="string", length=255)
      */
     protected $password;
 
@@ -467,5 +464,13 @@ class User implements UserInterface
         }
 
         return $happyName;
+    }
+    public function serialize()
+    {
+        return null;
+    }
+    public function unserialize($serialized)
+    {
+        
     }
 }

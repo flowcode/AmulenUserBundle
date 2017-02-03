@@ -36,7 +36,7 @@ class UserRegisterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Amulen\UserBundle\Entity\User'
+            'data_class' => 'Flowcode\UserBundle\Entity\User'
         ));
     }
 

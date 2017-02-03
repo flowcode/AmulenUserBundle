@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
-use Flowcode\UserBundle\Entity\User;
+use Flowcode\UserBundle\Entity\UserInterface as User;
 use Flowcode\UserBundle\Service\UserNotificationService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -29,15 +29,15 @@ class UserService implements UserProviderInterface
      */
     protected $encoder;
 
-    public function __construct(EntityManager $em, UserPasswordEncoder $encoder, ContainerInterface $container, TokenStorageInterface $tokenStorage, EventDispatcherInterface $dispatcher)
+    public function __construct(EntityManager $em, UserPasswordEncoder $encoder, ContainerInterface $container, TokenStorageInterface $tokenStorage, EventDispatcherInterface $dispatcher, $class)
     {
         $this->em = $em;
         $this->encoder = $encoder;
         $this->container = $container;
         $this->tokenStorage = $tokenStorage;
         $this->dispatcher = $dispatcher;
+        $this->class = $class;
     }
-
     /**
      * Find al users with pagination options.
      * @param  integer $page [description]
@@ -46,11 +46,10 @@ class UserService implements UserProviderInterface
      */
     public function findAll($page = 1, $max = 50)
     {
-        $offset = (($page-1) * $max);
+        $offset = (($page - 1) * $max);
         $users = $this->getEm()->getRepository("AmulenUserBundle:User")->findBy(array(), array(), $max, $offset);
         return $users;
     }
-
     /**
      * Find by id.
      * @param  integer $id
@@ -60,7 +59,15 @@ class UserService implements UserProviderInterface
     {
         return $this->getEm()->getRepository("AmulenUserBundle:User")->find($id);
     }
-
+    
+    
+    public function createNewUser()
+    {
+        $class = $this->getClass();
+        $user = new $class();
+        return $user;
+    }
+    
     /**
      * Create a new user.
      * @param  User   $user the user instance.
@@ -68,6 +75,7 @@ class UserService implements UserProviderInterface
      */
     public function create(User $user)
     {
+
         /* handle encode */
         $user = $this->encode($user);
 
@@ -76,7 +84,6 @@ class UserService implements UserProviderInterface
 
         return $user;
     }
-
     public function encode(User $user)
     {
         if (strlen($user->getPlainPassword()) > 0) {
@@ -85,7 +92,6 @@ class UserService implements UserProviderInterface
         }
         return $user;
     }
-
     public function update(User $user)
     {
         /* handle encode */
@@ -94,13 +100,11 @@ class UserService implements UserProviderInterface
         $this->getEm()->flush();
         return $user;
     }
-
     public function loadUserByUsername($username)
     {
         $user = $this->getEm()->getRepository("AmulenUserBundle:User")->findByUsername($username);
         return $user;
     }
-
     public function resetPasssword(User $user)
     {
         $plainPassword = $this->generateRandomPassword();
@@ -111,10 +115,9 @@ class UserService implements UserProviderInterface
 
         return true;
     }
-
     /**
-    * Geneate Radmon password.
-    */
+     * Geneate Radmon password.
+     */
     public function generateRandomPassword()
     {
         $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
@@ -126,7 +129,6 @@ class UserService implements UserProviderInterface
         }
         return implode($pass);
     }
-
     /**
      * Check if is valid username.
      * @param  [type] $username [description]
@@ -139,7 +141,6 @@ class UserService implements UserProviderInterface
         }
         return !preg_match('/[^A-Za-z0-9_\\-]/', $username);
     }
-
     /**
      * Check if is unique.
      * @param  [type]  $username [description]
@@ -154,7 +155,6 @@ class UserService implements UserProviderInterface
         $entities = $this->getEm()->getRepository("AmulenUserBundle:User")->findByUniques($username, $email, $dni, $code);
         return count($entities) <= 0;
     }
-
     /**
      * Get by Code.
      * @param  [type] $code [description]
@@ -165,7 +165,6 @@ class UserService implements UserProviderInterface
         $user = $this->getEm()->getRepository("AmulenUserBundle:User")->findOneBy(array('code' => $code));
         return $user;
     }
-
     /**
      * Get by Code.
      * @param  [type] $user [user to auth]
@@ -184,7 +183,6 @@ class UserService implements UserProviderInterface
 
         return $token;
     }
-
     /**
      * Get by Code.
      * @param  [type] $event [description]
@@ -196,7 +194,6 @@ class UserService implements UserProviderInterface
 
         return true;
     }
-
     /**
      * Upload user image.
      *
@@ -227,24 +224,20 @@ class UserService implements UserProviderInterface
 
         return $entity;
     }
-
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(
-                sprintf('Instances of "%s" are not supported.', get_class($user))
+            sprintf('Instances of "%s" are not supported.', get_class($user))
             );
         }
 
         return $this->loadUserByUsername($user->getUsername());
     }
-
     public function supportsClass($class)
     {
         return $class === 'Amulen\UserBundle\Entity\User';
     }
-
-
     /**
      * Set entityManager.
      */
@@ -259,5 +252,10 @@ class UserService implements UserProviderInterface
     public function getEm()
     {
         return $this->em;
+    }
+    
+    private function getClass()
+    {
+        return $this->class;
     }
 }

@@ -5,7 +5,9 @@ namespace Flowcode\UserBundle\Controller\Api;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Flowcode\UserBundle\Entity\User;
+use FOS\RestBundle\View\View as FOSView;
+use Symfony\Component\HttpFoundation\Response;
+use Flowcode\UserBundle\Entity\ResponseCode;
 
 class UserController extends FOSRestController
 {
@@ -36,10 +38,7 @@ class UserController extends FOSRestController
      * parameters={
      *      {"name"="username", "dataType"="string", "required"=true, "description"="The user name"},
      *      {"name"="plainPassword", "dataType"="string", "required"=true, "description"="The user password"},
-     *      {"name"="email", "dataType"="string", "required"=true, "description"="The user email"},
-     *      {"name"="accessToken", "dataType"="string", "required"=false, "description"="The social network user token"},
-     *      {"name"="externalId", "dataType"="string", "required"=false, "description"="The social network user id"},
-     *      {"name"="socialNetwork", "dataType"="string", "required"=false, "description"="The social network name"}
+     *      {"name"="email", "dataType"="string", "required"=true, "description"="The user email"}
      * },
      *  statusCodes={
      *         200="Returned when successful",
@@ -51,31 +50,12 @@ class UserController extends FOSRestController
     {
         $userService = $this->get('flowcode.user');
 
-        $user = new User();
-        $form = $this->createForm($this->getParameter('form.type.user_register'), $user);
-        $form->submit($request->request->all(), false);
+        $user = $userService->createNewUser();
 
+        $form = $this->createForm($this->getParameter('form.type.user_register.api.class'));
+        $form->submit($request->request->all(), true);
         if ($form->isValid()) {
             $user = $userService->create($user);
-
-            /* $notificationService = $this->get('flou.user.notification');
-              $notificationService->notifyRegister($user);
-
-              if ($request->get('socialNetwork') && $request->get('accessToken') && $request->get('externalId')) {
-
-              //Asocia el usuario a la red social
-              $socialNetwork = $this->get('flou.social.network')->getSocialNetwork($request->get('socialNetwork'));
-
-              $userSocialAccount = new UserSocialAccount();
-              $userSocialAccount->setUser($user);
-              $userSocialAccount->setAccessToken($request->get('accessToken'));
-              $userSocialAccount->setSocialNetwork($socialNetwork);
-              $userSocialAccount->setExternalId($request->get('externalId'));
-
-              $userSocialAccountService = $this->get('flou.user.social.account');
-              $userSocialAccountService->create($userSocialAccount);
-              }
-             */
             $response = array("success" => true, "message" => "User registered", "code" => ResponseCode::USER_REGISTER_OK);
             return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
         }

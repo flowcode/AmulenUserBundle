@@ -5,10 +5,7 @@ namespace Flowcode\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * UserGroup
- */
-class UserGroup
+abstract class UserGroup
 {
     /**
      * @ORM\Id
