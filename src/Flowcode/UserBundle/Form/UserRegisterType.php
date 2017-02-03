@@ -45,7 +45,7 @@ class UserRegisterType extends AbstractType
      */
     public function getName()
     {
-        return 'flowcode_userbundle_user_profile';
+        return 'flowcode_userbundle_user_register';
     }
 
 }

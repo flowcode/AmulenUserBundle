@@ -1,0 +1,9 @@
+flowcode_user_api_login_check:     
+    path: /login_check
+    defaults:  { _controller: FlowcodeUserBundle:Api\User:check }
+    methods: [POST]
+    
+flowcode_user_api_register:     
+    path:     /users/register     
+    defaults: { _controller: FlowcodeUserBundle:Api\User:register }     
+    methods:  [POST] 

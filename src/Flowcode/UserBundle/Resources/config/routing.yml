@@ -1,5 +1,0 @@
-flowcode_user_api_login_v1:     
-    path: /users
-    defaults:  { _controller: FlowcodeUserBundle:Api/Security:login }
-    methods: [POST]
-    
