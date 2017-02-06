@@ -3,7 +3,6 @@
 namespace Flowcode\UserBundle\Tests\Service;
 
 use Flowcode\UserBundle\Tests\BaseTestCase;
-use Flowcode\UserBundle\Exception;
 use Flowcode\UserBundle\Exception\ExistentUserException;
 
 class UserServiceTest extends BaseTestCase

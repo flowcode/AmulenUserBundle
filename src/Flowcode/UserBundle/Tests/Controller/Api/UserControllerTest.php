@@ -43,11 +43,10 @@ class UserControllerTest extends BaseTestCase
 
         $this->assertEquals(true, $responseContent->success);
         $this->assertEquals(ResponseCode::USER_REGISTER_OK, $responseContent->code);
-        
+
         $this->assertEquals("juancho", $user->getUsername());
         $this->assertEquals("juancho@juancho.com", $user->getEmail());
         $this->assertNotEquals("1234", $user->getPassword());
-
     }
 
     public function testRegister_userAlreadyCreated_notCreateUser()
@@ -69,5 +68,37 @@ class UserControllerTest extends BaseTestCase
         $responseContent = json_decode($response->getContent());
         $this->assertEquals(false, $responseContent->success);
         $this->assertEquals(ResponseCode::USER_REGISTER_IN_SYSTEM, $responseContent->code);
+    }
+
+    public function testLogin_userOk_loginUser()
+    {
+        $apiRoute = $this->getUrl('flowcode_user_api_login');
+        $params = [
+            "username" => 'juan',
+            "password" => '1234',
+            "ACCEPT" => 'application/json'
+        ];
+
+        $this->client->request('POST', $apiRoute, $params);
+        $response = $this->client->getResponse();
+        $responseContent = json_decode($response->getContent());
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertNotEmpty(true, $responseContent->token);
+    }
+
+    public function testLogin_userInvalid_notLoginUser()
+    {
+        $apiRoute = $this->getUrl('flowcode_user_api_login');
+        $params = [
+            "username" => 'juan',
+            "password" => '12345',
+            "ACCEPT" => 'application/json'
+        ];
+
+        $this->client->request('POST', $apiRoute, $params);
+        $response = $this->client->getResponse();
+
+        $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
 }

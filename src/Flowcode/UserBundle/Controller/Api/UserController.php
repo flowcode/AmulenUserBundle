@@ -18,7 +18,7 @@ class UserController extends FOSRestController
      *  description="Login user",
      *  section="User Bundle",
      * parameters={
-     *      {"name"="username", "dataType"="string", "required"=true, "description"="The user username or email"},
+     *      {"name"="username", "dataType"="string", "required"=true, "description"="The user username"},
      *      {"name"="password", "dataType"="string", "required"=true, "description"="The user password"},
      *  },
      *  statusCodes={

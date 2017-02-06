@@ -11,7 +11,7 @@ class BaseTestCase extends WebTestCase
     public function setUp()
     {
         $classes = array(
-            'Flowcode\UserBundle\Tests\DataFixtures\UserFixture',
+            'Flowcode\UserBundle\Tests\DataFixtures\LoadUserData',
         );
         $this->loadFixtures($classes);
         $this->client = $this->createClient();
