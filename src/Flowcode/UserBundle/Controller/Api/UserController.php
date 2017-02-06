@@ -62,7 +62,7 @@ class UserController extends FOSRestController
             try {
                 $user = $userService->create($user);
             } catch (ExistentUserException $ex) {
-                $response = array("success" => false, "message" => "User already registered", "code" => ResponseCode::USER_REGISTER_IN_SYSTEM);
+                $response = array("success" => false, "message" => $ex->getMessage(), "code" => ResponseCode::USER_REGISTER_IN_SYSTEM);
                 return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
             }
             $response = array("success" => true, "message" => "User registered", "code" => ResponseCode::USER_REGISTER_OK);
