@@ -8,6 +8,7 @@ Include libs in composer
 + friendsofsymfony/rest-bundle
 + jms/serializer-bundle
 + nelmio/cors-bundle
++ lexik/jwt-authentication-bundle
 
 
 Create bundles in AppKernel
@@ -18,6 +19,7 @@ new FOS\RestBundle\FOSRestBundle(),
 new JMS\SerializerBundle\JMSSerializerBundle(),
 new Nelmio\CorsBundle\NelmioCorsBundle(),
 new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
 new Flowcode\NotificationBundle\FlowcodeNotificationBundle(),
 new Flowcode\UserBundle\FlowcodeUserBundle(),
 ```
@@ -49,28 +51,46 @@ stof_doctrine_extensions:
             timestampable: true
 
 
-# Nelmio CORS Configuration
+stof_doctrine_extensions:
+    default_locale: es
+    orm:
+        default:
+            tree: true
+            sluggable: true
+            timestampable: true
+
 nelmio_cors:
-    defaults:
-        allow_credentials: false
-        allow_origin: ['*']
-        allow_headers: ['*']
-        allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-        max_age: 3600
-        hosts: []
-        origin_regex: false
- 
-# FOSRest Configuration
-fos_rest:
-    body_listener: true
-    routing_loader:
-        include_format: false
-    format_listener:
-        rules:
-            - { path: '^/', priorities: ['json'], fallback_format: json, prefer_extension: false }
-    param_fetcher_listener: true
-    view:
-        view_response_listener: 'force'
-        formats:
-            json: true
+        defaults:
+            allow_credentials: false
+            allow_origin: []
+            allow_headers: []
+            allow_methods: []
+            expose_headers: []
+            max_age: 0
+            hosts: []
+            origin_regex: false
+        paths:
+            '^/api/':
+                allow_origin: ['*']
+                allow_headers: ['Authorization']
+                allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+                max_age: 3600
+            
+lexik_jwt_authentication:
+    private_key_path: "%jwt_private_key_path%"
+    public_key_path:  "%jwt_public_key_path%"
+    pass_phrase:      "%jwt_key_pass_phrase%"
+    token_ttl:        "%jwt_token_ttl%"
+```
+
+
+Add in parameters.yml
+--------------------
+Reference: https://github.com/lexik/LexikJWTAuthenticationBundle
+
+```
+    jwt_private_key_path: %kernel.root_dir%/var/jwt/private.pem   # ssh private key path
+    jwt_public_key_path:  %kernel.root_dir%/var/jwt/public.pem    # ssh public key path
+    jwt_key_pass_phrase:  'keypass'                            # ssh key pass phrase
+    jwt_token_ttl:        86400
 ```
