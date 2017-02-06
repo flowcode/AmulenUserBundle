@@ -39,7 +39,6 @@ abstract class User implements UserInterface
 
     /**
      * @var string
-     * @Assert\NotNull
      * @ORM\Column(name="password", type="string", length=255)
      */
     protected $password;

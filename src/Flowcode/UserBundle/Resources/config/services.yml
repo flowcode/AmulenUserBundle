@@ -1,6 +1,5 @@
 parameters:
     form.type.user_register.api.class: Flowcode\UserBundle\Form\Api\UserRegisterType   
-    flowcode.model.user.class: Flowcode\UserBundle\Entity\DummyUser
 
 services:
     form.type.user:
@@ -23,7 +22,7 @@ services:
             
     form.type.user_register.api:
         class: Flowcode\UserBundle\Form\Api\UserRegisterType
-        arguments: [%flowcode.model.user.class%]
+        arguments: ["%flowcode.model.user.class%"]
         tags:
             - { name: form.type, alias: user_register_type_api }
 
@@ -31,6 +30,12 @@ services:
         class: Flowcode\UserBundle\Service\UserNotificationService
         arguments: ["@service_container", "@flowcode.sender.senderEmailLocal", "@templating"]
 
+    flowcode.user.repository:         
+        class: Doctrine\ORM\EntityRepository         
+        factory: ["@doctrine.orm.entity_manager", getRepository]         
+        arguments:             
+            - "%flowcode.model.user.class%"
+            
     flowcode.user:
         class: Flowcode\UserBundle\Service\UserService
-        arguments: ["@doctrine.orm.entity_manager", "@security.password_encoder", "@service_container", "@security.token_storage", "@event_dispatcher", %flowcode.model.user.class%]
+        arguments: ["@doctrine.orm.entity_manager", "@security.password_encoder", "@service_container", "@security.token_storage", "@event_dispatcher", "@flowcode.user.repository", "%flowcode.model.user.class%"]

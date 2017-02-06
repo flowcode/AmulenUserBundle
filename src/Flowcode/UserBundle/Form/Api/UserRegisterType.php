@@ -27,9 +27,9 @@ class UserRegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('username', null, array('required' => true))
-                ->add('plainPassword', null, array('required' => true))
-                ->add('email',null, array('required' => true));
+                ->add('username')
+                ->add('plainPassword')
+                ->add('email');
     }
     /**
      * @param OptionsResolver $resolver
@@ -37,12 +37,12 @@ class UserRegisterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->class,
-            'csrf_protection' => false
+            'data_class' => 'Flowcode\UserBundle\Entity\User',
+            'csrf_protection' => false,
+            'allow_extra_fields' => true
         ));
     }
-    public function getName()
-    {
-        return 'flowcode_userbundle_user_register_api';
+public function getName(){
+    return '';
     }
 }

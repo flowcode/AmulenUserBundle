@@ -11,6 +11,7 @@ use Flowcode\UserBundle\Entity\ResponseCode;
 
 class UserController extends FOSRestController
 {
+
     /**
      * @ApiDoc(
      *  description="Login user",
@@ -31,6 +32,7 @@ class UserController extends FOSRestController
     {
         
     }
+
     /**
      * @ApiDoc(
      *  description="Register user",
@@ -52,8 +54,9 @@ class UserController extends FOSRestController
 
         $user = $userService->createNewUser();
 
-        $form = $this->createForm($this->getParameter('form.type.user_register.api.class'));
+        $form = $this->createForm($this->getParameter('form.type.user_register.api.class'), $user);
         $form->submit($request->request->all(), true);
+        
         if ($form->isValid()) {
             $user = $userService->create($user);
             $response = array("success" => true, "message" => "User registered", "code" => ResponseCode::USER_REGISTER_OK);
