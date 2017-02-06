@@ -5,7 +5,6 @@ namespace Flowcode\UserBundle\Tests\DataFixtures;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Cloudlance\ApiBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
@@ -17,6 +16,7 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
     {
         $this->container = $container;
     }
+
     public function load(ObjectManager $manager)
     {
         $userService = $this->container->get('flowcode.user');
@@ -29,6 +29,7 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
 
         $manager->flush();
     }
+
     public function getOrder()
     {
         return 1;

@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityRepository;
+use Flowcode\UserBundle\Exception\ExistentUserException;
 
 /**
  * User Service
@@ -29,10 +30,9 @@ class UserService implements UserProviderInterface
      * @var PasswordEncoderInterface
      */
     protected $encoder;
-
     protected $userClass;
     protected $userRepository;
-    
+
     public function __construct(EntityManager $em, UserPasswordEncoder $encoder, ContainerInterface $container, TokenStorageInterface $tokenStorage, EventDispatcherInterface $dispatcher, EntityRepository $userRepository, $userClass)
     {
         $this->em = $em;
@@ -81,10 +81,15 @@ class UserService implements UserProviderInterface
      */
     public function create(User $user)
     {
-
-        /* handle encode */
+        $userUsername = $this->getUserRepository()->findOneBy(array('username' => $user->getUsername()));
+        if ($userUsername != null) {
+            throw new ExistentUserException("The username already exists");
+        }
+        $userEmail = $this->getUserRepository()->findOneBy(array('email' => $user->getEmail()));
+        if ($userEmail != null) {
+            throw new ExistentUserException("The email already exists");
+        }
         $user = $this->encode($user);
-
         $this->getEm()->persist($user);
         $this->getEm()->flush();
 
@@ -254,7 +259,7 @@ class UserService implements UserProviderInterface
 
     public function supportsClass($class)
     {
-        return $class === 'Amulen\UserBundle\Entity\User';
+        return $class === $this->class;
     }
 
     /**

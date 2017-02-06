@@ -8,6 +8,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\View\View as FOSView;
 use Symfony\Component\HttpFoundation\Response;
 use Flowcode\UserBundle\Entity\ResponseCode;
+use Flowcode\UserBundle\Exception\ExistentUserException;
 
 class UserController extends FOSRestController
 {
@@ -56,9 +57,14 @@ class UserController extends FOSRestController
 
         $form = $this->createForm($this->getParameter('form.type.user_register.api.class'), $user);
         $form->submit($request->request->all(), true);
-        
+
         if ($form->isValid()) {
-            $user = $userService->create($user);
+            try {
+                $user = $userService->create($user);
+            } catch (ExistentUserException $ex) {
+                $response = array("success" => false, "message" => "User already registered", "code" => ResponseCode::USER_REGISTER_IN_SYSTEM);
+                return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
+            }
             $response = array("success" => true, "message" => "User registered", "code" => ResponseCode::USER_REGISTER_OK);
             return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
         }
