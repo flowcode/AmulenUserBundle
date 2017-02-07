@@ -26,12 +26,9 @@ class UserControllerTest extends BaseTestCase
             "email" => 'juancho@juancho.com',
             "ACCEPT" => 'application/json'
         ];
-
-
+        
         $this->client->request('POST', $apiRoute, $params);
         $response = $this->client->getResponse();
-
-
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
 
         $user = $this->userService->loadUserByUsername("juancho");

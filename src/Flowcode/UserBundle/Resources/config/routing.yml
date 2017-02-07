@@ -1,0 +1,4 @@
+flowcode_user_activate_account:     
+    path: /register/{token}
+    defaults:  { _controller: FlowcodeUserBundle:Security:activateAccount }
+    methods: [GET]

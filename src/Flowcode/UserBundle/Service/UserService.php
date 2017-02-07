@@ -288,4 +288,17 @@ class UserService implements UserProviderInterface
     {
         return $this->userRepository;
     }
+
+    public function generateRegisterToken(User $user)
+    {
+        $token = '';
+        $lengthToken = 20;
+        $keys = array_merge(range(0, 9), range('a', 'z'));
+        for ($i = 0; $i < $lengthToken; $i++) {
+            $token .= $keys[array_rand($keys)];
+        }
+        $user->setRegisterToken($token);
+
+        $this->getEm()->flush();
+    }
 }

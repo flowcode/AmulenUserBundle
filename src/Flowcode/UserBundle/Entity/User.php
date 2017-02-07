@@ -101,10 +101,17 @@ abstract class User implements UserInterface
      */
     protected $groups;
 
+    /**
+     * @var string
+     * @ORM\Column(name="register_token", type="string", length=20, nullable=true)
+     */
+    protected $registerToken;
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
     }
+
     /**
      * Get id
      *
@@ -114,6 +121,7 @@ abstract class User implements UserInterface
     {
         return $this->id;
     }
+
     /**
      * Set username
      *
@@ -127,6 +135,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * Get username
      *
@@ -136,6 +145,7 @@ abstract class User implements UserInterface
     {
         return $this->username;
     }
+
     /**
      * Set password
      *
@@ -149,6 +159,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * Get password
      *
@@ -158,6 +169,7 @@ abstract class User implements UserInterface
     {
         return $this->password;
     }
+
     /**
      * Set email
      *
@@ -171,6 +183,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * Get email
      *
@@ -180,6 +193,7 @@ abstract class User implements UserInterface
     {
         return $this->email;
     }
+
     /**
      * Set status
      *
@@ -193,6 +207,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * Get status
      *
@@ -202,6 +217,7 @@ abstract class User implements UserInterface
     {
         return $this->status;
     }
+
     /**
      * Set created
      *
@@ -215,6 +231,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * Get created
      *
@@ -224,6 +241,7 @@ abstract class User implements UserInterface
     {
         return $this->created;
     }
+
     /**
      * Set updated
      *
@@ -237,6 +255,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * Get updated
      *
@@ -246,6 +265,7 @@ abstract class User implements UserInterface
     {
         return $this->updated;
     }
+
     /**
      * Set firstname
      *
@@ -259,6 +279,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * Get firstname
      *
@@ -268,6 +289,7 @@ abstract class User implements UserInterface
     {
         return $this->firstname;
     }
+
     /**
      * Set lastname
      *
@@ -281,6 +303,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * Get lastname
      *
@@ -290,6 +313,7 @@ abstract class User implements UserInterface
     {
         return $this->lastname;
     }
+
     /**
      * Set phone
      *
@@ -303,6 +327,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * Get phone
      *
@@ -312,6 +337,7 @@ abstract class User implements UserInterface
     {
         return $this->phone;
     }
+
     /**
      * Set dni
      *
@@ -325,6 +351,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * Get dni
      *
@@ -334,6 +361,7 @@ abstract class User implements UserInterface
     {
         return $this->dni;
     }
+
     /**
      * Set code
      *
@@ -347,14 +375,17 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
     }
+
     public function getPlainPassword()
     {
         return $this->plainPassword;
     }
+
     /**
      * Sets file.
      *
@@ -364,6 +395,7 @@ abstract class User implements UserInterface
     {
         $this->file = $file;
     }
+
     /**
      * Set avatar
      *
@@ -376,6 +408,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * Get avatar
      *
@@ -385,6 +418,7 @@ abstract class User implements UserInterface
     {
         return $this->avatar;
     }
+
     /**
      * Get file.
      *
@@ -394,6 +428,7 @@ abstract class User implements UserInterface
     {
         return $this->file;
     }
+
     /**
      * Get code
      *
@@ -403,6 +438,7 @@ abstract class User implements UserInterface
     {
         return $this->code;
     }
+
     public function getRoles()
     {
         $roles = array();
@@ -413,14 +449,17 @@ abstract class User implements UserInterface
         }
         return $roles;
     }
+
     public function getSalt()
     {
         return null;
     }
+
     public function eraseCredentials()
     {
         
     }
+
     /**
      * @param \Flowcode\UserBundle\Entity\UserGroup $userGroup
      *
@@ -432,6 +471,7 @@ abstract class User implements UserInterface
 
         return $this;
     }
+
     /**
      * @param \Flowcode\UserBundle\Entity\UserGroup $userGroup
      */
@@ -439,6 +479,7 @@ abstract class User implements UserInterface
     {
         $this->groups->removeElement($userGroup);
     }
+
     /**
      * @return \Flowcode\UserBundle\Entity\UserGroup
      */
@@ -446,10 +487,12 @@ abstract class User implements UserInterface
     {
         return $this->groups;
     }
+
     public function setGroups($groups)
     {
         $this->groups = $groups;
     }
+
     public function getHappyName()
     {
         $happyName = "";
@@ -464,10 +507,22 @@ abstract class User implements UserInterface
 
         return $happyName;
     }
+
+    function getRegisterToken()
+    {
+        return $this->registerToken;
+    }
+
+    function setRegisterToken($registerToken)
+    {
+        $this->registerToken = $registerToken;
+    }
+
     public function serialize()
     {
         return null;
     }
+
     public function unserialize($serialized)
     {
         

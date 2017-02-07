@@ -189,13 +189,10 @@ class SecurityController extends Controller
 
     /**
      * Activate an user's account
-     *
-     * @Route("/register/{token}", name="flowcode_user_activate_account")
-     * @Method("get")
      */
     public function activateAccountAction(Request $request, $token)
     {
-        
-        return $this->redirect('http://stackoverflow.com?token='.$token);
+        var_dump($token);
+        die();
     }
 }

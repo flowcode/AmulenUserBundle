@@ -87,4 +87,12 @@ class UserServiceTest extends BaseTestCase
         $this->setExpectedException(ExistentUserException::class);
         $this->userService->create($user);
     }
+
+    public function testGenerateRegisterToken_userOk_generateToken()
+    {
+        $user = $this->userService->loadUserByUsername('juan');
+        $this->assertEmpty($user->getRegisterToken());
+        $this->userService->generateRegisterToken($user);
+        $this->assertNotEmpty($user->getRegisterToken());
+    }
 }

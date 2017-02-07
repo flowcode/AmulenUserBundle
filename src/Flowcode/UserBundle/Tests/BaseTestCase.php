@@ -16,5 +16,4 @@ class BaseTestCase extends WebTestCase
         $this->loadFixtures($classes);
         $this->client = $this->createClient();
     }
-
 }
