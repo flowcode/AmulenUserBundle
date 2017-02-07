@@ -39,7 +39,6 @@ class UserRegisterType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Flowcode\UserBundle\Entity\User',
             'csrf_protection' => false,
-            'allow_extra_fields' => true
         ));
     }
 public function getName(){

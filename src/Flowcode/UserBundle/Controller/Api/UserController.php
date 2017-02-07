@@ -14,19 +14,25 @@ class UserController extends FOSRestController
 {
 
     /**
+     * Login user
+     * 
+     * #### Response ok #### 
+     * {"token": "token"}
+     * #### Response fail #### 
+     * {"code": 401, "message": "Bad Credentials"}    
+     * 
      * @ApiDoc(
      *  description="Login user",
      *  section="User Bundle",
+     *  authentication = false,
      * parameters={
      *      {"name"="username", "dataType"="string", "required"=true, "description"="The user username"},
      *      {"name"="password", "dataType"="string", "required"=true, "description"="The user password"},
      *  },
      *  statusCodes={
-     *         201="Returned when successful",
-     *         404={
-     *           "Returned when the user exceed the number of devices registred."
+     *         200="Returned when successful",
+     *         404="When not all required parameters was found"
      *         }
-     *     }
      * )
      */
     public function checkAction(Request $request)
@@ -35,9 +41,27 @@ class UserController extends FOSRestController
     }
 
     /**
+     * Register user
+     * 
+     * #### Response ok ####
+     * {
+     *   "success": true,
+     *   "message": "User registered",
+     *   "code": 100
+     * }
+     * #### Response fail ####
+     * 
+     *
+     * {
+     *    "success": false,
+     *    "message": "The username already exists",
+     *    "code": 130
+     * }
+     * 
      * @ApiDoc(
      *  description="Register user",
      *  section="User Bundle",
+     *  authentication = false,
      * parameters={
      *      {"name"="username", "dataType"="string", "required"=true, "description"="The user name"},
      *      {"name"="plainPassword", "dataType"="string", "required"=true, "description"="The user password"},
@@ -45,7 +69,7 @@ class UserController extends FOSRestController
      * },
      *  statusCodes={
      *         200="Returned when successful",
-     *         404="When not all required parameters was found",
+     *         409="Returned in conflict",
      *     }
      * )
      */
