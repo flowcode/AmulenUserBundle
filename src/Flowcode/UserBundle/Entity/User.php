@@ -422,25 +422,25 @@ abstract class User implements UserInterface
         
     }
     /**
-     * @param \Amulen\UserBundle\Entity\UserGroup $userGroup
+     * @param \Flowcode\UserBundle\Entity\UserGroup $userGroup
      *
      * @return User
      */
-    public function addUserGroup(\Amulen\UserBundle\Entity\UserGroup $userGroup)
+    public function addUserGroup(\Flowcode\UserBundle\Entity\UserGroup $userGroup)
     {
         $this->groups[] = $userGroup;
 
         return $this;
     }
     /**
-     * @param \Amulen\UserBundle\Entity\UserGroup $userGroup
+     * @param \Flowcode\UserBundle\Entity\UserGroup $userGroup
      */
-    public function removeUserGroup(\Amulen\UserBundle\Entity\UserGroup $userGroup)
+    public function removeUserGroup(\Flowcode\UserBundle\Entity\UserGroup $userGroup)
     {
         $this->groups->removeElement($userGroup);
     }
     /**
-     * @return \Amulen\UserBundle\Entity\UserGroup
+     * @return \Flowcode\UserBundle\Entity\UserGroup
      */
     public function getGroups()
     {
