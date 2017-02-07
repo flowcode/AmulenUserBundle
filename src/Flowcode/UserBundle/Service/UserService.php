@@ -124,8 +124,8 @@ class UserService implements UserProviderInterface
         $plainPassword = $this->generateRandomPassword();
         $user->setPlainPassword($plainPassword);
         $this->update($user);
-        $notificationService = $this->container->get("amulen.user.notification");
-        $notificationService->notifyPasswordReset($user, $plainPassword);
+        /*   $notificationService = $this->container->get("flowcode.user.notification");
+          $notificationService->notifyPasswordReset($user, $plainPassword); */
 
         return true;
     }

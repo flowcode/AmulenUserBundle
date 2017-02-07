@@ -89,6 +89,8 @@ class UserController extends FOSRestController
                 $response = array("success" => false, "message" => $ex->getMessage(), "code" => ResponseCode::USER_REGISTER_IN_SYSTEM);
                 return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
             }
+            $notificationService = $this->get('flowcode.user.notification');
+            $notificationService->notifyRegister($user);
             $response = array("success" => true, "message" => "User registered", "code" => ResponseCode::USER_REGISTER_OK);
             return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
         }
