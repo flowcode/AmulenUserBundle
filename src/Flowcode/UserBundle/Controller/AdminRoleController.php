@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Flowcode\UserBundle\Form\RoleType;
-use Amulen\UserBundle\Entity\Role;
+use Flowcode\UserBundle\Entity\Role;
 
 /**
  * Role controller.

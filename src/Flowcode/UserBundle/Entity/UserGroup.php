@@ -62,16 +62,16 @@ abstract class UserGroup
         return $this->roles;
     }
     /**
-     * @param \Amulen\UserBundle\Entity\Role $role
+     * @param \Flowcode\UserBundle\Entity\Role $role
      */
-    public function removeRole(\Amulen\UserBundle\Entity\Role $role)
+    public function removeRole(\Flowcode\UserBundle\Entity\Role $role)
     {
         $this->tags->removeElement($role);
     }
     /**
      * @param string $name
      *
-     * @return \Amulen\UserBundle\Entity\UserGroup
+     * @return \Flowcode\UserBundle\Entity\UserGroup
      */
     public function setName($name)
     {
@@ -80,11 +80,11 @@ abstract class UserGroup
         return $this;
     }
     /**
-     * @param \Amulen\UserBundle\Entity\Role $role
+     * @param \Flowcode\UserBundle\Entity\Role $role
      *
-     * @return \Amulen\UserBundle\Entity\UserGroup
+     * @return \Flowcode\UserBundle\Entity\UserGroup
      */
-    public function addRole(\Amulen\UserBundle\Entity\Role $role)
+    public function addRole(\Flowcode\UserBundle\Entity\Role $role)
     {
         $this->roles[] = $role;
 
@@ -93,7 +93,7 @@ abstract class UserGroup
     /**
      * @param array $roles
      *
-     * @return \Amulen\UserBundle\Entity\UserGroup
+     * @return \Flowcode\UserBundle\Entity\UserGroup
      */
     public function setRoles(array $roles)
     {
