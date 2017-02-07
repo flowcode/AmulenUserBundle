@@ -16,6 +16,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
  */
 class SecurityController extends Controller
 {
+
     /**
      * Login to admin panel.
      *
@@ -48,6 +49,7 @@ class SecurityController extends Controller
      */
     public function checkAction()
     {
+        
     }
 
     /**
@@ -183,5 +185,17 @@ class SecurityController extends Controller
         return array(
             'form' => $form->createView(),
         );
+    }
+
+    /**
+     * Activate an user's account
+     *
+     * @Route("/register/{token}", name="flowcode_user_activate_account")
+     * @Method("get")
+     */
+    public function activateAccountAction(Request $request, $token)
+    {
+        
+        return $this->redirect('http://stackoverflow.com?token='.$token);
     }
 }
