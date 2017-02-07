@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Amulen\UserBundle\Entity\UserGroup as UserGroup;
+use Flowcode\UserBundle\Entity\UserGroup as UserGroup;
 use Flowcode\UserBundle\Form\UserGroupType;
 
 /**

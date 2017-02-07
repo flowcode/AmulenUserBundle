@@ -25,7 +25,7 @@ class RoleType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Amulen\UserBundle\Entity\Role'
+            'data_class' => 'Flowcode\UserBundle\Entity\Role'
         ));
     }
 

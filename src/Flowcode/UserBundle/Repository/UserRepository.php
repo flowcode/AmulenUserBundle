@@ -2,8 +2,6 @@
 
 namespace Flowcode\UserBundle\Repository;
 
-use Amulen\UserBundle\Entity\User;
-
 /**
  * UserRepository
  *

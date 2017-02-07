@@ -2,8 +2,6 @@
 
 namespace Flowcode\UserBundle\Repository;
 
-use Amulen\UserBundle\Entity\User;
-
 /**
  * UserRepository
  *
@@ -22,5 +20,5 @@ class UserGroupRepository extends \Doctrine\ORM\EntityRepository
         $qb->setParameter("group_id", $group);
         $qb->setMaxResults(1);
         return $qb->getQuery()->getOneOrNullResult();
-    }   
+    }
 }

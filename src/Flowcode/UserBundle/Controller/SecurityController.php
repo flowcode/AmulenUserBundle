@@ -2,7 +2,7 @@
 
 namespace Flowcode\UserBundle\Controller;
 
-use Amulen\UserBundle\Entity\User;
+use Flowcode\UserBundle\User;
 use Flowcode\UserBundle\Form\UserRegisterType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

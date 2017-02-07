@@ -26,7 +26,7 @@ class UserGroupType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Amulen\UserBundle\Entity\UserGroup'
+            'data_class' => 'Flowcode\UserBundle\Entity\UserGroup'
         ));
     }
 
