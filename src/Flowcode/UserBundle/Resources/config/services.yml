@@ -28,7 +28,7 @@ services:
 
     flowcode.user.notification:
         class: Flowcode\UserBundle\Service\UserNotificationService
-        arguments: ["@service_container", "@flowcode.sender.senderEmailMandrill", "@templating"]
+        arguments: ["@service_container", "@flowcode.sender.senderEmailMailgun", "@templating"]
 
     flowcode.user.repository:         
         class: Doctrine\ORM\EntityRepository         

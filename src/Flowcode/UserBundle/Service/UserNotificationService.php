@@ -2,16 +2,14 @@
 
 namespace Flowcode\UserBundle\Service;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
 use Flowcode\NotificationBundle\Senders\EmailSenderInterface;
-use Flowcode\UserBundle\Entity\UserInterface;
-
+use Flowcode\UserBundle\Entity\UserInterface as User;
 /**
  * Description of UserNotificationService
  *
  * @author Juan Manuel Agüero <jaguero@flowcode.com.ar>
  */
-class UserNotificationService extends ContainerAware
+class UserNotificationService
 {
     /**
      * EmailSender
@@ -47,7 +45,7 @@ class UserNotificationService extends ContainerAware
         $appName = $this->container->getParameter("default_app_name");
         $subject = "[$appName] Cambio de datos";
         $toEmail = $user->getEmail();
-        $toName = $user->getFirstname();
+        $toName = $user->getUsername();
         $body = $this->container->get('templating')->render('FlowcodeUserBundle:Email:notifyPasswordReset.html.twig', array('user' => $user, 'plainPassword' => $plainPassword));
 
         $this->mailSender->send($toEmail, $toName, $fromEmail, $fromName, $subject, $body, true);
@@ -66,7 +64,7 @@ class UserNotificationService extends ContainerAware
         $appName = $this->container->getParameter("default_app_name");
         $subject = "[$appName] Bienvenido";
         $toEmail = $user->getEmail();
-        $toName = $user->getFirstname();
+        $toName = $user->getUsername();
         $body = $this->container->get('templating')->render('FlowcodeUserBundle:Email:notifyRegister.html.twig', array('user' => $user));
 
         $this->mailSender->send($toEmail, $toName, $fromEmail, $fromName, $subject, $body, true);
@@ -85,7 +83,7 @@ class UserNotificationService extends ContainerAware
         $fromName = $this->container->getParameter("default_mail_from_name");
         $subject = "[" . $fromName . "] Bienvenido";
         $toEmail = $user->getEmail();
-        $toName = $user->getFirstname();
+        $toName = $user->getUsername();
         $body = $this->container->get('templating')->render('FlowcodeUserBundle:Email:notifyRegister.html.twig', array('user' => $user));
 
         $this->mailSender->send($toEmail, $toName, $fromEmail, $fromName, $subject, $body, true);
