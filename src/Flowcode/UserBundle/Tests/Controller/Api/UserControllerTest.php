@@ -32,7 +32,7 @@ class UserControllerTest extends BaseTestCase
         $response = $this->client->getResponse();
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
 
-        $user = $this->userService->loadUserByUsername("juancho");
+        $user = $this->userService->findByUsername("juancho");
         $responseContent = json_decode($response->getContent());
         if ($user == null) {
             $this->fail('User not registered');

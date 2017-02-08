@@ -44,6 +44,16 @@ class UserService implements UserProviderInterface
         $this->userRepository = $userRepository;
         $this->userClass = $userClass;
     }
+    /* UserProviderInterface method. If user can be logged, return the user. If not, return null */
+
+    public function loadUserByUsername($username)
+    {
+        $user = $this->getUserRepository()->findOneBy(array('username' => $username));
+        if ($user == null || $user->getStatus() != UserStatus::ACTIVE) {
+            return null;
+        }
+        return $user;
+    }
 
     /**
      * Find al users with pagination options.
@@ -66,6 +76,11 @@ class UserService implements UserProviderInterface
     public function findById($id)
     {
         return $this->getUserRepository()->find($id);
+    }
+
+    public function findByUsername($username)
+    {
+        return $this->getUserRepository()->findOneBy(array('username' => $username));
     }
 
     public function createNewUser()
@@ -113,11 +128,6 @@ class UserService implements UserProviderInterface
 
         $this->getEm()->flush();
         return $user;
-    }
-
-    public function loadUserByUsername($username)
-    {
-        return $this->getUserRepository()->findOneBy(array('username' => $username));
     }
 
     public function resetPasssword(User $user)

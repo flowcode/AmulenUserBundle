@@ -34,6 +34,12 @@ class UserServiceTest extends BaseTestCase
         $this->assertNull($user);
     }
 
+    public function testLoadUserByUsername_userStatusNotActive_returnNull()
+    {
+        $user = $this->userService->loadUserByUsername("pedro");
+        $this->assertNull($user);
+    }
+
     public function testCreate_userOk_createUser()
     {
         $user = $this->userService->createNewUser();
@@ -41,7 +47,7 @@ class UserServiceTest extends BaseTestCase
         $user->setPlainPassword("1234");
         $user->setEmail("pepe@pepe.com");
 
-        $userBefore = $this->userService->loadUserByUsername("pepe");
+        $userBefore = $this->userService->findByUsername("pepe");
         $this->assertNull($userBefore);
 
         $userAfter = $this->userService->create($user);
@@ -60,7 +66,7 @@ class UserServiceTest extends BaseTestCase
         $user->setPlainPassword("1234");
         $user->setEmail("user@user.com");
 
-        $userBefore = $this->userService->loadUserByUsername($username);
+        $userBefore = $this->userService->findByUsername($username);
         $this->assertNotNull($userBefore);
 
         $this->setExpectedException(ExistentUserException::class);
@@ -76,7 +82,7 @@ class UserServiceTest extends BaseTestCase
         $user->setPlainPassword("1234");
         $user->setEmail("user@user.com");
 
-        $userBefore = $this->userService->loadUserByUsername($username);
+        $userBefore = $this->userService->findByUsername($username);
         $this->assertNotNull($userBefore);
 
         $this->setExpectedException(ExistentUserException::class);
@@ -85,7 +91,7 @@ class UserServiceTest extends BaseTestCase
 
     public function testGenerateRegisterToken_userOk_generateToken()
     {
-        $user = $this->userService->loadUserByUsername('user');
+        $user = $this->userService->findByUsername('user');
         $this->assertEmpty($user->getRegisterToken());
         $this->userService->generateRegisterToken($user);
         $this->assertNotEmpty($user->getRegisterToken());

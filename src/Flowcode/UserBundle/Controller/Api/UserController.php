@@ -39,7 +39,8 @@ class UserController extends FOSRestController
      */
     public function checkAction(Request $request)
     {
-        
+        $response = array("success" => true, "message" => "User registered", "code" => ResponseCode::USER_REGISTER_IN_SYSTEM);
+        return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));
     }
 
     /**

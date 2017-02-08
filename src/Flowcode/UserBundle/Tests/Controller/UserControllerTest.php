@@ -20,7 +20,7 @@ class UserControllerTest extends BaseTestCase
 
     public function testActivateAccount_userAndTokenOk_activateAccount()
     {
-        $user = $this->userService->loadUserByUsername("user2");
+        $user = $this->userService->findByUsername("user2");
         $route = $this->getUrl('flowcode_user_activate_account', array(
             "id" => $user->getId(),
             "token" => $user->getRegisterToken()
@@ -28,7 +28,7 @@ class UserControllerTest extends BaseTestCase
         $this->client->request('GET', $route);
 
 
-        $userAfter = $this->userService->loadUserByUsername("user2");
+        $userAfter = $this->userService->findByUsername("user2");
         $this->assertEquals("user2", $userAfter->getUsername());
         //$this->assertEquals(UserStatus::ACTIVE, $userAfter->getStatus());
         //$this->assertNull($userAfter->getRegisterToken());
