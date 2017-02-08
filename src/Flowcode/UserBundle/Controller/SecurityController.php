@@ -196,10 +196,10 @@ class SecurityController extends Controller
     {
         $userService = $this->get('flowcode.user');
         $activateUser = $userService->activateUserRegister($id, $token);
+        $frontLoginUrl = $this->container->getParameter("front_url_login");
         if (!$activateUser) {
-            echo 'Error activate';
+            return $this->redirect($frontLoginUrl . "?register=failure");
         }
-        $frontLoginUrl = $this->getParameter("front_url_login");
-        return $this->redirect($frontLoginUrl);
+        return $this->redirect($frontLoginUrl . "?register=success");
     }
 }
