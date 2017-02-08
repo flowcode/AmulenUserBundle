@@ -64,10 +64,10 @@ abstract class User implements UserInterface
     protected $plainPassword;
 
     /**
-     * @var integer
+     * @var UserStatus
      *
      *
-     * @ORM\Column(name="status", type="smallint", nullable=true)
+     * @ORM\Column(name="status", type="string", length=255, nullable=true)
      */
     protected $status;
 
@@ -103,13 +103,14 @@ abstract class User implements UserInterface
 
     /**
      * @var string
-     * @ORM\Column(name="register_token", type="string", length=20, nullable=true)
+     * @ORM\Column(name="register_token", type="string", length=255, nullable=true)
      */
     protected $registerToken;
 
     public function __construct()
     {
         $this->groups = new ArrayCollection();
+        $this->status = UserStatus::INACTIVE;
     }
 
     /**
@@ -197,21 +198,20 @@ abstract class User implements UserInterface
     /**
      * Set status
      *
-     * @param integer $status
+     * @param string $status
      *
      * @return User
      */
     public function setStatus($status)
     {
         $this->status = $status;
-
         return $this;
     }
 
     /**
      * Get status
      *
-     * @return integer
+     * @return string
      */
     public function getStatus()
     {

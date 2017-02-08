@@ -5,6 +5,7 @@ namespace Flowcode\UserBundle\Tests\Controller\Api;
 use Flowcode\UserBundle\Tests\BaseTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Flowcode\UserBundle\Entity\ResponseCode;
+use Flowcode\UserBundle\Entity\UserStatus;
 
 class UserControllerTest extends BaseTestCase
 {
@@ -26,14 +27,13 @@ class UserControllerTest extends BaseTestCase
             "email" => 'juancho@juancho.com',
             "ACCEPT" => 'application/json'
         ];
-        
+
         $this->client->request('POST', $apiRoute, $params);
         $response = $this->client->getResponse();
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
 
         $user = $this->userService->loadUserByUsername("juancho");
         $responseContent = json_decode($response->getContent());
-
         if ($user == null) {
             $this->fail('User not registered');
         }
@@ -44,6 +44,7 @@ class UserControllerTest extends BaseTestCase
         $this->assertEquals("juancho", $user->getUsername());
         $this->assertEquals("juancho@juancho.com", $user->getEmail());
         $this->assertNotEquals("1234", $user->getPassword());
+        $this->assertEquals(UserStatus::IN_REGISTER, $user->getStatus());
     }
 
     public function testRegister_userAlreadyCreated_notCreateUser()
@@ -51,7 +52,7 @@ class UserControllerTest extends BaseTestCase
         $apiRoute = $this->getUrl('flowcode_user_api_register');
 
         $params = [
-            "username" => 'juan',
+            "username" => 'user',
             "plainPassword" => '1234',
             "email" => 'juancho@juancho.com',
             "ACCEPT" => 'application/json'
@@ -71,7 +72,7 @@ class UserControllerTest extends BaseTestCase
     {
         $apiRoute = $this->getUrl('flowcode_user_api_login');
         $params = [
-            "username" => 'juan',
+            "username" => 'user',
             "password" => '1234',
             "ACCEPT" => 'application/json'
         ];
@@ -88,7 +89,7 @@ class UserControllerTest extends BaseTestCase
     {
         $apiRoute = $this->getUrl('flowcode_user_api_login');
         $params = [
-            "username" => 'juan',
+            "username" => 'user',
             "password" => '12345',
             "ACCEPT" => 'application/json'
         ];

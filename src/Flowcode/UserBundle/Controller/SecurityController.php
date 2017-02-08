@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Flowcode\UserBundle\Entity\UserStatus;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Login controller.
@@ -190,9 +192,14 @@ class SecurityController extends Controller
     /**
      * Activate an user's account
      */
-    public function activateAccountAction(Request $request, $token)
+    public function activateAccountAction(Request $request, $id, $token)
     {
-        var_dump($token);
-        die();
+        $userService = $this->get('flowcode.user');
+        $activateUser = $userService->activateUserRegister($id, $token);
+        if (!$activateUser) {
+            echo 'Error activate';
+        }
+        $frontLoginUrl = $this->getParameter("front_url_login");
+        return $this->redirect($frontLoginUrl);
     }
 }

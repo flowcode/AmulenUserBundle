@@ -15,6 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityRepository;
 use Flowcode\UserBundle\Exception\ExistentUserException;
+use Flowcode\UserBundle\Entity\UserStatus;
 
 /**
  * User Service
@@ -291,14 +292,23 @@ class UserService implements UserProviderInterface
 
     public function generateRegisterToken(User $user)
     {
-        $token = '';
-        $lengthToken = 20;
-        $keys = array_merge(range(0, 9), range('a', 'z'));
-        for ($i = 0; $i < $lengthToken; $i++) {
-            $token .= $keys[array_rand($keys)];
-        }
+        $token = $token = md5(uniqid(rand(), true));
         $user->setRegisterToken($token);
+        $this->getEm()->flush();
+    }
+
+    public function activateUserRegister($id, $token)
+    {
+        $user = $this->findById($id);
+        $userToken = $user->getRegisterToken();
+        if ($user == null || $token != $userToken) {
+            return false;
+        }
+        $user->setStatus(UserStatus::ACTIVE);
+        $user->setRegisterToken(null);
+        $this->getEm()->refresh($user);
 
         $this->getEm()->flush();
+        return true;
     }
 }

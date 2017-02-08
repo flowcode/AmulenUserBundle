@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Flowcode\UserBundle\Entity\ResponseCode;
 use Flowcode\UserBundle\Exception\ExistentUserException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Flowcode\UserBundle\Entity\UserStatus;
 
 class UserController extends FOSRestController
 {
@@ -84,6 +85,7 @@ class UserController extends FOSRestController
         $form->submit($request->request->all(), true);
         if ($form->isValid()) {
             try {
+                $user->setStatus(UserStatus::IN_REGISTER);
                 $user = $userService->create($user);
             } catch (ExistentUserException $ex) {
                 $response = array("success" => false, "message" => $ex->getMessage(), "code" => ResponseCode::USER_REGISTER_IN_SYSTEM);
@@ -91,15 +93,13 @@ class UserController extends FOSRestController
             }
             $notificationService = $this->get('flowcode.user.notification');
             $userService->generateRegisterToken($user);
-            $activateAccountLink = $this->generateUrl('flowcode_user_activate_account', array('token' => $user->getRegisterToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+            $activateAccountLink = $this->generateUrl('flowcode_user_activate_account', array('id' => $user->getId(), 'token' => $user->getRegisterToken()), UrlGeneratorInterface::ABSOLUTE_URL);
             $notificationService->notifyRegister($user, $activateAccountLink);
-            $response = array("success" => true, "message" => $activateAccountLink, "code" => ResponseCode::USER_REGISTER_OK);
+            $response = array("success" => true, "message" => "User registered", "code" => ResponseCode::USER_REGISTER_OK);
             return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
         }
 
         $response = array('success' => false, 'errors' => $form->getErrors());
         return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));
     }
-
-
 }

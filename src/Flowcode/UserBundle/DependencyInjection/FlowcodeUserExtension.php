@@ -25,7 +25,7 @@ class FlowcodeUserExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
-        if (in_array($container->getParameter('kernel.environment'), ['dev', 'test'], true)) {
+        if (in_array($container->getParameter('kernel.environment'), ['test'], true)) {
             $loader->load('services_test.yml');
         } else {
             $loader->load('services.yml');
