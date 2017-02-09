@@ -48,10 +48,7 @@ class UserService implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
-        $user = $this->getUserRepository()->findOneBy(array('username' => $username));
-        if ($user == null || $user->getStatus() != UserStatus::ACTIVE) {
-            return null;
-        }
+        $user = $this->getUserRepository()->findOneBy(array('username' => $username, 'status' => UserStatus::ACTIVE));
         return $user;
     }
 
@@ -81,6 +78,11 @@ class UserService implements UserProviderInterface
     public function findByUsername($username)
     {
         return $this->getUserRepository()->findOneBy(array('username' => $username));
+    }
+
+    public function findByEmail($email)
+    {
+        return $this->getUserRepository()->findOneBy(array('email' => $email));
     }
 
     public function createNewUser()
@@ -307,16 +309,41 @@ class UserService implements UserProviderInterface
         $this->getEm()->flush();
     }
 
+    public function generateForgotToken(User $user)
+    {
+        $token = $token = md5(uniqid(rand(), true));
+        $user->setForgotToken($token);
+        $this->getEm()->flush();
+    }
+
     public function activateUserRegister($id, $token)
     {
         $user = $this->findById($id);
+        if ($user == null) {
+            return false;
+        }
         $userToken = $user->getRegisterToken();
-        if ($user == null || $token != $userToken) {
+        if ($token != $userToken) {
             return false;
         }
         $user->setStatus(UserStatus::ACTIVE);
         $user->setRegisterToken(null);
-        
+
+        $this->getEm()->flush();
+        return true;
+    }
+
+    public function checkForgot($id, $token)
+    {
+        $user = $this->findById($id);
+        if ($user == null) {
+            return false;
+        }
+        $userToken = $user->getForgotToken();
+        if ($token != $userToken) {
+            return false;
+        }
+        $user->setForgotToken(null);
         $this->getEm()->flush();
         return true;
     }

@@ -96,4 +96,79 @@ class UserServiceTest extends BaseTestCase
         $this->userService->generateRegisterToken($user);
         $this->assertNotEmpty($user->getRegisterToken());
     }
+
+    public function testActivateUserRegister_userOk_returnTrue()
+    {
+        $user = $this->userService->findByUsername('user2');
+        $this->assertNotNull($user->getRegisterToken());
+        $this->assertEquals(UserStatus::IN_REGISTER, $user->getStatus());
+        $activateUser = $this->userService->activateUserRegister($user->getId(), $user->getRegisterToken());
+        $this->assertTrue($activateUser);
+        $this->assertNUll($user->getRegisterToken());
+        $this->assertEquals(UserStatus::ACTIVE, $user->getStatus());
+    }
+
+    public function testActivateUserRegister_withInvalidUser_returnFalse()
+    {
+        $user = $this->userService->findByUsername('user2');
+        $this->assertNotNull($user->getRegisterToken());
+        $this->assertEquals(UserStatus::IN_REGISTER, $user->getStatus());
+        $activateUser = $this->userService->activateUserRegister(9999, $user->getRegisterToken());
+        $this->assertFalse($activateUser);
+        $this->assertNotNull($user->getRegisterToken());
+        $this->assertEquals(UserStatus::IN_REGISTER, $user->getStatus());
+    }
+
+    public function testActivateUserRegister_withInvalidToken_returnFalse()
+    {
+        $user = $this->userService->findByUsername('user2');
+        $this->assertNotNull($user->getRegisterToken());
+        $this->assertEquals(UserStatus::IN_REGISTER, $user->getStatus());
+        $activateUser = $this->userService->activateUserRegister($user->getId(), 'sarasa');
+        $this->assertFalse($activateUser);
+        $this->assertNotNull($user->getRegisterToken());
+        $this->assertEquals(UserStatus::IN_REGISTER, $user->getStatus());
+    }
+
+    public function testGenerateForgotToken_userOk_generateToken()
+    {
+        $user = $this->userService->findByUsername('user');
+        $this->assertEmpty($user->getForgotToken());
+        $this->userService->generateForgotToken($user);
+        $this->assertNotEmpty($user->getForgotToken());
+    }
+
+    public function testCheckForgot_userOk_returnTrue()
+    {
+        $user = $this->userService->findByUsername('user3');
+        $this->assertNotNull($user->getForgotToken());
+
+        $checkForgotUser = $this->userService->checkForgot($user->getId(), $user->getForgotToken());
+
+        $this->assertTrue($checkForgotUser);
+        $this->assertNull($user->getForgotToken());
+    }
+
+    public function testCheckForgot_withInvalidUser_returnFalse()
+    {
+        $user = $this->userService->findByUsername('user3');
+        $this->assertNotNull($user->getForgotToken());
+
+        $checkForgotUser = $this->userService->checkForgot(9999, $user->getForgotToken());
+
+        $this->assertFalse($checkForgotUser);
+        $this->assertNotNull($user->getForgotToken());
+    }
+
+    public function testCheckForgot_withInvalidToken_returnFalse()
+    {
+        $user = $this->userService->findByUsername('user3');
+        $this->assertNotNull($user->getForgotToken());
+
+        $checkForgotUser = $this->userService->checkForgot($user->getId(), 'sarasa');
+
+        $this->assertFalse($checkForgotUser);
+        $this->assertNotNull($user->getForgotToken());
+    }
+
 }

@@ -103,4 +103,60 @@ class UserController extends FOSRestController
         $response = array('success' => false, 'errors' => $form->getErrors());
         return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));
     }
+
+    /**
+     * Register user
+     * 
+     * #### Response ok ####
+     * {
+     *   "success": true,
+     *   "message": "User registered",
+     *   "code": 100
+     * }
+     * #### Response fail ####
+     * 
+     *
+     * {
+     *    "success": false,
+     *    "message": "The username already exists",
+     *    "code": 130
+     * }
+     * 
+     * @ApiDoc(
+     *  description="Request change password",
+     *  section="User Bundle",
+     *  authentication = false,
+     * parameters={
+     *      {"name"="email", "dataType"="string", "required"=true, "description"="The user email"},
+     * },
+     *  statusCodes={
+     *         200="Returned when successful",
+     *         409="Returned in conflict",
+     *     }
+     * )
+     */
+    public function forgotAction(Request $request)
+    {
+        $userService = $this->get('flowcode.user');
+
+        $user = $userService->createNewUser();
+        $form = $this->createForm($this->getParameter('form.type.user_forgot.api.class'), $user);
+        $form->submit($request->request->all(), true);
+        if ($form->isValid()) {
+            $user = $userService->findByEmail($user->getEmail());
+            if (!$user) {
+                $response = array("success" => false, "message" => "User not found", "code" => ResponseCode::USER_NOT_FOUND);
+                return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));
+            }
+            $notificationService = $this->get('flowcode.user.notification');
+            $userService->generateForgotToken($user);
+            $forgotCheckLink = $this->generateUrl('flowcode_user_forgot_check', array('id' => $user->getId(), 'token' => $user->getForgotToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+            $notificationService->notifyRegister($user, $forgotCheckLink);
+            $response = array("success" => true, "message" => "Email sent", "code" => ResponseCode::USER_FORGOT_SEND);
+            return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
+        }
+
+        $response = array('success' => false, 'errors' => $form->getErrors());
+        return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));
+    }
 }

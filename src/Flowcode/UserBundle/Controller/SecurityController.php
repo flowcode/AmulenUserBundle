@@ -202,4 +202,18 @@ class SecurityController extends Controller
         }
         return $this->redirect($frontLoginUrl . "?register=success");
     }
+
+    /**
+     * Activate an user's account
+     */
+    public function forgotCheckApiAction(Request $request, $id, $token)
+    {
+        $userService = $this->get('flowcode.user');
+        $forgotUser = $userService->checkForgot($id, $token);
+        $frontRecoverUrl = $this->container->getParameter("front_url_recover");
+        if (!$forgotUser) {
+            return $this->redirect($frontRecoverUrl . "?recover=failure");
+        }
+        return $this->redirect($frontRecoverUrl . "?recover=ok");
+    }
 }

@@ -1,5 +1,7 @@
 parameters:
     form.type.user_register.api.class: Flowcode\UserBundle\Form\Api\UserRegisterType   
+    form.type.user_forgot.api.class: Flowcode\UserBundle\Form\Api\UserForgotType   
+
 
 services:
     form.type.user:
@@ -21,11 +23,15 @@ services:
             - { name: form.type, alias: user_register_type }
             
     form.type.user_register.api:
-        class: Flowcode\UserBundle\Form\Api\UserRegisterType
+        class: "%form.type.user_register.api.class%"
         arguments: ["%flowcode.model.user.class%"]
         tags:
             - { name: form.type, alias: user_register_type_api }
-
+    form.type.user_forgot.api:
+        class: "%form.type.user_forgot.api.class%"
+        arguments: ["%flowcode.model.user.class%"]
+        tags:
+            - { name: form.type, alias: user_forgot_type_api }
     flowcode.user.notification:
         class: Flowcode\UserBundle\Service\UserNotificationService
         arguments: ["@service_container", "@flowcode.sender.senderEmailMailgun", "@templating"]

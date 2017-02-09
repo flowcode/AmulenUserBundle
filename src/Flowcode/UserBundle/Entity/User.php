@@ -25,14 +25,12 @@ abstract class User implements UserInterface
 
     /**
      * @var string
-     * @Assert\NotNull
      * @ORM\Column(name="email", type="string", length=255)
      */
     protected $email;
 
     /**
      * @var string
-     * @Assert\NotNull
      * @ORM\Column(name="username", type="string", length=255)
      */
     protected $username;
@@ -106,6 +104,12 @@ abstract class User implements UserInterface
      * @ORM\Column(name="register_token", type="string", length=255, nullable=true)
      */
     protected $registerToken;
+
+    /**
+     * @var string
+     * @ORM\Column(name="forgot_token", type="string", length=255, nullable=true)
+     */
+    protected $forgotToken;
 
     public function __construct()
     {
@@ -518,7 +522,18 @@ abstract class User implements UserInterface
         $this->registerToken = $registerToken;
     }
 
-    public function serialize()
+    
+    function getForgotToken()
+    {
+        return $this->forgotToken;
+    }
+
+    function setForgotToken($forgotToken)
+    {
+        $this->forgotToken = $forgotToken;
+    }
+
+        public function serialize()
     {
         return null;
     }

@@ -7,3 +7,8 @@ flowcode_user_api_register:
     path:     /users/register     
     defaults: { _controller: FlowcodeUserBundle:Api\User:register }     
     methods:  [POST] 
+    
+flowcode_user_api_forgot:     
+    path:     /users/forgot
+    defaults: { _controller: FlowcodeUserBundle:Api\User:forgot }     
+    methods:  [POST] 

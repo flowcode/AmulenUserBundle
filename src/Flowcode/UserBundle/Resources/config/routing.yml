@@ -2,3 +2,8 @@ flowcode_user_activate_account:
     path: /register/{id}/{token}
     defaults:  { _controller: FlowcodeUserBundle:Security:activateAccount }
     methods: [GET]
+    
+flowcode_user_forgot_check:     
+    path: /forgot/{id}/{token}
+    defaults:  { _controller: FlowcodeUserBundle:Security:forgotCheckApi }
+    methods: [GET]

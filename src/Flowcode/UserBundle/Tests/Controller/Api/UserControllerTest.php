@@ -99,4 +99,28 @@ class UserControllerTest extends BaseTestCase
 
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
+
+    public function testforgot_userOk_checkForgotTokenSet()
+    {
+        $apiRoute = $this->getUrl('flowcode_user_api_forgot');
+
+        $params = [
+            "email" => 'user@user.com',
+            "ACCEPT" => 'application/json'
+        ];
+
+
+        $this->client->request('POST', $apiRoute, $params);
+        $response = $this->client->getResponse();
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $responseContent = json_decode($response->getContent());
+        $this->assertEquals(true, $responseContent->success);
+        $this->assertEquals(ResponseCode::USER_FORGOT_SEND, $responseContent->code);
+
+        $user = $this->userService->findByUsername("user");
+        if ($user == null) {
+            $this->fail('User not registered');
+        }
+        $this->assertNotNull($user->getForgotToken());
+    }
 }
