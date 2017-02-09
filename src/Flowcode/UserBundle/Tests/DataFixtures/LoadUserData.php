@@ -38,7 +38,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user2->setRegisterToken("token");
         $user2->setStatus(UserStatus::IN_REGISTER);
         $userService->create($user2);
-        $this->addReference('user2', $user2);
         $manager->flush();
     }
 

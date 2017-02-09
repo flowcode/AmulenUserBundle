@@ -316,8 +316,7 @@ class UserService implements UserProviderInterface
         }
         $user->setStatus(UserStatus::ACTIVE);
         $user->setRegisterToken(null);
-        $this->getEm()->refresh($user);
-
+        
         $this->getEm()->flush();
         return true;
     }

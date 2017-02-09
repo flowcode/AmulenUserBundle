@@ -3,10 +3,7 @@
 namespace Flowcode\UserBundle\Tests\Controller;
 
 use Flowcode\UserBundle\Tests\BaseTestCase;
-use Symfony\Component\HttpFoundation\Response;
-use Flowcode\UserBundle\Entity\ResponseCode;
 use Flowcode\UserBundle\Entity\UserStatus;
-use Symfony\Component\Stopwatch\Stopwatch;
 
 class UserControllerTest extends BaseTestCase
 {
@@ -26,11 +23,10 @@ class UserControllerTest extends BaseTestCase
             "token" => $user->getRegisterToken()
         ));
         $this->client->request('GET', $route);
-
-
+        $this->getContainer()->get('doctrine')->getManager()->refresh($user);
         $userAfter = $this->userService->findByUsername("user2");
         $this->assertEquals("user2", $userAfter->getUsername());
-        //$this->assertEquals(UserStatus::ACTIVE, $userAfter->getStatus());
-        //$this->assertNull($userAfter->getRegisterToken());
+        $this->assertEquals(UserStatus::ACTIVE, $userAfter->getStatus());
+        $this->assertNull($userAfter->getRegisterToken());
     }
 }

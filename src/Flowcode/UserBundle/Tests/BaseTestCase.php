@@ -3,6 +3,7 @@
 namespace Flowcode\UserBundle\Tests;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
 class BaseTestCase extends WebTestCase
 {
@@ -13,7 +14,7 @@ class BaseTestCase extends WebTestCase
         $classes = array(
             'Flowcode\UserBundle\Tests\DataFixtures\LoadUserData',
         );
-        $this->loadFixtures($classes);
+        $this->loadFixtures($classes, null, 'doctrine', ORMPurger::PURGE_MODE_TRUNCATE);
         $this->client = $this->createClient();
     }
 }
