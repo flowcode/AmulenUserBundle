@@ -214,6 +214,6 @@ class SecurityController extends Controller
         if (!$forgotUser) {
             return $this->redirect($frontRecoverUrl . "?recover=failure");
         }
-        return $this->redirect($frontRecoverUrl . "?recover=ok");
+        return $this->redirect($frontRecoverUrl . "?recover=success");
     }
 }
