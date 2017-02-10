@@ -1,0 +1,40 @@
+{% extends "FlowcodeUserBundle:Email:layout.html.twig" %}
+{% block body %}
+    <table class="container" >
+        <tr>
+            <td>
+                <table class="row">
+                    <tr>
+                        <td class="wrapper last"></td>
+                    </tr>
+                </table>
+                <table align="center">
+                    <tr>
+                        <td>
+                            <h1>Hola, {{ user.username }}</h1>
+                        </td>
+                    </tr>
+                </table>
+                <table class="nine columns">
+                    <tr>
+                        <td>
+                            <p>Su password se ha actualizado.</p>
+                            <p>Si usted no solicito dicho cambio, por favor contactese con nosotros.</p>
+                        </td>
+                        <td class="expander"></td>
+                    </tr>
+                </table>
+                <table class="row callout">
+                    <tr>
+                        <td class="wrapper last">
+                            <table class="twelve columns">
+                                <tr>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

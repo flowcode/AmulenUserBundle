@@ -5,6 +5,7 @@ namespace Flowcode\UserBundle\Tests\Service;
 use Flowcode\UserBundle\Tests\BaseTestCase;
 use Flowcode\UserBundle\Exception\ExistentUserException;
 use Flowcode\UserBundle\Entity\UserStatus;
+use Flowcode\UserBundle\Exception\InvalidTokenException;
 
 class UserServiceTest extends BaseTestCase
 {
@@ -171,4 +172,40 @@ class UserServiceTest extends BaseTestCase
         $this->assertNotNull($user->getForgotToken());
     }
 
+    public function testRecoverPassword_withUserAndTokenOk_generateNewPassword()
+    {
+        $user = $this->userService->findByUsername('user3');
+        $initialPassword = "1234";
+        $newPassword = "12345";
+        $encoder = $this->getContainer()->get('security.password_encoder');
+        $this->assertNotNull($user->getForgotToken());
+
+        $this->userService->recoverPassword($user, $user->getForgotToken(), $newPassword);
+
+        $userAfter = $this->userService->findByUsername('user3');
+
+        $this->assertNull($userAfter->getForgotToken());
+        $this->assertFalse($encoder->isPasswordValid($userAfter, $initialPassword));
+        $this->assertTrue($encoder->isPasswordValid($userAfter, $newPassword));
+    }
+
+    public function testRecoverPassword_withTokenNull_throwException()
+    {
+        $user = $this->userService->findByUsername('user');
+        $newPassword = "12345";
+        $this->assertNull($user->getForgotToken());
+
+        $this->setExpectedException(InvalidTokenException::class);
+        $this->userService->recoverPassword($user, $user->getForgotToken(), $newPassword);
+    }
+
+    public function testRecoverPassword_withDifferentToken_throwException()
+    {
+        $user = $this->userService->findByUsername('user3');
+        $newPassword = "12345";
+        $this->assertNotNull($user->getForgotToken());
+
+        $this->setExpectedException(InvalidTokenException::class);
+        $this->userService->recoverPassword($user, "sarasa", $newPassword);
+    }
 }

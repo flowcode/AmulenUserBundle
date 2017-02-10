@@ -11,6 +11,7 @@ use Flowcode\UserBundle\Entity\ResponseCode;
 use Flowcode\UserBundle\Exception\ExistentUserException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Flowcode\UserBundle\Entity\UserStatus;
+use Flowcode\UserBundle\Exception\InvalidTokenException;
 
 class UserController extends FOSRestController
 {
@@ -92,7 +93,7 @@ class UserController extends FOSRestController
                 $user = $userService->create($user);
             } catch (ExistentUserException $ex) {
                 $response = array("success" => false, "message" => $ex->getMessage(), "code" => ResponseCode::USER_REGISTER_IN_SYSTEM);
-                return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
+                return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));
             }
             $notificationService = $this->get('flowcode.user.notification');
             $userService->generateRegisterToken($user);
@@ -191,8 +192,8 @@ class UserController extends FOSRestController
      *  authentication = false,
      * parameters={
      *      {"name"="email", "dataType"="string", "required"=true, "description"="The user email"},
-     *      {"name"="token", "dataType"="string", "required"=true, "description"="The user forgot token"},
-     *      {"name"="password", "dataType"="string", "required"=true, "description"="The user new password"},
+     *      {"name"="forgotToken", "dataType"="string", "required"=true, "description"="The user forgot token"},
+     *      {"name"="plainPassword", "dataType"="string", "required"=true, "description"="The user new plain password"},
 
      * },
      *  statusCodes={
@@ -203,26 +204,31 @@ class UserController extends FOSRestController
      */
     public function recoverAction(Request $request)
     {
-        /*  $userService = $this->get('flowcode.user');
+        $userService = $this->get('flowcode.user');
 
-          $user = $userService->createNewUser();
-          $form = $this->createForm($this->getParameter('form.type.user_forgot.api.class'), $user);
-          $form->submit($request->request->all(), true);
-          if ($form->isValid()) {
-          $user = $userService->findByEmail($user->getEmail());
-          if (!$user) {
-          $response = array("success" => false, "message" => "User not found", "code" => ResponseCode::USER_NOT_FOUND);
-          return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));
-          }
-          $notificationService = $this->get('flowcode.user.notification');
-          $userService->generateForgotToken($user);
-          $forgotLink = $this->generateUrl('flowcode_user_forgot_check', array('id' => $user->getId(), 'token' => $user->getForgotToken()), UrlGeneratorInterface::ABSOLUTE_URL);
-          $notificationService->notifyForgot($user, $forgotLink);
-          $response = array("success" => true, "message" => "Email sent", "code" => ResponseCode::USER_FORGOT_SEND);
-          return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
-          }
-         */
-        $response = array('success' => false, 'errors' => 'errors');
+        $userRequest = $userService->createNewUser();
+        $form = $this->createForm($this->getParameter('form.type.user_recover.api.class'), $userRequest);
+        $form->submit($request->request->all(), true);
+
+        if ($form->isValid()) {
+            $user = $userService->findByEmail($userRequest->getEmail());
+            if (!$user) {
+                $response = array("success" => false, "message" => "User not found", "code" => ResponseCode::USER_NOT_FOUND);
+                return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));
+            }
+            try {
+                $userService->recoverPassword($user, $userRequest->getForgotToken(), $userRequest->getPlainPassword());
+            } catch (InvalidTokenException $ex) {
+                $response = array("success" => false, "message" => $ex->getMessage(), "code" => ResponseCode::USER_PASSWORD_NOT_CHANGED);
+                return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));
+            }
+            $notificationService = $this->get('flowcode.user.notification');
+            $notificationService->notifyRecover($user);
+            $response = array("success" => true, "message" => "Password changed", "code" => ResponseCode::USER_PASSWORD_CHANGED);
+            return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
+        }
+
+        $response = array('success' => false, 'errors' => $form->getErrors());
         return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));
     }
 }

@@ -62,7 +62,7 @@ class UserControllerTest extends BaseTestCase
         $this->client->request('POST', $apiRoute, $params);
         $response = $this->client->getResponse();
 
-        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_CONFLICT, $response->getStatusCode());
         $responseContent = json_decode($response->getContent());
         $this->assertEquals(false, $responseContent->success);
         $this->assertEquals(ResponseCode::USER_REGISTER_IN_SYSTEM, $responseContent->code);
@@ -100,7 +100,7 @@ class UserControllerTest extends BaseTestCase
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
 
-    public function testforgot_userOk_checkForgotTokenSet()
+    public function testForgot_userOk_checkForgotTokenSet()
     {
         $apiRoute = $this->getUrl('flowcode_user_api_forgot');
 
@@ -112,6 +112,7 @@ class UserControllerTest extends BaseTestCase
 
         $this->client->request('POST', $apiRoute, $params);
         $response = $this->client->getResponse();
+
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $responseContent = json_decode($response->getContent());
         $this->assertEquals(true, $responseContent->success);
@@ -122,5 +123,109 @@ class UserControllerTest extends BaseTestCase
             $this->fail('User not registered');
         }
         $this->assertNotNull($user->getForgotToken());
+    }
+
+    public function testForgot_userFail_forgotTokenNotSet()
+    {
+        $apiRoute = $this->getUrl('flowcode_user_api_forgot');
+
+        $params = [
+            "email" => 'userSarasas@user.com',
+            "ACCEPT" => 'application/json'
+        ];
+
+
+        $this->client->request('POST', $apiRoute, $params);
+        $response = $this->client->getResponse();
+        $this->assertEquals(Response::HTTP_CONFLICT, $response->getStatusCode());
+        $responseContent = json_decode($response->getContent());
+        $this->assertEquals(false, $responseContent->success);
+        $this->assertEquals(ResponseCode::USER_NOT_FOUND, $responseContent->code);
+    }
+
+    public function testRecover_tokenOk_updatePassword()
+    {
+        $encoder = $this->getContainer()->get('security.password_encoder');
+        $initialPassword = "1234";
+        $newPassword = "12345";
+        $apiRoute = $this->getUrl('flowcode_user_api_recover');
+        $user = $this->userService->findByUsername("user3");
+
+        $params = [
+            "email" => $user->getEmail(),
+            "forgotToken" => $user->getForgotToken(),
+            "plainPassword" => $newPassword,
+            "ACCEPT" => 'application/json'
+        ];
+
+        $this->client->request('POST', $apiRoute, $params);
+        $response = $this->client->getResponse();
+        $responseContent = json_decode($response->getContent());
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertEquals(true, $responseContent->success);
+        $this->assertEquals(ResponseCode::USER_PASSWORD_CHANGED, $responseContent->code);
+
+        $this->getContainer()->get('doctrine')->getManager()->refresh($user);
+        $userAfter = $this->userService->findByUsername("user3");
+
+        $this->assertEquals("user3", $userAfter->getUsername());
+        $this->assertEquals("user3@user.com", $userAfter->getEmail());
+        $this->assertNull($userAfter->getForgotToken());
+        $this->assertFalse($encoder->isPasswordValid($userAfter, $initialPassword));
+        $this->assertTrue($encoder->isPasswordValid($userAfter, $newPassword));
+    }
+
+    public function testRecover_differentToken_NotUpdatePassword()
+    {
+        $encoder = $this->getContainer()->get('security.password_encoder');
+        $initialPassword = "1234";
+        $newPassword = "12345";
+        $apiRoute = $this->getUrl('flowcode_user_api_recover');
+        $user = $this->userService->findByUsername("user3");
+
+        $params = [
+            "email" => $user->getEmail(),
+            "forgotToken" => "sarasa",
+            "plainPassword" => $newPassword,
+            "ACCEPT" => 'application/json'
+        ];
+
+        $this->client->request('POST', $apiRoute, $params);
+        $response = $this->client->getResponse();
+        $responseContent = json_decode($response->getContent());
+        $this->assertEquals(Response::HTTP_CONFLICT, $response->getStatusCode());
+        $this->assertEquals(false, $responseContent->success);
+        $this->assertEquals(ResponseCode::USER_PASSWORD_NOT_CHANGED, $responseContent->code);
+
+        $this->getContainer()->get('doctrine')->getManager()->refresh($user);
+        $userAfter = $this->userService->findByUsername("user3");
+
+        $this->assertEquals("user3", $userAfter->getUsername());
+        $this->assertEquals("user3@user.com", $userAfter->getEmail());
+        $this->assertNotNull($userAfter->getForgotToken());
+        $this->assertTrue($encoder->isPasswordValid($userAfter, $initialPassword));
+        $this->assertFalse($encoder->isPasswordValid($userAfter, $newPassword));
+    }
+    
+    
+    public function testRecover_inexistentEmail_NotUpdatePassword()
+    {
+        $newPassword = "12345";
+        $apiRoute = $this->getUrl('flowcode_user_api_recover');
+        $user = $this->userService->findByUsername("user3");
+
+        $params = [
+            "email" => "sarasa@pepe.com",
+            "forgotToken" => $user->getForgotToken(),
+            "plainPassword" => $newPassword,
+            "ACCEPT" => 'application/json'
+        ];
+
+        $this->client->request('POST', $apiRoute, $params);
+        $response = $this->client->getResponse();
+        $responseContent = json_decode($response->getContent());
+        $this->assertEquals(Response::HTTP_CONFLICT, $response->getStatusCode());
+        $this->assertEquals(false, $responseContent->success);
+        $this->assertEquals(ResponseCode::USER_NOT_FOUND, $responseContent->code);
     }
 }

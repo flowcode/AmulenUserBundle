@@ -15,6 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityRepository;
 use Flowcode\UserBundle\Exception\ExistentUserException;
+use Flowcode\UserBundle\Exception\InvalidTokenException;
 use Flowcode\UserBundle\Entity\UserStatus;
 
 /**
@@ -323,7 +324,7 @@ class UserService implements UserProviderInterface
             return false;
         }
         $userToken = $user->getRegisterToken();
-        if ($token != $userToken) {
+        if ($userToken == null || $userToken != $token) {
             return false;
         }
         $user->setStatus(UserStatus::ACTIVE);
@@ -340,9 +341,20 @@ class UserService implements UserProviderInterface
             return false;
         }
         $userToken = $user->getForgotToken();
-        if ($token != $userToken) {
+        if ($userToken == null || $userToken != $token) {
             return false;
         }
         return true;
+    }
+
+    public function recoverPassword($user, $token, $plainPassword)
+    {
+        $userForgotToken = $user->getForgotToken();
+        if ($userForgotToken == null || $userForgotToken != $token) {
+            throw new InvalidTokenException("The user forgot token is invalid");
+        }
+        $user->setPlainPassword($plainPassword);
+        $user->setForgotToken(null);
+        $this->update($user);
     }
 }

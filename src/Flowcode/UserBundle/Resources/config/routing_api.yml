@@ -12,3 +12,8 @@ flowcode_user_api_forgot:
     path:     /users/forgot
     defaults: { _controller: FlowcodeUserBundle:Api\User:forgot }     
     methods:  [POST] 
+
+flowcode_user_api_recover:     
+    path:     /users/recover
+    defaults: { _controller: FlowcodeUserBundle:Api\User:recover }     
+    methods:  [POST] 

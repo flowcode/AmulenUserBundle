@@ -89,10 +89,7 @@ class UserNotificationService
     }
 
     /**
-     * Notify register.
-     *
-     * @param  User   $user [description]
-     * @return [type]       [description]
+     * Notify forgot.
      */
     public function notifyForgot(User $user, $forgotLink)
     {
@@ -102,6 +99,21 @@ class UserNotificationService
         $toEmail = $user->getEmail();
         $toName = $user->getUsername();
         $body = $this->container->get('templating')->render('FlowcodeUserBundle:Email:notifyForgot.html.twig', array('user' => $user, 'forgotLink' => $forgotLink));
+
+        $this->mailSender->send($toEmail, $toName, $fromEmail, $fromName, $subject, $body, true);
+    }
+
+    /**
+     * Notify recover.
+     */
+    public function notifyRecover(User $user)
+    {
+        $fromEmail = $this->container->getParameter("default_mail_from");
+        $fromName = $this->container->getParameter("default_mail_from_name");
+        $subject = "[" . $fromName . "] Ha modificado su contraseña";
+        $toEmail = $user->getEmail();
+        $toName = $user->getUsername();
+        $body = $this->container->get('templating')->render('FlowcodeUserBundle:Email:notifyRecover.html.twig', array('user' => $user));
 
         $this->mailSender->send($toEmail, $toName, $fromEmail, $fromName, $subject, $body, true);
     }
