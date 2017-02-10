@@ -171,23 +171,29 @@ class UserController extends FOSRestController
      * 
      * #### Response ok ####
      * {
-     *   "success": true,
-     *   "message": "User registered",
-     *   "code": 100
+     *  "success": true,
+     *  "message": "Password changed",
+     *  "code": 104
      * }
      * #### Response fail ####
      * {
-     *    "success": false,
-     *    "message": "The username already exists",
-     *    "code": 130
+     *  "success": false,
+     *  "message": "User not found",
+     *  "code": 102
+     * }<br>
+     * {
+     *  "success": false,
+     *  "message": "The user forgot token is invalid",
+     *  "code": 105
      * }
      * 
      * #### Response Codes ####
      * { "code": 102 , "description": "USER_NOT_FOUND" }<br>
-     * { "code": 103 , "description": "USER_FORGOT_SEND" }
+     * { "code": 104 , "description": "USER_PASSWORD_CHANGED" }<br>
+     * { "code": 105 , "description": "USER_PASSWORD_NOT_CHANGED" }
      * 
      * @ApiDoc(
-     *  description="Request change password",
+     *  description="Recover password",
      *  section="User Bundle",
      *  authentication = false,
      * parameters={
