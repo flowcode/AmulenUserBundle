@@ -71,11 +71,11 @@ class SecurityControllerTest extends BaseTestCase
         $redirectUrl = $response->headers->get('location');
         $this->container->get('doctrine')->getManager()->refresh($user);
         $userAfter = $this->userService->findByUsername("user3");
-        $frontRecoverUrl = $this->container->getParameter("front_url_recover") . "?recover=success";
+        $frontRecoverUrl = $this->container->getParameter("front_url_recover") . "?recover=success&token=".$userAfter->getForgotToken();
 
         $this->assertEquals("user3", $userAfter->getUsername());
         $this->assertEquals(UserStatus::ACTIVE, $userAfter->getStatus());
-        $this->assertNull($userAfter->getForgotToken());
+        $this->assertNotNull($userAfter->getForgotToken());
         $this->assertEquals($frontRecoverUrl, $redirectUrl);
     }
 

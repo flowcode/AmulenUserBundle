@@ -146,7 +146,7 @@ class UserServiceTest extends BaseTestCase
         $checkForgotUser = $this->userService->checkForgot($user->getId(), $user->getForgotToken());
 
         $this->assertTrue($checkForgotUser);
-        $this->assertNull($user->getForgotToken());
+        $this->assertNotNull($user->getForgotToken());
     }
 
     public function testCheckForgot_withInvalidUser_returnFalse()

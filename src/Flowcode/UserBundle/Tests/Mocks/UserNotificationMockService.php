@@ -12,7 +12,6 @@ class UserNotificationMockService
      * @var EmailSenderInterface
      */
     protected $mailSender;
-
     protected $container;
 
     /**
@@ -23,6 +22,7 @@ class UserNotificationMockService
 
     public function __construct($container, $mailingService, $templating)
     {
+        
     }
 
     /**
@@ -33,6 +33,7 @@ class UserNotificationMockService
      */
     public function notifyPasswordReset(User $user, $plainPassword)
     {
+        
     }
 
     /**
@@ -43,7 +44,7 @@ class UserNotificationMockService
      */
     public function notifyLogin(User $user)
     {
-
+        
     }
 
     /**
@@ -54,6 +55,17 @@ class UserNotificationMockService
      */
     public function notifyRegister(User $user, $activateAccountLink)
     {
+        
     }
 
+    /**
+     * Notify register.
+     *
+     * @param  User   $user [description]
+     * @return [type]       [description]
+     */
+    public function notifyForgot(User $user, $forgotLink)
+    {
+        
+    }
 }

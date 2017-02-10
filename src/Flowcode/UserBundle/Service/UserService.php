@@ -343,8 +343,6 @@ class UserService implements UserProviderInterface
         if ($token != $userToken) {
             return false;
         }
-        $user->setForgotToken(null);
-        $this->getEm()->flush();
         return true;
     }
 }
