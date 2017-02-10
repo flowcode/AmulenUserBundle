@@ -22,7 +22,7 @@ class UserController extends FOSRestController
      * {"token": "token"}
      * #### Response fail #### 
      * {"code": 401, "message": "Bad Credentials"}    
-     * 
+
      * @ApiDoc(
      *  description="Login user",
      *  section="User Bundle",
@@ -53,13 +53,15 @@ class UserController extends FOSRestController
      *   "code": 100
      * }
      * #### Response fail ####
-     * 
-     *
      * {
      *    "success": false,
      *    "message": "The username already exists",
      *    "code": 130
      * }
+     * 
+     * #### Response Codes ####
+     * { "code": 100 , "description": "USER_REGISTER_IN_SYSTEM" }<br>
+     * { "code": 101 , "description": "USER_REGISTER_OK" }
      * 
      * @ApiDoc(
      *  description="Register user",
@@ -114,13 +116,15 @@ class UserController extends FOSRestController
      *   "code": 100
      * }
      * #### Response fail ####
-     * 
-     *
      * {
      *    "success": false,
      *    "message": "The username already exists",
      *    "code": 130
      * }
+     * 
+     * #### Response Codes ####
+     * { "code": 102 , "description": "USER_NOT_FOUND" }<br>
+     * { "code": 103 , "description": "USER_FORGOT_SEND" }
      * 
      * @ApiDoc(
      *  description="Request change password",
