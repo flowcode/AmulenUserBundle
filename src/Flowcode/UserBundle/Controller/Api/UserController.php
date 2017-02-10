@@ -150,8 +150,8 @@ class UserController extends FOSRestController
             }
             $notificationService = $this->get('flowcode.user.notification');
             $userService->generateForgotToken($user);
-            $forgotCheckLink = $this->generateUrl('flowcode_user_forgot_check', array('id' => $user->getId(), 'token' => $user->getForgotToken()), UrlGeneratorInterface::ABSOLUTE_URL);
-            $notificationService->notifyRegister($user, $forgotCheckLink);
+            $forgotLink = $this->generateUrl('flowcode_user_forgot_check', array('id' => $user->getId(), 'token' => $user->getForgotToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+            $notificationService->notifyForgot($user, $forgotLink);
             $response = array("success" => true, "message" => "Email sent", "code" => ResponseCode::USER_FORGOT_SEND);
             return $this->handleView(FOSView::create($response, Response::HTTP_OK)->setFormat("json"));
         }

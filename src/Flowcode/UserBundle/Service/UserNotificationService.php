@@ -4,6 +4,7 @@ namespace Flowcode\UserBundle\Service;
 
 use Flowcode\NotificationBundle\Senders\EmailSenderInterface;
 use Flowcode\UserBundle\Entity\UserInterface as User;
+
 /**
  * Description of UserNotificationService
  *
@@ -16,7 +17,6 @@ class UserNotificationService
      * @var EmailSenderInterface
      */
     protected $mailSender;
-
     protected $container;
 
     /**
@@ -68,7 +68,6 @@ class UserNotificationService
         $body = $this->container->get('templating')->render('FlowcodeUserBundle:Email:notifyRegister.html.twig', array('user' => $user));
 
         $this->mailSender->send($toEmail, $toName, $fromEmail, $fromName, $subject, $body, true);
-
     }
 
     /**
@@ -87,7 +86,23 @@ class UserNotificationService
         $body = $this->container->get('templating')->render('FlowcodeUserBundle:Email:notifyRegister.html.twig', array('user' => $user, 'activateAccountLink' => $activateAccountLink));
 
         $this->mailSender->send($toEmail, $toName, $fromEmail, $fromName, $subject, $body, true);
-
     }
 
+    /**
+     * Notify register.
+     *
+     * @param  User   $user [description]
+     * @return [type]       [description]
+     */
+    public function notifyForgot(User $user, $forgotLink)
+    {
+        $fromEmail = $this->container->getParameter("default_mail_from");
+        $fromName = $this->container->getParameter("default_mail_from_name");
+        $subject = "[" . $fromName . "] Recupero de contraseña";
+        $toEmail = $user->getEmail();
+        $toName = $user->getUsername();
+        $body = $this->container->get('templating')->render('FlowcodeUserBundle:Email:notifyForgot.html.twig', array('user' => $user, 'forgotLink' => $forgotLink));
+
+        $this->mailSender->send($toEmail, $toName, $fromEmail, $fromName, $subject, $body, true);
+    }
 }
