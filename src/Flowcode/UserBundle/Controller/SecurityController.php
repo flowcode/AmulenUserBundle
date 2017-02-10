@@ -12,6 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Flowcode\UserBundle\Entity\UserStatus;
 use Symfony\Component\HttpFoundation\Response;
+use Flowcode\UserBundle\Exception\InexistentUserException;
+use Flowcode\UserBundle\Exception\InvalidTokenException;
 
 /**
  * Login controller.
@@ -30,10 +32,10 @@ class SecurityController extends Controller
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 
-        // get the login error if there is one
+// get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        // last username entered by the user
+// last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return array(
@@ -167,19 +169,19 @@ class SecurityController extends Controller
 
         if ($form->isValid()) {
 
-            // FIXME: This have to be in the service.
+// FIXME: This have to be in the service.
             $user->setStatus(User::STATUS_ACTIVE);
 
             $userManager = $this->container->get('flowcode.user');
             $userManager->create($user);
 
-            // //FIXME: firewall name in security.yml
-            // $firewall = 'public';
-            // $token = $userManager->getAuthToken($user, $user->getPlainPassword(), $firewall);
-            // // Fire the login event
-            // // Logging the user in above the way we do it doesn't do this automatically
-            // $event = new InteractiveLoginEvent($request, $token);
-            // $userManager->loginUser($event);
+// //FIXME: firewall name in security.yml
+// $firewall = 'public';
+// $token = $userManager->getAuthToken($user, $user->getPlainPassword(), $firewall);
+// // Fire the login event
+// // Logging the user in above the way we do it doesn't do this automatically
+// $event = new InteractiveLoginEvent($request, $token);
+// $userManager->loginUser($event);
 
             return $this->redirect($this->generateUrl('homepage'));
         }
@@ -195,9 +197,12 @@ class SecurityController extends Controller
     public function activateAccountAction(Request $request, $id, $token)
     {
         $userService = $this->get('flowcode.user');
-        $activateUser = $userService->activateUserRegister($id, $token);
         $frontLoginUrl = $this->container->getParameter("front_url_login");
-        if (!$activateUser) {
+        try {
+            $userService->activateUserRegister($id, $token);
+        } catch (InexistentUserException $ex) {
+            return $this->redirect($frontLoginUrl . "?register=failure");
+        } catch (InvalidTokenException $ex) {
             return $this->redirect($frontLoginUrl . "?register=failure");
         }
         return $this->redirect($frontLoginUrl . "?register=success");
@@ -209,11 +214,15 @@ class SecurityController extends Controller
     public function forgotCheckApiAction(Request $request, $id, $token)
     {
         $userService = $this->get('flowcode.user');
-        $forgotUser = $userService->checkForgot($id, $token);
         $frontRecoverUrl = $this->container->getParameter("front_url_recover");
-        if (!$forgotUser) {
+        try {
+            $userService->checkForgot($id, $token);
+        } catch (InexistentUserException $ex) {
+            return $this->redirect($frontRecoverUrl . "?recover=failure");
+        } catch (InvalidTokenException $ex) {
             return $this->redirect($frontRecoverUrl . "?recover=failure");
         }
+
         $user = $userService->findById($id);
         $recoverSuccessUrl = $frontRecoverUrl .
                 "?recover=success" .

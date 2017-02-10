@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Doctrine\ORM\EntityRepository;
 use Flowcode\UserBundle\Exception\ExistentUserException;
 use Flowcode\UserBundle\Exception\InvalidTokenException;
+use Flowcode\UserBundle\Exception\InexistentUserException;
 use Flowcode\UserBundle\Entity\UserStatus;
 
 /**
@@ -321,30 +322,27 @@ class UserService implements UserProviderInterface
     {
         $user = $this->findById($id);
         if ($user == null) {
-            return false;
+            throw new InexistentUserException("The user not exist");
         }
         $userToken = $user->getRegisterToken();
         if ($userToken == null || $userToken != $token) {
-            return false;
+            throw new InvalidTokenException("The token is invalid");
         }
         $user->setStatus(UserStatus::ACTIVE);
         $user->setRegisterToken(null);
-
         $this->getEm()->flush();
-        return true;
     }
 
     public function checkForgot($id, $token)
     {
         $user = $this->findById($id);
         if ($user == null) {
-            return false;
+            throw new InexistentUserException("The user not exist");
         }
         $userToken = $user->getForgotToken();
         if ($userToken == null || $userToken != $token) {
-            return false;
+            throw new InvalidTokenException("The token is invalid");
         }
-        return true;
     }
 
     public function recoverPassword($user, $token, $plainPassword)
