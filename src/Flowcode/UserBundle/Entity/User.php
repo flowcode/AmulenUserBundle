@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation\Exclude;
 
 abstract class User implements UserInterface
 {
@@ -38,6 +39,7 @@ abstract class User implements UserInterface
     /**
      * @var string
      * @ORM\Column(name="password", type="string", length=255)
+     * @Exclude
      */
     protected $password;
 
@@ -102,12 +104,14 @@ abstract class User implements UserInterface
     /**
      * @var string
      * @ORM\Column(name="register_token", type="string", length=255, nullable=true)
+     * @Exclude
      */
     protected $registerToken;
 
     /**
      * @var string
      * @ORM\Column(name="forgot_token", type="string", length=255, nullable=true)
+     * @Exclude
      */
     protected $forgotToken;
 
