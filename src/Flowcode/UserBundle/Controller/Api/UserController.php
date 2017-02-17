@@ -40,8 +40,6 @@ class UserController extends FOSRestController
      */
     public function checkAction(Request $request)
     {
-        $response = array("success" => true, "message" => "User registered", "code" => ResponseCode::USER_REGISTER_IN_SYSTEM);
-        return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));
     }
 
     /**
@@ -57,12 +55,12 @@ class UserController extends FOSRestController
      * {
      *    "success": false,
      *    "message": "The username already exists",
-     *    "code": 130
+     *    "code": 101
      * }
      * 
      * #### Response Codes ####
-     * { "code": 100 , "description": "USER_REGISTER_IN_SYSTEM" }<br>
-     * { "code": 101 , "description": "USER_REGISTER_OK" }
+     * { "code": 100 , "message": "USER_REGISTER_OK" }<br>
+     * { "code": 101 , "message": "USER_REGISTER_FAIL" }
      * 
      * @ApiDoc(
      *  description="Register user",
@@ -125,8 +123,8 @@ class UserController extends FOSRestController
      * }
      * 
      * #### Response Codes ####
-     * { "code": 102 , "description": "USER_NOT_FOUND" }<br>
-     * { "code": 103 , "description": "USER_FORGOT_SEND" }
+     * { "code": 102 , "message": "USER_NOT_FOUND" }<br>
+     * { "code": 103 , "message": "USER_FORGOT_SEND" }
      * 
      * @ApiDoc(
      *  description="Request change password",
@@ -188,9 +186,9 @@ class UserController extends FOSRestController
      * }
      * 
      * #### Response Codes ####
-     * { "code": 102 , "description": "USER_NOT_FOUND" }<br>
-     * { "code": 104 , "description": "USER_PASSWORD_CHANGED" }<br>
-     * { "code": 105 , "description": "USER_PASSWORD_NOT_CHANGED" }
+     * { "code": 102 , "message": "USER_NOT_FOUND" }<br>
+     * { "code": 104 , "message": "USER_PASSWORD_CHANGED" }<br>
+     * { "code": 105 , "message": "USER_PASSWORD_NOT_CHANGED" }
      * 
      * @ApiDoc(
      *  description="Recover password",

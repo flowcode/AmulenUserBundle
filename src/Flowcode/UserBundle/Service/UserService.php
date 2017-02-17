@@ -103,11 +103,11 @@ class UserService implements UserProviderInterface
     {
         $userUsername = $this->getUserRepository()->findOneBy(array('username' => $user->getUsername()));
         if ($userUsername != null) {
-            throw new ExistentUserException("The username already exists");
+            throw new ExistentUserException("login:register:userexists");
         }
         $userEmail = $this->getUserRepository()->findOneBy(array('email' => $user->getEmail()));
         if ($userEmail != null) {
-            throw new ExistentUserException("The email already exists");
+            throw new ExistentUserException("login:register:emailexists");
         }
         $user = $this->encode($user);
         $this->getEm()->persist($user);
