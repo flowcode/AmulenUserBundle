@@ -61,7 +61,7 @@ class UserController extends FOSRestController
      * #### Response Codes ####
      * { "code": 100 , "message": "USER_REGISTER_OK" }<br>
      * { "code": 101 , "message": "USER_REGISTER_FAIL" }
-     * 
+     *
      * @ApiDoc(
      *  description="Register user",
      *  section="User Bundle",

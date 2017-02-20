@@ -325,11 +325,13 @@ class UserService implements UserProviderInterface
     {
         $user = $this->findById($id);
         if ($user == null) {
-            throw new InexistentUserException("The user not exist");
+            throw new InexistentUserException("login:register:usernotexists");
         }
         $userToken = $user->getRegisterToken();
-        if ($userToken == null || $userToken != $token) {
-            throw new InvalidTokenException("The token is invalid");
+        if ($user->getStatus() == UserStatus::IN_REGISTER) {
+            if ($userToken == null || $userToken != $token) {
+                throw new InvalidTokenException("login:register:tokeninvalid");
+            }
         }
         $user->setStatus(UserStatus::ACTIVE);
         $user->setRegisterToken(null);
@@ -340,11 +342,11 @@ class UserService implements UserProviderInterface
     {
         $user = $this->findById($id);
         if ($user == null) {
-            throw new InexistentUserException("The user not exist");
+            throw new InexistentUserException("login:register:usernotexists");
         }
         $userToken = $user->getForgotToken();
         if ($userToken == null || $userToken != $token) {
-            throw new InvalidTokenException("The token is invalid");
+            throw new InvalidTokenException("login:register:tokeninvalid");
         }
     }
 
@@ -352,7 +354,7 @@ class UserService implements UserProviderInterface
     {
         $userForgotToken = $user->getForgotToken();
         if ($userForgotToken == null || $userForgotToken != $token) {
-            throw new InvalidTokenException("The user forgot token is invalid");
+            throw new InvalidTokenException("login:register:tokeninvalid");
         }
         $user->setPlainPassword($plainPassword);
         $user->setForgotToken(null);

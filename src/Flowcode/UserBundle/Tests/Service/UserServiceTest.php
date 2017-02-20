@@ -137,6 +137,21 @@ class UserServiceTest extends BaseTestCase
         $this->assertEquals(UserStatus::IN_REGISTER, $user->getStatus());
     }
 
+    public function testActivateUserRegister_withInvalidTokenAndUserActive_activateUser()
+    {
+        $user = $this->userService->findByUsername('user2');
+        $this->assertNotNull($user->getRegisterToken());
+        $this->assertEquals(UserStatus::IN_REGISTER, $user->getStatus());
+        $this->userService->activateUserRegister($user->getId(), $user->getRegisterToken());
+
+        $this->assertNull($user->getRegisterToken());
+        $this->assertEquals(UserStatus::ACTIVE, $user->getStatus());
+
+        $this->userService->activateUserRegister($user->getId(), $user->getRegisterToken());
+        $this->assertNull($user->getRegisterToken());
+        $this->assertEquals(UserStatus::ACTIVE, $user->getStatus());
+    }
+
     public function testGenerateForgotToken_userOk_generateToken()
     {
         $user = $this->userService->findByUsername('user');

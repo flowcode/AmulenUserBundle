@@ -35,6 +35,12 @@ class SecurityControllerTest extends BaseTestCase
         $this->assertEquals(UserStatus::ACTIVE, $userAfter->getStatus());
         $this->assertNull($userAfter->getRegisterToken());
         $this->assertEquals($frontLoginUrl, $redirectUrl);
+
+        /* Second call return SUCCESS */
+        $this->client->request('GET', $route);
+        $redirectUrl = $response->headers->get('location');
+        $response = $this->client->getResponse();
+        $this->assertEquals($frontLoginUrl, $redirectUrl);
     }
 
     public function testActivateAccount_userAndTokenFail_redirectFail()
