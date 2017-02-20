@@ -27,7 +27,7 @@ class UserServiceTest extends BaseTestCase
 
         $this->assertEquals("user", $user->getUsername());
         $this->assertEquals("user@user.com", $user->getEmail());
-        $this->assertNotEquals("1234", $user->getPassword());
+        $this->assertNotEquals("123456", $user->getPassword());
     }
 
     public function testLoadUserByUsername_usernameInvalid_returnNull()
@@ -46,7 +46,7 @@ class UserServiceTest extends BaseTestCase
     {
         $user = $this->userService->createNewUser();
         $user->setUsername("pepe");
-        $user->setPlainPassword("1234");
+        $user->setPlainPassword("123456");
         $user->setEmail("pepe@pepe.com");
 
         $userBefore = $this->userService->findByUsername("pepe");
@@ -56,8 +56,13 @@ class UserServiceTest extends BaseTestCase
         $this->assertNotNull($userAfter);
         $this->assertEquals("pepe", $userAfter->getUsername());
         $this->assertEquals("pepe@pepe.com", $userAfter->getEmail());
-        $this->assertNotEquals("1234", $userAfter->getPassword());
+        $this->assertNotEquals("123456", $userAfter->getPassword());
         $this->assertEquals(UserStatus::INACTIVE, $userAfter->getStatus());
+
+        /*        $this->assertNotNull($userAfter->getGroups());
+          $this->assertEquals(1, sizeof($userAfter->getRoles()));
+          $role = $userAfter->getRoles()[0];
+          $this->assertNotEmpty("ROLE_USER", $role->getName()); */
     }
 
     public function testCreate_usernameExistent_throwException()
@@ -65,7 +70,7 @@ class UserServiceTest extends BaseTestCase
         $user = $this->userService->createNewUser();
         $username = "user";
         $user->setUsername($username);
-        $user->setPlainPassword("1234");
+        $user->setPlainPassword("123456");
         $user->setEmail("user@user.com");
 
         $userBefore = $this->userService->findByUsername($username);
@@ -81,7 +86,7 @@ class UserServiceTest extends BaseTestCase
         $username = "user";
 
         $user->setUsername($username);
-        $user->setPlainPassword("1234");
+        $user->setPlainPassword("123456");
         $user->setEmail("user@user.com");
 
         $userBefore = $this->userService->findByUsername($username);
@@ -105,7 +110,7 @@ class UserServiceTest extends BaseTestCase
         $this->assertNotNull($user->getRegisterToken());
         $this->assertEquals(UserStatus::IN_REGISTER, $user->getStatus());
         $this->userService->activateUserRegister($user->getId(), $user->getRegisterToken());
-        
+
         $this->assertNull($user->getRegisterToken());
         $this->assertEquals(UserStatus::ACTIVE, $user->getStatus());
     }
@@ -176,8 +181,8 @@ class UserServiceTest extends BaseTestCase
     public function testRecoverPassword_withUserAndTokenOk_generateNewPassword()
     {
         $user = $this->userService->findByUsername('user3');
-        $initialPassword = "1234";
-        $newPassword = "12345";
+        $initialPassword = "123456";
+        $newPassword = "1234567";
         $encoder = $this->getContainer()->get('security.password_encoder');
         $this->assertNotNull($user->getForgotToken());
 
@@ -193,7 +198,7 @@ class UserServiceTest extends BaseTestCase
     public function testRecoverPassword_withTokenNull_throwException()
     {
         $user = $this->userService->findByUsername('user');
-        $newPassword = "12345";
+        $newPassword = "123456";
         $this->assertNull($user->getForgotToken());
 
         $this->setExpectedException(InvalidTokenException::class);
@@ -203,7 +208,7 @@ class UserServiceTest extends BaseTestCase
     public function testRecoverPassword_withDifferentToken_throwException()
     {
         $user = $this->userService->findByUsername('user3');
-        $newPassword = "12345";
+        $newPassword = "123456";
         $this->assertNotNull($user->getForgotToken());
 
         $this->setExpectedException(InvalidTokenException::class);

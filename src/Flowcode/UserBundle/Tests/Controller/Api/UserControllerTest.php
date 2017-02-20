@@ -23,7 +23,7 @@ class UserControllerTest extends BaseTestCase
 
         $params = [
             "username" => 'juancho',
-            "plainPassword" => '1234',
+            "plainPassword" => '123456',
             "email" => 'juancho@juancho.com',
             "ACCEPT" => 'application/json'
         ];
@@ -53,7 +53,7 @@ class UserControllerTest extends BaseTestCase
 
         $params = [
             "username" => 'user',
-            "plainPassword" => '1234',
+            "plainPassword" => '123456',
             "email" => 'juancho@juancho.com',
             "ACCEPT" => 'application/json'
         ];
@@ -61,11 +61,30 @@ class UserControllerTest extends BaseTestCase
 
         $this->client->request('POST', $apiRoute, $params);
         $response = $this->client->getResponse();
+        $responseContent = json_decode($response->getContent());
 
         $this->assertEquals(Response::HTTP_CONFLICT, $response->getStatusCode());
-        $responseContent = json_decode($response->getContent());
         $this->assertEquals(false, $responseContent->success);
         $this->assertEquals(ResponseCode::USER_REGISTER_IN_SYSTEM, $responseContent->code);
+    }
+
+    public function testRegister_userWithInvalidPassword_notCreateUser()
+    {
+        $apiRoute = $this->getUrl('flowcode_user_api_register');
+
+        $params = [
+            "username" => 'juancho',
+            "plainPassword" => '1234',
+            "email" => 'juancho@juancho.com',
+            "ACCEPT" => 'application/json'
+        ];
+
+        $this->client->request('POST', $apiRoute, $params);
+        $response = $this->client->getResponse();
+        $responseContent = json_decode($response->getContent());
+
+        $this->assertEquals(Response::HTTP_CONFLICT, $response->getStatusCode());
+        $this->assertEquals(false, $responseContent->success);
     }
 
     public function testLogin_userOk_loginUser()
@@ -73,7 +92,7 @@ class UserControllerTest extends BaseTestCase
         $apiRoute = $this->getUrl('flowcode_user_api_login');
         $params = [
             "username" => 'user',
-            "password" => '1234',
+            "password" => '123456',
             "ACCEPT" => 'application/json'
         ];
 
@@ -90,7 +109,7 @@ class UserControllerTest extends BaseTestCase
         $apiRoute = $this->getUrl('flowcode_user_api_login');
         $params = [
             "username" => 'user',
-            "password" => '12345',
+            "password" => '12345678',
             "ACCEPT" => 'application/json'
         ];
 
@@ -146,8 +165,8 @@ class UserControllerTest extends BaseTestCase
     public function testRecover_tokenOk_updatePassword()
     {
         $encoder = $this->getContainer()->get('security.password_encoder');
-        $initialPassword = "1234";
-        $newPassword = "12345";
+        $initialPassword = "123456";
+        $newPassword = "12345567";
         $apiRoute = $this->getUrl('flowcode_user_api_recover');
         $user = $this->userService->findByUsername("user3");
 
@@ -178,8 +197,8 @@ class UserControllerTest extends BaseTestCase
     public function testRecover_differentToken_NotUpdatePassword()
     {
         $encoder = $this->getContainer()->get('security.password_encoder');
-        $initialPassword = "1234";
-        $newPassword = "12345";
+        $initialPassword = "123456";
+        $newPassword = "1234567";
         $apiRoute = $this->getUrl('flowcode_user_api_recover');
         $user = $this->userService->findByUsername("user3");
 
@@ -206,11 +225,10 @@ class UserControllerTest extends BaseTestCase
         $this->assertTrue($encoder->isPasswordValid($userAfter, $initialPassword));
         $this->assertFalse($encoder->isPasswordValid($userAfter, $newPassword));
     }
-    
-    
+
     public function testRecover_inexistentEmail_NotUpdatePassword()
     {
-        $newPassword = "12345";
+        $newPassword = "123456";
         $apiRoute = $this->getUrl('flowcode_user_api_recover');
         $user = $this->userService->findByUsername("user3");
 

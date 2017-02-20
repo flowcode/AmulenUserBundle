@@ -60,6 +60,10 @@ abstract class User implements UserInterface
     /**
      * Plain Password.
      * @var string
+     * @Assert\Length(
+     *      min = 6,
+     *      minMessage = "Your name must be at least {{ limit }} characters long"
+     * )
      */
     protected $plainPassword;
 
@@ -526,7 +530,6 @@ abstract class User implements UserInterface
         $this->registerToken = $registerToken;
     }
 
-    
     function getForgotToken()
     {
         return $this->forgotToken;
@@ -537,7 +540,7 @@ abstract class User implements UserInterface
         $this->forgotToken = $forgotToken;
     }
 
-        public function serialize()
+    public function serialize()
     {
         return null;
     }

@@ -24,7 +24,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
         $user = $userService->createNewUser();
         $user->setUsername("user");
-        $user->setPlainPassword("1234");
+        $user->setPlainPassword("123456");
         $user->setEmail("user@user.com");
         $user->setStatus(UserStatus::ACTIVE);
         $userService->create($user);
@@ -32,7 +32,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
         $user2 = $userService->createNewUser();
         $user2->setUsername("user2");
-        $user2->setPlainPassword("1234");
+        $user2->setPlainPassword("123456");
         $user2->setEmail("user2@user.com");
         $user2->setRegisterToken("token");
         $user2->setStatus(UserStatus::IN_REGISTER);
@@ -41,7 +41,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
         $user3 = $userService->createNewUser();
         $user3->setUsername("user3");
-        $user3->setPlainPassword("1234");
+        $user3->setPlainPassword("123456");
         $user3->setEmail("user3@user.com");
         $user3->setForgotToken("token");
         $user3->setStatus(UserStatus::ACTIVE);
