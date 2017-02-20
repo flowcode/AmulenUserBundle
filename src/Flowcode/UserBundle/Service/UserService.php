@@ -109,6 +109,9 @@ class UserService implements UserProviderInterface
         if ($userEmail != null) {
             throw new ExistentUserException("login:register:emailexists");
         }
+        $userGroupService = $this->container->get("flowcode.user.group");
+        $userGroup = $userGroupService->findByName("group_user");
+        $user->addUserGroup($userGroup);
         $user = $this->encode($user);
         $this->getEm()->persist($user);
         $this->getEm()->flush();

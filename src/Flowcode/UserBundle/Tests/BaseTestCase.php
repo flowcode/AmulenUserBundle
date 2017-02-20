@@ -13,6 +13,7 @@ class BaseTestCase extends WebTestCase
     {
         $classes = array(
             'Flowcode\UserBundle\Tests\DataFixtures\LoadUserData',
+            'Flowcode\UserBundle\Tests\DataFixtures\LoadUserGroupData',
         );
         $this->loadFixtures($classes, null, 'doctrine', ORMPurger::PURGE_MODE_TRUNCATE);
         $this->client = $this->createClient();

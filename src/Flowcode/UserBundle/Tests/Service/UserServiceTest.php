@@ -59,10 +59,9 @@ class UserServiceTest extends BaseTestCase
         $this->assertNotEquals("123456", $userAfter->getPassword());
         $this->assertEquals(UserStatus::INACTIVE, $userAfter->getStatus());
 
-        /*        $this->assertNotNull($userAfter->getGroups());
-          $this->assertEquals(1, sizeof($userAfter->getRoles()));
-          $role = $userAfter->getRoles()[0];
-          $this->assertNotEmpty("ROLE_USER", $role->getName()); */
+        $this->assertNotNull($userAfter->getGroups());
+        $this->assertEquals(1, sizeof($userAfter->getRoles()));
+        $this->assertEquals("ROLE_USER", $userAfter->getRoles()[0]);
     }
 
     public function testCreate_usernameExistent_throwException()

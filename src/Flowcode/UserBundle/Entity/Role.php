@@ -3,8 +3,9 @@
 namespace Flowcode\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Flowcode\UserBundle\Entity\RoleInterface;
 
-abstract class Role
+abstract class Role implements RoleInterface
 {
     /**
      * @var integer
@@ -22,10 +23,11 @@ abstract class Role
      */
     protected $name;
 
-    public function __construct()
+    public function __construct($name)
     {
-        
+        $this->name = $name;
     }
+
     /**
      * Get id
      *
@@ -35,6 +37,7 @@ abstract class Role
     {
         return $this->id;
     }
+
     /**
      * Set name
      *
@@ -48,6 +51,7 @@ abstract class Role
 
         return $this;
     }
+
     /**
      * Get name
      *
@@ -57,6 +61,7 @@ abstract class Role
     {
         return $this->name;
     }
+
     function __toString()
     {
         return $this->getName();

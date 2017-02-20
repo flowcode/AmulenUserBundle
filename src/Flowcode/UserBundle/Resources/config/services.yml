@@ -50,7 +50,27 @@ services:
         factory: ["@doctrine.orm.entity_manager", getRepository]         
         arguments:             
             - "%flowcode.model.user.class%"
+
+    flowcode.user.group.repository:         
+        class: Doctrine\ORM\EntityRepository         
+        factory: ["@doctrine.orm.entity_manager", getRepository]         
+        arguments:             
+            - "%flowcode.model.user.group.class%"
+            
+    flowcode.role.repository:         
+        class: Doctrine\ORM\EntityRepository         
+        factory: ["@doctrine.orm.entity_manager", getRepository]         
+        arguments:             
+            - "%flowcode.model.role.class%"
             
     flowcode.user:
         class: Flowcode\UserBundle\Service\UserService
         arguments: ["@doctrine.orm.entity_manager", "@security.password_encoder", "@service_container", "@security.token_storage", "@event_dispatcher", "@flowcode.user.repository", "%flowcode.model.user.class%"]
+
+    flowcode.user.group:
+        class: Flowcode\UserBundle\Service\UserGroupService
+        arguments: ["@doctrine.orm.entity_manager", "@service_container", "@flowcode.user.group.repository", "%flowcode.model.user.group.class%"]
+    
+    flowcode.role:
+        class: Flowcode\UserBundle\Service\RoleService
+        arguments: ["@doctrine.orm.entity_manager", "@service_container", "@flowcode.role.repository", "%flowcode.model.role.class%"]

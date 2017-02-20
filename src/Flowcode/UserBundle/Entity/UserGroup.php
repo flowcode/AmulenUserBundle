@@ -5,7 +5,7 @@ namespace Flowcode\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-abstract class UserGroup
+abstract class UserGroup implements UserGroupInterface
 {
     /**
      * @ORM\Id
@@ -64,14 +64,14 @@ abstract class UserGroup
     /**
      * @param \Flowcode\UserBundle\Entity\Role $role
      */
-    public function removeRole(\Flowcode\UserBundle\Entity\Role $role)
+    public function removeRole(RoleInterface $role)
     {
         $this->tags->removeElement($role);
     }
     /**
      * @param string $name
      *
-     * @return \Flowcode\UserBundle\Entity\UserGroup
+     * @return \Flowcode\UserBundle\Entity\UserGroupInterface
      */
     public function setName($name)
     {
@@ -82,9 +82,9 @@ abstract class UserGroup
     /**
      * @param \Flowcode\UserBundle\Entity\Role $role
      *
-     * @return \Flowcode\UserBundle\Entity\UserGroup
+     * @return \Flowcode\UserBundle\Entity\UserGroupInterface
      */
-    public function addRole(\Flowcode\UserBundle\Entity\Role $role)
+    public function addRole(RoleInterface $role)
     {
         $this->roles[] = $role;
 
@@ -93,7 +93,7 @@ abstract class UserGroup
     /**
      * @param array $roles
      *
-     * @return \Flowcode\UserBundle\Entity\UserGroup
+     * @return \Flowcode\UserBundle\Entity\UserGroupInterface
      */
     public function setRoles(array $roles)
     {

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\Exclude;
+use Flowcode\UserBundle\Entity\UserGroupInterface;
 
 abstract class User implements UserInterface
 {
@@ -477,7 +478,7 @@ abstract class User implements UserInterface
      *
      * @return User
      */
-    public function addUserGroup(\Flowcode\UserBundle\Entity\UserGroup $userGroup)
+    public function addUserGroup(UserGroupInterface $userGroup)
     {
         $this->groups[] = $userGroup;
 
@@ -487,7 +488,7 @@ abstract class User implements UserInterface
     /**
      * @param \Flowcode\UserBundle\Entity\UserGroup $userGroup
      */
-    public function removeUserGroup(\Flowcode\UserBundle\Entity\UserGroup $userGroup)
+    public function removeUserGroup(UserGroupInterface $userGroup)
     {
         $this->groups->removeElement($userGroup);
     }
