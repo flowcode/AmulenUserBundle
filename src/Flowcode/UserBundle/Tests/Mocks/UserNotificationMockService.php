@@ -32,4 +32,8 @@ class UserNotificationMockService
     public function notifyRecover(User $user)
     {
     }
+
+    public function notifyRegisterSuccess(User $user)
+    {
+    }
 }
