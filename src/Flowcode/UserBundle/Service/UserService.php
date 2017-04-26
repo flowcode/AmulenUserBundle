@@ -18,6 +18,7 @@ use Flowcode\UserBundle\Exception\ExistentUserException;
 use Flowcode\UserBundle\Exception\InvalidTokenException;
 use Flowcode\UserBundle\Exception\InexistentUserException;
 use Flowcode\UserBundle\Entity\UserStatus;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
  * User Service
@@ -51,6 +52,9 @@ class UserService implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         $user = $this->getUserRepository()->findOneBy(array('username' => $username, 'status' => UserStatus::ACTIVE));
+        if (!$user) {
+            throw new AuthenticationException('Invalid token');
+        }
         return $user;
     }
 
