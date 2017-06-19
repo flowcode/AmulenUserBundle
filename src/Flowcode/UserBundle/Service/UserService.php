@@ -19,7 +19,7 @@ use Flowcode\UserBundle\Exception\InvalidTokenException;
 use Flowcode\UserBundle\Exception\InexistentUserException;
 use Flowcode\UserBundle\Entity\UserStatus;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 /**
  * User Service
  */
