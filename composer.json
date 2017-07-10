@@ -19,6 +19,6 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "flowcode/notificationbundle": "^0.1.0"
+        "flowcode/notificationbundle": "^1.0.0"
     }
 }
