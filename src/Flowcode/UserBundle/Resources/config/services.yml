@@ -7,7 +7,12 @@ parameters:
 services:
     form.type.user:
         class: Flowcode\UserBundle\Form\UserType
-        arguments: ["@security.token_storage"]
+        arguments: ["@flowcode.user.group", "@flowcode.user"]
+        tags:
+            - { name: form.type, alias: user_type }
+    form.type.user.edit:
+        class: Flowcode\UserBundle\Form\UserEditType
+        arguments: ["@flowcode.user.group", "@flowcode.user"]
         tags:
             - { name: form.type, alias: user_type }
 
@@ -51,7 +56,7 @@ services:
         arguments:             
             - "%flowcode.model.user.class%"
 
-    flowcode.user.group.repository:         
+    flowcode.user.group.repository:
         class: Doctrine\ORM\EntityRepository         
         factory: ["@doctrine.orm.entity_manager", getRepository]         
         arguments:             

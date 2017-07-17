@@ -88,7 +88,7 @@ class UserController extends FOSRestController
         if ($form->isValid()) {
             try {
                 $user->setStatus(UserStatus::IN_REGISTER);
-                $user = $userService->create($user);
+                $user = $userService->createFromApiRegister($user);
             } catch (ExistentUserException $ex) {
                 $response = array("success" => false, "message" => $ex->getMessage(), "code" => ResponseCode::USER_REGISTER_IN_SYSTEM);
                 return $this->handleView(FOSView::create($response, Response::HTTP_CONFLICT)->setFormat("json"));

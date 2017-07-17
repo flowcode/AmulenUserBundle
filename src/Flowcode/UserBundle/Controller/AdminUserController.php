@@ -33,7 +33,8 @@ class AdminUserController extends Controller
         $filter['q'] = $request->get('q');
 
         $em = $this->getDoctrine()->getManager();
-        $qb = $em->getRepository('AmulenUserBundle:User')->createQueryBuilder('u');
+        $userService = $this->get('flowcode.user');
+        $qb = $userService->getUserFindQB('u');
         if ($filter['q']) {
             $qb->andWhere('(u.username LIKE :username OR u.email LIKE :username OR u.email LIKE :username OR u.firstname LIKE :username OR u.lastname LIKE :username)')->setParameter('username', '%' . $filter['q'] . '%');
         }
@@ -55,14 +56,13 @@ class AdminUserController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new User();
+        $userService = $this->get("flowcode.user");
+        $entity = $userService->createNewUser();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $userService = $this->get("flowcode.user");
             $userService->create($entity);
-
             return $this->redirect($this->generateUrl('admin_user_show', array('id' => $entity->getId())));
         }
 

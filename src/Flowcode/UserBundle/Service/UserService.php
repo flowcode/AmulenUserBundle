@@ -20,6 +20,7 @@ use Flowcode\UserBundle\Exception\InexistentUserException;
 use Flowcode\UserBundle\Entity\UserStatus;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+
 /**
  * User Service
  */
@@ -47,6 +48,14 @@ class UserService implements UserProviderInterface
         $this->userRepository = $userRepository;
         $this->userClass = $userClass;
     }
+
+    public function getPossibleStatuses()
+    {
+        return array(
+            'Inactive' => 0,
+            'Active' => 1
+        );
+    }
     /* UserProviderInterface method. If user can be logged, return the user. If not, return null */
 
     public function loadUserByUsername($username)
@@ -69,6 +78,10 @@ class UserService implements UserProviderInterface
         $offset = (($page - 1) * $max);
         $users = $this->getUserRepository()->findBy(array(), array(), $max, $offset);
         return $users;
+    }
+    public function getUserFindQB($alias)
+    {
+        return $this->getUserRepository()->createQueryBuilder($alias);
     }
 
     /**
@@ -98,12 +111,7 @@ class UserService implements UserProviderInterface
         return $user;
     }
 
-    /**
-     * Create a new user.
-     * @param  User   $user the user instance.
-     * @return User       the user instance.
-     */
-    public function create(User $user)
+    protected function isValid($user)
     {
         $userUsername = $this->getUserRepository()->findOneBy(array('username' => $user->getUsername()));
         if ($userUsername != null) {
@@ -113,13 +121,29 @@ class UserService implements UserProviderInterface
         if ($userEmail != null) {
             throw new ExistentUserException("login:register:emailexists");
         }
-        $userGroupService = $this->container->get("flowcode.user.group");
-        $userGroup = $userGroupService->findByName("group_user");
-        $user->addUserGroup($userGroup);
+        return $user;
+    }
+    /**
+     * Create a new user.
+     * @param  User   $user the user instance.
+     * @return User       the user instance.
+     */
+    public function create(User $user)
+    {
+        $user = $this->isValid($user);
+        return $this->persistUser($user);
+    }
+
+    public function createFromApiRegister(User $user)
+    {
+        return $this->create($user);
+    }
+
+    protected function persistUser($user)
+    {
         $user = $this->encode($user);
         $this->getEm()->persist($user);
         $this->getEm()->flush();
-
         return $user;
     }
 
@@ -272,7 +296,7 @@ class UserService implements UserProviderInterface
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(
-            sprintf('Instances of "%s" are not supported.', get_class($user))
+                sprintf('Instances of "%s" are not supported.', get_class($user))
             );
         }
 
@@ -301,12 +325,12 @@ class UserService implements UserProviderInterface
         return $this->em;
     }
 
-    private function getClass()
+    protected function getClass()
     {
         return $this->userClass;
     }
 
-    private function getUserRepository()
+    protected function getUserRepository()
     {
         return $this->userRepository;
     }

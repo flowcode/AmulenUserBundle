@@ -36,15 +36,23 @@ class UserGroupService
     {
         return $this->userGroupRepository->findOneBy(array('name' => $nameGroup));
     }
-
+    public function createNewUserGroup($name)
+    {
+        $class = $this->getClass();
+        $userGroup = new $class($name);
+        return $userGroup;
+    }
+    public function getClass()
+    {
+        return $this->userGroupClass;
+    }
     public function create($name)
     {
         $userGroup = $this->findByName($name);
         if ($userGroup) {
             return $userGroup;
         }
-        $class = $this->userGroupClass;
-        $userGroup = new $class($name);
+        $userGroup = $this->createNewUserGroup($name);
         $this->em->persist($userGroup);
         $this->em->flush();
         return $userGroup;

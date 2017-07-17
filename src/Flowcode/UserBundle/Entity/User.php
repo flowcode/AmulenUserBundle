@@ -280,30 +280,6 @@ abstract class User implements UserInterface
     }
 
     /**
-     * Set firstname
-     *
-     * @param string $firstname
-     *
-     * @return User
-     */
-    public function setFirstname($firstname)
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    /**
-     * Get firstname
-     *
-     * @return string
-     */
-    public function getFirstname()
-    {
-        return $this->firstname;
-    }
-
-    /**
      * Set lastname
      *
      * @param string $lastname
@@ -506,37 +482,22 @@ abstract class User implements UserInterface
         $this->groups = $groups;
     }
 
-    public function getHappyName()
-    {
-        $happyName = "";
-        if (isset($this->firstname)) {
-            $happyName .= $this->firstname;
-            if (isset($this->lastname)) {
-                $happyName .= " " . $this->lastname;
-            }
-        } else {
-            $happyName .= $this->username;
-        }
-
-        return $happyName;
-    }
-
-    function getRegisterToken()
+    public function getRegisterToken()
     {
         return $this->registerToken;
     }
 
-    function setRegisterToken($registerToken)
+    public function setRegisterToken($registerToken)
     {
         $this->registerToken = $registerToken;
     }
 
-    function getForgotToken()
+    public function getForgotToken()
     {
         return $this->forgotToken;
     }
 
-    function setForgotToken($forgotToken)
+    public function setForgotToken($forgotToken)
     {
         $this->forgotToken = $forgotToken;
     }

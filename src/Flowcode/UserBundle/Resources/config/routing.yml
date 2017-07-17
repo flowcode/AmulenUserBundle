@@ -3,7 +3,53 @@ flowcode_user_activate_account:
     defaults:  { _controller: FlowcodeUserBundle:Security:activateAccount }
     methods: [GET]
     
-flowcode_user_forgot_check:     
+flowcode_user_forgot_check:
     path: /forgot/{id}/{token}
     defaults:  { _controller: FlowcodeUserBundle:Security:forgotCheckApi }
+    methods: [GET]
+
+admin_user:
+    path: /admin/user
+    defaults:  { _controller: FlowcodeUserBundle:AdminUser:index }
+    methods: [GET]
+admin_user_new:
+    path: /admin/user/new
+    defaults:  { _controller: FlowcodeUserBundle:AdminUser:new }
+    methods: [GET]
+admin_user_new:
+    path: /admin/user
+    defaults:  { _controller: FlowcodeUserBundle:AdminUser:create }
+    methods: [POST]
+admin_user_show:
+    path: /admin/user/{id}
+    defaults:  { _controller: FlowcodeUserBundle:AdminUser:show }
+    methods: [GET]
+
+flowcode_admin_user_check:
+    path: /admin/_check
+    defaults:  { _controller: FlowcodeUserBundle:AdminLogin:_check }
+    methods: [GET]
+flowcode_admin_user_logout:
+    path: /admin/logout
+    defaults:  { _controller: FlowcodeUserBundle:AdminLogin:logout }
+    methods: [GET]
+flowcode_admin_user_login:
+    path: /admin/login
+    defaults:  { _controller: FlowcodeUserBundle:AdminLogin:login }
+    methods: [GET]
+amulen_admin_login_forgot:
+    path: /admin/forgot
+    defaults:  { _controller: FlowcodeUserBundle:AdminLogin:forgot }
+    methods: [GET]
+admin_profile_show:
+    path: /admin/profile
+    defaults:  { _controller: FlowcodeUserBundle:AdminProfile:index }
+    methods: [GET]
+admin_usergroup:
+    path: /admin/usergroup
+    defaults:  { _controller: FlowcodeUserBundle:UserGroup:index }
+    methods: [GET]
+admin_role:
+    path: /admin/role
+    defaults:  { _controller: FlowcodeUserBundle:AdminRole:index }
     methods: [GET]
